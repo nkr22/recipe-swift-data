@@ -61,7 +61,7 @@ class Direction: Codable, Hashable {
     var direction: String
     
     @Relationship(inverse: \Recipe.directions)
-        var recipes: Recipe?
+        var recipe: Recipe?
 
     enum CodingKeys: CodingKey {
         case order, direction
@@ -93,7 +93,7 @@ class Ingredient: Codable, Hashable {
     var notes: String
 
     @Relationship(inverse: \Recipe.ingredients)
-        var recipes: Recipe?
+        var recipe: Recipe?
 
     enum CodingKeys: CodingKey {
         case quantity, ingredient, notes

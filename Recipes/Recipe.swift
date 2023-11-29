@@ -25,9 +25,9 @@ class Recipe {
     var imageURL: String?
     var notes: String?
     @Relationship(deleteRule: .cascade)
-    var directions: [Direction]
+    var directions: [Direction] = []
     @Relationship(deleteRule: .cascade)
-    var ingredients: [Ingredient]
+    var ingredients: [Ingredient] = []
     
     init(title: String, author: String, dateCreated: String, expertiseRequired: ExpertiseLevel, dateLastViewed: String, sourceURL: String?, prepTime: Int? , cookTime: Int? , servings: Double? , currentScale: Double, isFavorited: Bool, starRating: Int?, imageURL: String? , notes: String? , directions: [Direction], ingredients: [Ingredient]) {
         self.title = title
@@ -61,7 +61,7 @@ class Direction: Codable, Hashable {
     var direction: String
     
     @Relationship(inverse: \Recipe.directions)
-        var recipe: Recipe?
+        var recipes: Recipe?
 
     enum CodingKeys: CodingKey {
         case order, direction
@@ -91,9 +91,9 @@ class Ingredient: Codable, Hashable {
     var quantity: String
     var ingredient: String
     var notes: String
-    
+
     @Relationship(inverse: \Recipe.ingredients)
-        var recipe: Recipe?
+        var recipes: Recipe?
 
     enum CodingKeys: CodingKey {
         case quantity, ingredient, notes

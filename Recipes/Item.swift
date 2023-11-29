@@ -16,3 +16,15 @@ final class Item {
         self.timestamp = timestamp
     }
 }
+
+//final class Item {
+//    var title: String
+//    var ingredients: String
+//    var instruction: String
+//    
+//    init(title: String, ingredients: String, instruction: String) {
+//        self.title = title
+//        self.ingredients = ingredients
+//        self.instruction = instruction
+//    }
+//}

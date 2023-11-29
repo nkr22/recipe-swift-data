@@ -1,0 +1,23 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-sendimages-dev-172032-authRole",
+      "UnauthRoleArn": "arn:aws:iam::953050468038:role/amplify-sendimages-dev-172032-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::953050468038:role/amplify-sendimages-dev-172032-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-sendimages-dev-172032-deployment",
+      "UnauthRoleName": "amplify-sendimages-dev-172032-unauthRole",
+      "StackName": "amplify-sendimages-dev-172032",
+      "StackId": "arn:aws:cloudformation:us-east-2:953050468038:stack/amplify-sendimages-dev-172032/c8017b10-8cba-11ee-a8f7-0228c481201b",
+      "AmplifyAppId": "d2xdzvywmzg98j"
+    },
+    "categories": {
+      "auth": {
+        "sendimages519c3bb7": {}
+      },
+      "storage": {
+        "recipeImages": {}
+      }
+    }
+  }
+}

@@ -1,0 +1,247 @@
+{
+    "recipes": [{
+  "title": "Lebkuchengewürz (German Gingerbread Spice)",
+  "author": "Kimberly Killebrew",
+  "dateCreated": "2023-11-26T00:00:00Z",
+  "expertiseRequired": "moderate",
+  "dateLastViewed": "2023-11-26T00:00:00Z",
+  "sourceURL": "https://www.daringgourmet.com/homemade-lebkuchengewuerz-german-gingerbread-spice-blend/",
+  "prepTime": 5,
+  "servings": 4,
+  "currentScale": 1.0,
+  "isFavorited": false,
+  "imageURL": null,
+  "notes": "Essential ingredient for authentic tasting Lebkuchen, Pfeffernüsee, and more.",
+  "directions": [
+    {
+      "order": 1,
+      "direction": "Combine the spices together and store in an airtight jar in a cool, dark place for up to one year."
+    },
+    {
+      "order": 2,
+      "direction": "For superior flavor, grind spices from toasted and freshly ground whole spices. Heat a dry skillet over medium heat and toast the spices until very fragrant but not scorched."
+    }
+  ],
+  "ingredients": [
+    {
+      "quantity": "2 1/2 tablespoons",
+      "ingredient": "ground cinnamon",
+      "notes": ""
+    },
+    {
+      "quantity": "2 teaspoons",
+      "ingredient": "ground cloves",
+      "notes": ""
+    },
+    {
+      "quantity": "1/2 teaspoon",
+      "ingredient": "ground allspice",
+      "notes": ""
+    },
+    {
+      "quantity": "1/2 teaspoon",
+      "ingredient": "ground coriander",
+      "notes": ""
+    },
+    {
+      "quantity": "1/2 teaspoon",
+      "ingredient": "ground green cardamom",
+      "notes": ""
+    },
+    {
+      "quantity": "1/2 teaspoon",
+      "ingredient": "ground ginger",
+      "notes": "Doubled in the recipe."
+    },
+    {
+      "quantity": "1/2 teaspoon",
+      "ingredient": "ground star anise",
+      "notes": ""
+    },
+    {
+      "quantity": "1/4 teaspoon",
+      "ingredient": "ground mace",
+      "notes": ""
+    },
+    {
+      "quantity": "1/4 teaspoon",
+      "ingredient": "ground nutmeg",
+      "notes": ""
+    }
+  ]
+},
+{
+  "title": "Nürnberger Elisenlebkuchen (German Lebkuchen)",
+  "author": "Kimberly Killebrew",
+  "dateCreated": "2023-11-26T00:00:00Z",
+  "expertiseRequired": "moderate",
+  "dateLastViewed": "2023-11-26T00:00:00Z",
+  "sourceURL": "https://www.daringgourmet.com/traditional-nuernberger-elisenlebkuchen-german-lebkuchen/",
+  "prepTime": 20,
+  "cookTime": 25,
+  "servings": 35,
+  "currentScale": 1.0,
+  "isFavorited": false,
+  "imageURL": null,
+  "notes": "A popular and beloved German Christmas confection.",
+  "directions": [
+    {
+      "order": 1,
+      "direction": "Preheat the oven to 300 degrees F."
+    },
+    {
+      "order": 2,
+      "direction": "Toss the candied lemon and orange peel with about 1/4 cup all-purpose flour to prevent sticking, then pulse in a food processor until finely minced. Set aside."
+    },
+    {
+      "order": 3,
+      "direction": "In a large mixing bowl, beat the eggs until foamy. Add the sugar, honey, and vanilla extract, beating until combined."
+    },
+    {
+      "order": 4,
+      "direction": "Add the ground almonds, hazelnuts, salt, baking powder, Lebkuchengewürz, and the minced candied peels. Stir vigorously until thoroughly combined."
+    },
+    {
+      "order": 5,
+      "direction": "Scoop the mixture onto Backoblaten, smoothing the top. Set them on a lined cookie sheet."
+    },
+    {
+      "order": 6,
+      "direction": "Bake on the middle rack of the oven for 25-28 minutes. Allow to cool completely after removing."
+    },
+    {
+      "order": 7,
+      "direction": "For glazing, dip half of the Lebkuchen in chocolate glaze and half in sugar glaze, letting excess drip off. Place on a wire rack to dry."
+    },
+    {
+      "order": 8,
+      "direction": "Store in an airtight container. Will keep for several weeks; flavor improves with time."
+    }
+  ],
+  "ingredients": [
+    {
+      "quantity": "5",
+      "ingredient": "large eggs",
+      "notes": ""
+    },
+    {
+      "quantity": "275g",
+      "ingredient": "packed brown sugar",
+      "notes": ""
+    },
+    {
+      "quantity": "85ml",
+      "ingredient": "honey",
+      "notes": ""
+    },
+    {
+      "quantity": "1 teaspoon",
+      "ingredient": "vanilla extract",
+      "notes": ""
+    },
+    {
+      "quantity": "225g",
+      "ingredient": "almond meal",
+      "notes": ""
+    },
+    {
+      "quantity": "225g",
+      "ingredient": "hazelnut meal",
+      "notes": ""
+    },
+    {
+      "quantity": "1/4 teaspoon",
+      "ingredient": "salt",
+      "notes": ""
+    },
+    {
+      "quantity": "1/2 teaspoon",
+      "ingredient": "baking powder",
+      "notes": ""
+    },
+    {
+      "quantity": "3 teaspoons",
+      "ingredient": "Lebkuchengewürz",
+      "notes": ""
+    },
+    {
+      "quantity": "115g",
+      "ingredient": "candied lemon peel",
+      "notes": ""
+    },
+    {
+      "quantity": "115g",
+      "ingredient": "candied orange peel",
+      "notes": ""
+    },
+    {
+      "quantity": "1/4 cup",
+      "ingredient": "all-purpose flour",
+      "notes": "To coat the candied peel"
+    }
+  ]
+},
+{
+  "title": "Strawberry Poke Cake",
+  "author": "Betty Crocker Kitchens",
+  "dateCreated": "2023-08-01",
+  "expertiseRequired": "beginner",
+  "dateLastViewed": "2023-11-26T00:00:00Z",
+  "sourceURL": "https://www.bettycrocker.com/recipes/strawberry-poke-cake/354fda2b-949f-4222-b939-24ea67b50f1a",
+  "prepTime": 15,
+  "cookTime": 20,
+  "servings": 12,
+  "currentScale": 1.0,
+  "isFavorited": false,
+  "imageURL": null,
+  "notes": "A tender-crumbed white cake filled with strawberry Jell-O, topped with fluffy frosting and fresh strawberries.",
+  "directions": [
+    {
+      "order": 1,
+      "direction": "Heat oven to 350°F (325°F for dark or nonstick pan). Make and bake cake as directed on box for 13x9-inch pan, using water, oil, and egg whites. Cool in pan on cooling rack for 20 minutes."
+    },
+    {
+      "order": 2,
+      "direction": "In a medium bowl, pour boiling water on gelatin; stir until gelatin is dissolved. Poke cake every inch with the handle of a wooden spoon or tines of a fork halfway into the cake. Carefully pour strawberry gelatin evenly over the top of the cake. Cool completely, about 1 hour."
+    },
+    {
+      "order": 3,
+      "direction": "Spoon and spread frosting over top of cake. Cut into 4 rows by 3 rows. Garnish each piece of cake with strawberries. Store loosely covered in the refrigerator."
+    }
+  ],
+  "ingredients": [
+    {
+      "quantity": "1 box",
+      "ingredient": "Betty Crocker™ Super Moist™ White Cake Mix",
+      "notes": ""
+    },
+    {
+      "quantity": "As called for on cake mix box",
+      "ingredient": "Water, vegetable oil, and egg whites",
+      "notes": ""
+    },
+    {
+      "quantity": "1 cup",
+      "ingredient": "boiling water",
+      "notes": ""
+    },
+    {
+      "quantity": "1 box",
+      "ingredient": "Jell-O™ strawberry-flavored gelatin (4-serving size)",
+      "notes": ""
+    },
+    {
+      "quantity": "1 tub (12 oz)",
+      "ingredient": "Betty Crocker™ Whipped Fluffy White Frosting",
+      "notes": ""
+    },
+    {
+      "quantity": "12",
+      "ingredient": "fresh strawberries, cut in half",
+      "notes": ""
+    }
+  ]
+  }
+  ]
+}
+

@@ -39,22 +39,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "8C690C56-12BC-4BB2-BD36-FC3A7BE159F4"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Recipes/ContentView.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "20"
-            endingLineNumber = "20"
-            landmarkName = "body"
-            landmarkType = "24">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "5DC41A83-A4B3-4EF2-B121-6C020013C543"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -236,6 +220,22 @@
                   offsetFromSymbolStart = "84">
                </Location>
             </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B5993D17-98F5-4E08-AF66-A5758338F9E0"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../../../var/folders/zq/w_70rzrx0cb09mbp5dsrl07w0000gn/T/swift-generated-sources/@__swiftmacro_7Recipes33_B64A4829C88F0C77F41A6713F3AA7DAELl7PreviewfMf_.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1"
+            endingLineNumber = "1"
+            landmarkName = "$s7Recipes33_B64A4829C88F0C77F41A6713F3AA7DAELl7PreviewfMf_15PreviewRegistryfMu_"
+            landmarkType = "37">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

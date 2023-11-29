@@ -12,60 +12,17 @@ import MarkdownUI
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @State var showModal = false
-    @Query private var items: [Recipe]
+    @Query private var recipes: [Recipe]
 
     var body: some View {
         NavigationSplitView {
-                List {
-                    ForEach(items) { item in
-                        NavigationLink {
-                            VStack{
-                                List {
-                                    ForEach(item.ingredients, id: \.self) { ingredient in
-                                        Markdown {
-                                            "\(ingredient.quantity) \(ingredient.ingredient) \(ingredient.notes)"
-                                        }
-                                    }
-                                    ForEach(item.directions, id: \.self) { direction in
-                                        Markdown {
-                                            "\(direction.order). \(direction.direction)"
-                                        }
-                                    }
-                                }
-                                
-                            }
-                        } label: {
-                            Text(item.title)
-                        }
-                    }
-                    .onDelete(perform: deleteItems)
-                }
-    #if os(macOS)
-                .navigationSplitViewColumnWidth(min: 180, ideal: 200)
-    #endif
-                
-            
-        } detail: {
-            Markdown {
-                """
-                *Select* an **item**
-                """
-            }
-        }
-        .fullScreenCover(isPresented: $showModal) {
-           NewRecipe()
-        }
-    }
-    
-    private var browseAllList: some View {
-        List {
-            ForEach(items) { item in
-                NavigationLink {
-                    Text("blah")
-                } label: {
-                    Text("This is the label")
-                }
-                
+            VStack {
+                Text("Recipes")
+                browseAllList
+
+#if os(macOS)
+                    
+#endif
             }
             .toolbar {
 #if os(iOS)
@@ -85,22 +42,56 @@ struct ContentView: View {
                     }
                 }
         }
+            
+        } detail: {
+            Markdown {
+                """
+                *Select* an **item**
+                """
+            }
         }
+        .fullScreenCover(isPresented: $showModal) {
+           NewRecipe()
+        }
+    }
+    
+    private var browseAllList: some View {
+        List {
+            ForEach(recipes) { recipe in
+                NavigationLink {
+                    VStack{
+                        List {
+                            ForEach(recipe.ingredients, id: \.self) { ingredient in
+                                Markdown {
+                                    "\(ingredient.quantity) \(ingredient.ingredient) \(ingredient.notes)"
+                                }
+                            }
+                            ForEach(recipe.directions, id: \.self) { direction in
+                                Markdown {
+                                    "\(direction.order). \(direction.direction)"
+                                }
+                            }
+                        }
+                        
+                    }
+                } label: {
+                    Text("\(recipe.title)")
+                }
+                
+            }
+            .onDelete(perform: deleteItems)
+        }
+        .navigationSplitViewColumnWidth(min: 180, ideal: 200)
     }
 
     private func addItem() {
-//        withAnimation {
-//            let newItem = Item(timestamp: Date())
-//            modelContext.insert(newItem)
-//        }
-        
         showModal = true
     }
 
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
             for index in offsets {
-                modelContext.delete(items[index])
+                modelContext.delete(recipes[index])
             }
         }
     }
@@ -137,5 +128,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
+        .modelContainer(for: Recipe.self, inMemory: true)
 }

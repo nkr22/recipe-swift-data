@@ -29,25 +29,7 @@ struct RecipeJSON: Codable {
     var notes: String?
     var directions: [Direction]
     var ingredients: [Ingredient]
-    
-//    init(title: String, author: String, dateCreated: String, expertiseRequired: ExpertiseLevel, dateLastViewed: String, sourceURL: String?, prepTime: Int? = nil, cookTime: Int? = nil, servings: Double? = nil, currentScale: Double, isFavorited: Bool, starRating: Int? = nil, imageURL: String? = nil, notes: String? = nil, directions: [Direction], ingredients: [Ingredient]) {
-//        self.title = title
-//        self.author = author
-//        self.dateCreated = dateCreated
-//        self.expertiseRequired = expertiseRequired
-//        self.dateLastViewed = dateLastViewed
-//        self.sourceURL = sourceURL
-//        self.prepTime = prepTime
-//        self.cookTime = cookTime
-//        self.servings = servings
-//        self.currentScale = currentScale
-//        self.isFavorited = isFavorited
-//        self.starRating = starRating
-//        self.imageURL = imageURL
-//        self.notes = notes
-//        self.directions = directions
-//        self.ingredients = ingredients
-//    }
+    var categories: [Category]?
 }
 
 func loadJson(filename fileName: String) -> [RecipeJSON]? {

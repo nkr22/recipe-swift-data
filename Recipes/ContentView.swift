@@ -11,19 +11,35 @@ import MarkdownUI
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @State var showModal = false
+    @State var showNewRecipeModal = false
+    @State var showEditRecipeModal = false
     @Query private var recipes: [Recipe]
+    @Query private var categories: [Category]
 
     var body: some View {
         NavigationSplitView {
-            VStack {
-                Text("Recipes")
-                browseAllList
-
-#if os(macOS)
-                    
-#endif
+            TabView {
+                VStack{
+                    if recipes.isEmpty {
+                        NoRecipesView()
+                    } else {
+                        Text("Recipes")
+                        browseAllList
+                    }
+                }
+                .tabItem{
+                    Label("Recipes", systemImage: "list.bullet")
+                }
+                VStack{
+                    ForEach(categories, id: \.self) {category in
+                        Text("\(category.name)")
+                    }
+                }
+                .tabItem {
+                    Label("Blah", systemImage: "list.star")
+                }
             }
+            
             .toolbar {
 #if os(iOS)
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -50,15 +66,19 @@ struct ContentView: View {
                 """
             }
         }
-        .fullScreenCover(isPresented: $showModal) {
+        .fullScreenCover(isPresented: $showNewRecipeModal) {
            NewRecipe()
         }
+        
     }
     
     private var browseAllList: some View {
         List {
             ForEach(recipes) { recipe in
                 NavigationLink {
+                    Button(action: editRecipe) {
+                        Label("Edit", systemImage: "pencil")
+                    }
                     VStack{
                         List {
                             ForEach(recipe.ingredients, id: \.self) { ingredient in
@@ -66,7 +86,8 @@ struct ContentView: View {
                                     "\(ingredient.quantity) \(ingredient.ingredient) \(ingredient.notes)"
                                 }
                             }
-                            ForEach(recipe.directions, id: \.self) { direction in
+                            let sortedDirections = recipe.directions.sorted { $0.order < $1.order }
+                            ForEach(sortedDirections, id: \.self) { direction in
                                 Markdown {
                                     "\(direction.order). \(direction.direction)"
                                 }
@@ -74,18 +95,26 @@ struct ContentView: View {
                         }
                         
                     }
+                    .fullScreenCover(isPresented: $showEditRecipeModal) {
+                       EditRecipeView(recipe: recipe)
+                    }
                 } label: {
                     Text("\(recipe.title)")
                 }
                 
             }
             .onDelete(perform: deleteItems)
+            
         }
         .navigationSplitViewColumnWidth(min: 180, ideal: 200)
     }
 
     private func addItem() {
-        showModal = true
+        showNewRecipeModal = true
+    }
+    
+    private func editRecipe() {
+        showEditRecipeModal = true
     }
 
     private func deleteItems(offsets: IndexSet) {
@@ -116,7 +145,8 @@ struct ContentView: View {
                                imageURL: recipe.imageURL,
                                notes: recipe.notes,
                                directions: recipe.directions,
-                               ingredients: recipe.ingredients
+                               ingredients: recipe.ingredients,
+                               categories: []
                               )
                         )
                 }

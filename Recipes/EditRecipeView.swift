@@ -1,15 +1,16 @@
 //
-//  NewRecipe.swift
+//  EditRecipeView.swift
 //  Recipes
 //
-//  Created by Noelia Root on 11/27/23.
+//  Created by Noelia Root on 11/30/23.
 //
 
 import SwiftUI
 
-struct NewRecipe: View {
+struct EditRecipeView: View {
+    let recipe: Recipe
     @Environment(\.modelContext) private var context
-    @Environment(\.dismiss) var dismiss
+    @Environment(\.dismiss) private var dismiss
     @State private var title = ""
     @State private var author = ""
     @State private var isFavorited: Bool = false
@@ -105,35 +106,76 @@ struct NewRecipe: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Save") {
-                        let newRecipe =
-                        Recipe(
-                            title: title,
-                            author: author,
-                            dateCreated: df.string(from: Date()),
-                            expertiseRequired: expertiseRequired,
-                            dateLastViewed: df.string(from: Date()),
-                            sourceURL: sourceURL,
-                            prepTime: prepTime,
-                            cookTime: cookTime,
-                            servings: servings,
-                            currentScale: 1,
-                            isFavorited: isFavorited,
-                            starRating: starRating,
-                            imageURL: "",
-                            notes: notes,
-                            directions: directions,
-                            ingredients: ingredients,
-                            categories: []
-                        )
-                        context.insert(newRecipe)
-                        dismiss()
+                        if isChanged {
+                            recipe.title = title
+                            recipe.author = author
+                            recipe.expertiseRequired = expertiseRequired
+                            recipe.sourceURL = sourceURL
+                            recipe.prepTime = prepTime
+                            recipe.cookTime = cookTime
+                            recipe.servings = servings
+                            recipe.isFavorited = isFavorited
+                            recipe.starRating = starRating
+                            recipe.notes = notes
+                            recipe.directions = directions
+                            recipe.ingredients = ingredients
+                        }
                     }
                 }
             }
+            .onAppear() {
+                title = recipe.title
+                author = recipe.author
+                expertiseRequired = recipe.expertiseRequired
+                recipe.dateLastViewed = df.string(from: Date())
+                sourceURL = recipe.sourceURL ?? ""
+                prepTime = recipe.prepTime
+                cookTime = recipe.cookTime
+                servings = recipe.servings
+                isFavorited = recipe.isFavorited
+                starRating = recipe.starRating
+                notes = recipe.notes ?? ""
+                directions = recipe.directions
+                ingredients = recipe.ingredients
+            }
+        }
+        
+        var isChanged: Bool {
+            title != recipe.title ||
+            author != recipe.author ||
+            expertiseRequired != recipe.expertiseRequired ||
+            sourceURL != recipe.sourceURL ||
+            prepTime != recipe.prepTime ||
+            cookTime != recipe.cookTime ||
+            servings != recipe.servings ||
+            isFavorited != recipe.isFavorited ||
+            starRating != recipe.starRating ||
+            notes != recipe.notes ||
+            directions != recipe.directions ||
+            ingredients != recipe.ingredients
         }
     }
 }
 
-#Preview {
-    NewRecipe()
-}
+//#Preview {
+//    let df = DateFormatter()
+//    let recipe =  Recipe(
+//        title: "Cake",
+//        author: "Noelia Root",
+//        dateCreated: df.string(from: Date()),
+//        expertiseRequired: ExpertiseLevel.beginner,
+//        dateLastViewed: df.string(from: Date()),
+//        sourceURL: "",
+//        prepTime: 15,
+//        cookTime: 35,
+//        servings: 4,
+//        currentScale: 1,
+//        isFavorited: false,
+//        starRating: 3,
+//        imageURL: "",
+//        notes: "",
+//        directions: [Direction(order: 1, direction: "Mix Stuff")],
+//        ingredients: [Ingredient(quantity: "1 cup", ingredient: "flour", notes: "Unbleached")]
+//    )
+//    EditRecipeView(recipe: recipe)
+//}

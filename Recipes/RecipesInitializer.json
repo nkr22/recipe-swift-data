@@ -68,6 +68,17 @@
       "ingredient": "ground nutmeg",
       "notes": ""
     }
+  ],
+  "categories": [
+      {
+        "name": "Spices"
+      },
+      {
+        "name": "German"
+      },
+      {
+        "name": "Holiday"
+      }
   ]
 },
 {
@@ -179,6 +190,17 @@
       "ingredient": "all-purpose flour",
       "notes": "To coat the candied peel"
     }
+  ],
+  "categories": [
+      {
+        "name": "Bakery"
+      },
+      {
+        "name": "German"
+      },
+      {
+        "name": "Holiday"
+      }
   ]
 },
 {
@@ -240,6 +262,17 @@
       "ingredient": "fresh strawberries, cut in half",
       "notes": ""
     }
+  ],
+  "categories": [
+      {
+        "name": "Dessert"
+      },
+      {
+        "name": "Cakes"
+      },
+      {
+        "name": "Summer"
+      }
   ]
   }
   ]

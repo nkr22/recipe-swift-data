@@ -5,6 +5,8 @@
 //  Created by Noelia Root on 11/29/23.
 //
 
+//Walkthrough source: https://www.youtube.com/watch?v=dAMFgq4tDPM
+
 import SwiftUI
 
 struct RatingsView: View {
@@ -23,15 +25,17 @@ struct RatingsView: View {
                     .foregroundStyle(Color(color))
                     .onTapGesture {
                         withAnimation{
-                            currentRating = rating + 1
+                            currentRating = rating
                         }
                     }
+                    
             }
         }
+        .frame(width: CGFloat(Double(maxRating) * width))
     }
     
     func correctImage(for rating: Int) -> Bool {
-        if let currentRating, rating < currentRating {
+        if let currentRating, rating <= currentRating {
             return true
         } else {
             return false

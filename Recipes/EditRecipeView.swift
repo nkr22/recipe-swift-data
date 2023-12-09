@@ -6,11 +6,14 @@
 //
 
 import SwiftUI
+import SwiftData
+import PhotosUI
 
 struct EditRecipeView: View {
     let recipe: Recipe
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
+    @Query(sort: \Category.name) private var allCategories: [Category]
     @State private var title = ""
     @State private var author = ""
     @State private var isFavorited: Bool = false
@@ -24,6 +27,11 @@ struct EditRecipeView: View {
     @State private var directions: [Direction] = []
     @State private var directionCount: Int = 1
     @State private var ingredients: [Ingredient] = []
+    @State private var categories: [Category] = []
+    @State private var selectedCategories: Set<Category> = []
+    @State private var isInitialized = false
+    @State private var imageData: Data? = nil
+    @State private var selectedPhoto: PhotosPickerItem?
     
     let df = DateFormatter()
     
@@ -60,12 +68,36 @@ struct EditRecipeView: View {
                             .foregroundColor(.secondary)
                         Spacer()
                         RatingsView(maxRating: 5, currentRating: $starRating, sfSymbol: "star", width: 30.0, color: .systemYellow)
-                            .frame(maxWidth: UIScreen.main.bounds.width/2)
                     }
                     TextField("Source URL", text: $sourceURL)
                     // Additional fields for prepTime, cookTime, servings, etc.
+                    MultiSelector(label: Text("Select Categories"), options: allCategories, optionToString: {$0.name}, selected: $selectedCategories)
+                    if let selectedPhotoData = imageData,
+                           let uiImage = UIImage(data: selectedPhotoData) {
+                            Image(uiImage: uiImage)
+                                .resizable()
+                                .scaledToFill()
+                                .frame(maxWidth: .infinity, maxHeight: 300)
+                        }
+                    PhotosPicker(selection: $selectedPhoto,
+                                 matching: .images,
+                                 photoLibrary: .shared()) {
+                                        Label("Add Image", systemImage: "photo")
+                                    }
+                    if imageData != nil {
+                            Button(role: .destructive) {
+                                withAnimation {
+                                    selectedPhoto = nil
+                                    imageData = nil
+                                }
+                            } label: {
+                                Label("Remove Image", systemImage: "xmark")
+                                    .foregroundStyle(.red)
+                            }
+                        }
+                    
                 }
-
+                
                 Section(header: Text("Ingredients")) {
                     Button(action: addIngredient) {
                         Label("Add Ingredient", systemImage: "plus")
@@ -82,18 +114,18 @@ struct EditRecipeView: View {
                     Button(action: addDirection) {
                         Label("Add Direction", systemImage: "plus")
                     }
-                    ForEach($directions, id: \.id) { $direction in
+                    ForEach($directions.sorted { $0.order.wrappedValue < $1.order.wrappedValue }, id: \.id) { $direction in
                         DirectionInputView(direction: $direction)
                     }
                     .onDelete(perform: deleteDirection)
                 }
                 
                 Section(header: Text("Notes")) {
-                    TextEditor(text: $notes)
+                    TextEditor(text: $notes).multilineTextAlignment(.leading)
                 }
             
             }
-            .navigationTitle("New Recipe")
+            .navigationTitle("Edit Recipe")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
@@ -119,24 +151,38 @@ struct EditRecipeView: View {
                             recipe.notes = notes
                             recipe.directions = directions
                             recipe.ingredients = ingredients
+                            recipe.categories = Array(selectedCategories)
+                            recipe.imageURL = imageData
                         }
+                        dismiss()
                     }
                 }
             }
             .onAppear() {
-                title = recipe.title
-                author = recipe.author
-                expertiseRequired = recipe.expertiseRequired
-                recipe.dateLastViewed = df.string(from: Date())
-                sourceURL = recipe.sourceURL ?? ""
-                prepTime = recipe.prepTime
-                cookTime = recipe.cookTime
-                servings = recipe.servings
-                isFavorited = recipe.isFavorited
-                starRating = recipe.starRating
-                notes = recipe.notes ?? ""
-                directions = recipe.directions
-                ingredients = recipe.ingredients
+                if !isInitialized {
+                    title = recipe.title
+                    author = recipe.author
+                    expertiseRequired = recipe.expertiseRequired
+                    recipe.dateLastViewed = df.string(from: Date())
+                    sourceURL = recipe.sourceURL ?? ""
+                    imageData = recipe.imageURL
+                    prepTime = recipe.prepTime
+                    cookTime = recipe.cookTime
+                    servings = recipe.servings
+                    isFavorited = recipe.isFavorited
+                    starRating = recipe.starRating
+                    notes = recipe.notes ?? ""
+                    directions = recipe.directions
+                    ingredients = recipe.ingredients
+                    categories = recipe.categories
+                    selectedCategories = Set(recipe.categories)
+                    isInitialized = true
+                }
+            }
+        }
+        .task(id: selectedPhoto) {
+            if let data = try? await selectedPhoto?.loadTransferable(type: Data.self) {
+                imageData = data
             }
         }
         
@@ -152,8 +198,11 @@ struct EditRecipeView: View {
             starRating != recipe.starRating ||
             notes != recipe.notes ||
             directions != recipe.directions ||
-            ingredients != recipe.ingredients
+            ingredients != recipe.ingredients ||
+            Array(selectedCategories) != recipe.categories ||
+            imageData != recipe.imageURL
         }
+    
     }
 }
 

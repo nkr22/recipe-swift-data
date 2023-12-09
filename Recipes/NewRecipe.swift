@@ -6,9 +6,12 @@
 //
 
 import SwiftUI
+import SwiftData
+import PhotosUI
 
 struct NewRecipe: View {
     @Environment(\.modelContext) private var context
+    @Query(sort: \Category.name)  private var allCategories: [Category]
     @Environment(\.dismiss) var dismiss
     @State private var title = ""
     @State private var author = ""
@@ -23,6 +26,9 @@ struct NewRecipe: View {
     @State private var directions: [Direction] = []
     @State private var directionCount: Int = 1
     @State private var ingredients: [Ingredient] = []
+    @State private var categories: Set<Category> = []
+    @State private var imageData: Data? = nil
+    @State private var selectedPhoto: PhotosPickerItem?
     
     let df = DateFormatter()
     
@@ -59,10 +65,33 @@ struct NewRecipe: View {
                             .foregroundColor(.secondary)
                         Spacer()
                         RatingsView(maxRating: 5, currentRating: $starRating, sfSymbol: "star", width: 30.0, color: .systemYellow)
-                            .frame(maxWidth: UIScreen.main.bounds.width/2)
                     }
                     TextField("Source URL", text: $sourceURL)
-                    // Additional fields for prepTime, cookTime, servings, etc.
+                    MultiSelector(label: Text("Select Categories"), options: allCategories, optionToString: {$0.name}, selected: $categories)
+                    if let selectedPhotoData = imageData,
+                           let uiImage = UIImage(data: selectedPhotoData) {
+                            Image(uiImage: uiImage)
+                                .resizable()
+                                .scaledToFill()
+                                .frame(maxWidth: .infinity, maxHeight: 300)
+                        }
+                    PhotosPicker(selection: $selectedPhoto,
+                                 matching: .images,
+                                 photoLibrary: .shared()) {
+                                        Label("Add Image", systemImage: "photo")
+                                    }
+                    if imageData != nil {
+                            Button(role: .destructive) {
+                                withAnimation {
+                                    selectedPhoto = nil
+                                    imageData = nil
+                                }
+                            } label: {
+                                Label("Remove Image", systemImage: "xmark")
+                                    .foregroundStyle(.red)
+                            }
+                        }
+                                    
                 }
 
                 Section(header: Text("Ingredients")) {
@@ -88,7 +117,7 @@ struct NewRecipe: View {
                 }
                 
                 Section(header: Text("Notes")) {
-                    TextEditor(text: $notes)
+                    TextEditor(text: $notes).multilineTextAlignment(.leading)
                 }
             
             }
@@ -119,17 +148,23 @@ struct NewRecipe: View {
                             currentScale: 1,
                             isFavorited: isFavorited,
                             starRating: starRating,
-                            imageURL: "",
+                            imageURL: imageData,
                             notes: notes,
                             directions: directions,
                             ingredients: ingredients,
-                            categories: []
+                            categories: Array(categories)
                         )
                         context.insert(newRecipe)
                         dismiss()
                     }
                 }
             }
+            .task(id: selectedPhoto) {
+                if let data = try? await selectedPhoto?.loadTransferable(type: Data.self) {
+                    imageData = data
+                }
+            }
+
         }
     }
 }

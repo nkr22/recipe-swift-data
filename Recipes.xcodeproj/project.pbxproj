@@ -36,6 +36,18 @@
 		8176653C2B13C45700D640F1 /* AWSS3 in Frameworks */ = {isa = PBXBuildFile; productRef = 8176653B2B13C45700D640F1 /* AWSS3 */; };
 		81D146922B18E24900464427 /* NoRecipesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D146912B18E24900464427 /* NoRecipesView.swift */; };
 		81D146942B18E8C200464427 /* EditRecipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D146932B18E8C200464427 /* EditRecipeView.swift */; };
+		81D146972B1CECE600464427 /* MultiPicker in Frameworks */ = {isa = PBXBuildFile; productRef = 81D146962B1CECE600464427 /* MultiPicker */; };
+		81D146992B1CF80B00464427 /* MultiSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D146982B1CF80B00464427 /* MultiSelectionView.swift */; };
+		81D1469B2B1CFAC100464427 /* MultiSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D1469A2B1CFAC100464427 /* MultiSelector.swift */; };
+		81D1469D2B1D372D00464427 /* SelectCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D1469C2B1D372D00464427 /* SelectCategoryView.swift */; };
+		81D1469F2B1D5D2600464427 /* CategorySheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D1469E2B1D5D2600464427 /* CategorySheetView.swift */; };
+		81D146A12B1E21BA00464427 /* CategorySheetComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D146A02B1E21BA00464427 /* CategorySheetComponentView.swift */; };
+		81D146A32B1E2AC800464427 /* CategoriesInitializer.json in Resources */ = {isa = PBXBuildFile; fileRef = 81D146A22B1E2AC800464427 /* CategoriesInitializer.json */; };
+		81D146A52B1EE4EB00464427 /* HomePageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D146A42B1EE4EB00464427 /* HomePageView.swift */; };
+		81D146A72B20D16E00464427 /* SearchComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D146A62B20D16E00464427 /* SearchComponentView.swift */; };
+		81D146AB2B22DDDE00464427 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D146AA2B22DDDE00464427 /* TestView.swift */; };
+		81D146AD2B23D65D00464427 /* RatingsDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D146AC2B23D65D00464427 /* RatingsDisplayView.swift */; };
+		81D146AF2B24F91100464427 /* NewCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D146AE2B24F91100464427 /* NewCategoryView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -84,6 +96,17 @@
 		817665282B0674C200D640F1 /* RecipesUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipesUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		81D146912B18E24900464427 /* NoRecipesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoRecipesView.swift; sourceTree = "<group>"; };
 		81D146932B18E8C200464427 /* EditRecipeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditRecipeView.swift; sourceTree = "<group>"; };
+		81D146982B1CF80B00464427 /* MultiSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSelectionView.swift; sourceTree = "<group>"; };
+		81D1469A2B1CFAC100464427 /* MultiSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSelector.swift; sourceTree = "<group>"; };
+		81D1469C2B1D372D00464427 /* SelectCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectCategoryView.swift; sourceTree = "<group>"; };
+		81D1469E2B1D5D2600464427 /* CategorySheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySheetView.swift; sourceTree = "<group>"; };
+		81D146A02B1E21BA00464427 /* CategorySheetComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySheetComponentView.swift; sourceTree = "<group>"; };
+		81D146A22B1E2AC800464427 /* CategoriesInitializer.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = CategoriesInitializer.json; sourceTree = "<group>"; };
+		81D146A42B1EE4EB00464427 /* HomePageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageView.swift; sourceTree = "<group>"; };
+		81D146A62B20D16E00464427 /* SearchComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchComponentView.swift; sourceTree = "<group>"; };
+		81D146AA2B22DDDE00464427 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
+		81D146AC2B23D65D00464427 /* RatingsDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingsDisplayView.swift; sourceTree = "<group>"; };
+		81D146AE2B24F91100464427 /* NewCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCategoryView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +118,7 @@
 				817228DF2B141A41002AAE3C /* Amplify in Frameworks */,
 				817665372B0674EB00D640F1 /* MarkdownUI in Frameworks */,
 				817228DB2B141A41002AAE3C /* AWSCognitoAuthPlugin in Frameworks */,
+				81D146972B1CECE600464427 /* MultiPicker in Frameworks */,
 				817228DD2B141A41002AAE3C /* AWSS3StoragePlugin in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -141,7 +165,17 @@
 			children = (
 				817665082B0674C000D640F1 /* RecipesApp.swift */,
 				8176650A2B0674C000D640F1 /* ContentView.swift */,
+				81D146AE2B24F91100464427 /* NewCategoryView.swift */,
+				81D1469E2B1D5D2600464427 /* CategorySheetView.swift */,
+				81D146AA2B22DDDE00464427 /* TestView.swift */,
+				81D146A02B1E21BA00464427 /* CategorySheetComponentView.swift */,
+				81D146A62B20D16E00464427 /* SearchComponentView.swift */,
+				81D146A42B1EE4EB00464427 /* HomePageView.swift */,
+				81D1469C2B1D372D00464427 /* SelectCategoryView.swift */,
 				81D146932B18E8C200464427 /* EditRecipeView.swift */,
+				81D146982B1CF80B00464427 /* MultiSelectionView.swift */,
+				81D1469A2B1CFAC100464427 /* MultiSelector.swift */,
+				81D146A22B1E2AC800464427 /* CategoriesInitializer.json */,
 				817228E02B141A76002AAE3C /* TestAmplifyView.swift */,
 				817228E62B144D64002AAE3C /* RecipeComponentView.swift */,
 				8176650C2B0674C000D640F1 /* Item.swift */,
@@ -155,6 +189,7 @@
 				817228E42B142238002AAE3C /* amplifyconfiguration.json */,
 				817228E22B14221C002AAE3C /* awsconfiguration.json */,
 				817228F42B1796E8002AAE3C /* RatingsView.swift */,
+				81D146AC2B23D65D00464427 /* RatingsDisplayView.swift */,
 				817228E82B1450E0002AAE3C /* RecipesInitializer.json */,
 				817228EC2B15A6DE002AAE3C /* NewRecipe.swift */,
 				817228F62B185819002AAE3C /* HeartFavoriteView.swift */,
@@ -212,6 +247,7 @@
 				817228DA2B141A41002AAE3C /* AWSCognitoAuthPlugin */,
 				817228DC2B141A41002AAE3C /* AWSS3StoragePlugin */,
 				817228DE2B141A41002AAE3C /* Amplify */,
+				81D146962B1CECE600464427 /* MultiPicker */,
 			);
 			productName = Recipes;
 			productReference = 817665052B0674C000D640F1 /* Recipes.app */;
@@ -289,6 +325,7 @@
 				817665352B0674EB00D640F1 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
 				8176653A2B13C45700D640F1 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */,
 				817228D92B141A41002AAE3C /* XCRemoteSwiftPackageReference "amplify-ios" */,
+				81D146952B1CECE600464427 /* XCRemoteSwiftPackageReference "MultiPicker" */,
 			);
 			productRefGroup = 817665062B0674C000D640F1 /* Products */;
 			projectDirPath = "";
@@ -311,6 +348,7 @@
 				817228E32B14221C002AAE3C /* awsconfiguration.json in Resources */,
 				817228E92B1450E0002AAE3C /* RecipesInitializer.json in Resources */,
 				817228E52B142238002AAE3C /* amplifyconfiguration.json in Resources */,
+				81D146A32B1E2AC800464427 /* CategoriesInitializer.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -335,21 +373,31 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				81D1469F2B1D5D2600464427 /* CategorySheetView.swift in Sources */,
 				817228EF2B15B2D8002AAE3C /* IngredientInputView.swift in Sources */,
 				817228EB2B14550F002AAE3C /* RecipeJSON.swift in Sources */,
 				817228D82B140CF2002AAE3C /* S3BucketMethods.swift in Sources */,
 				817228F72B185819002AAE3C /* HeartFavoriteView.swift in Sources */,
 				8176650B2B0674C000D640F1 /* ContentView.swift in Sources */,
+				81D1469D2B1D372D00464427 /* SelectCategoryView.swift in Sources */,
 				817228E72B144D64002AAE3C /* RecipeComponentView.swift in Sources */,
+				81D1469B2B1CFAC100464427 /* MultiSelector.swift in Sources */,
 				817228F52B1796E8002AAE3C /* RatingsView.swift in Sources */,
 				8176650D2B0674C000D640F1 /* Item.swift in Sources */,
 				81D146942B18E8C200464427 /* EditRecipeView.swift in Sources */,
+				81D146AB2B22DDDE00464427 /* TestView.swift in Sources */,
 				817665092B0674C000D640F1 /* RecipesApp.swift in Sources */,
+				81D146992B1CF80B00464427 /* MultiSelectionView.swift in Sources */,
+				81D146A72B20D16E00464427 /* SearchComponentView.swift in Sources */,
 				817228ED2B15A6DE002AAE3C /* NewRecipe.swift in Sources */,
 				81D146922B18E24900464427 /* NoRecipesView.swift in Sources */,
 				817228F12B163B7D002AAE3C /* DirectionInputView.swift in Sources */,
+				81D146A12B1E21BA00464427 /* CategorySheetComponentView.swift in Sources */,
 				817228E12B141A76002AAE3C /* TestAmplifyView.swift in Sources */,
+				81D146AF2B24F91100464427 /* NewCategoryView.swift in Sources */,
+				81D146AD2B23D65D00464427 /* RatingsDisplayView.swift in Sources */,
 				817228D62B13FA8B002AAE3C /* Recipe.swift in Sources */,
+				81D146A52B1EE4EB00464427 /* HomePageView.swift in Sources */,
 				817228F32B16F4E4002AAE3C /* IngredientListView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -733,6 +781,14 @@
 				minimumVersion = 0.31.0;
 			};
 		};
+		81D146952B1CECE600464427 /* XCRemoteSwiftPackageReference "MultiPicker" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/toastersocks/MultiPicker.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -760,6 +816,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 8176653A2B13C45700D640F1 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */;
 			productName = AWSS3;
+		};
+		81D146962B1CECE600464427 /* MultiPicker */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 81D146952B1CECE600464427 /* XCRemoteSwiftPackageReference "MultiPicker" */;
+			productName = MultiPicker;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

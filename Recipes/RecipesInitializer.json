@@ -9,7 +9,7 @@
   "prepTime": 5,
   "servings": 4,
   "currentScale": 1.0,
-  "isFavorited": false,
+  "isFavorited": true,
   "imageURL": null,
   "notes": "Essential ingredient for authentic tasting Lebkuchen, Pfeffernüsee, and more.",
   "directions": [
@@ -195,12 +195,6 @@
       {
         "name": "Bakery"
       },
-      {
-        "name": "German"
-      },
-      {
-        "name": "Holiday"
-      }
   ]
 },
 {
@@ -274,7 +268,251 @@
         "name": "Summer"
       }
   ]
-  }
+  },
+{
+  "title": "Classic Margherita Pizza",
+  "author": "Maria Rossi",
+  "dateCreated": "2023-09-05T00:00:00Z",
+  "expertiseRequired": "beginner",
+  "dateLastViewed": "2023-09-05T00:00:00Z",
+  "sourceURL": "https://www.example.com/margherita-pizza-recipe",
+  "prepTime": 30,
+  "cookTime": 15,
+  "servings": 4,
+  "currentScale": 1.0,
+  "isFavorited": false,
+  "imageURL": null,
+  "notes": "A simple and authentic Italian pizza with fresh basil, mozzarella cheese, and tomato sauce.",
+  "directions": [
+    {
+      "order": 1,
+      "direction": "Preheat the oven to 475°F (245°C). Roll out pizza dough on a floured surface."
+    },
+    {
+      "order": 2,
+      "direction": "Spread tomato sauce evenly over the dough, leaving a small border."
+    },
+    {
+      "order": 3,
+      "direction": "Top with slices of mozzarella cheese and fresh basil leaves."
+    },
+    {
+      "order": 4,
+      "direction": "Bake for 12-15 minutes until the crust is golden and cheese is bubbly."
+    },
+    {
+      "order": 5,
+      "direction": "Remove from oven and drizzle with olive oil before serving."
+    }
+  ],
+  "ingredients": [
+    {
+      "quantity": "1",
+      "ingredient": "prepared pizza dough",
+      "notes": ""
+    },
+    {
+      "quantity": "1/2 cup",
+      "ingredient": "tomato sauce",
+      "notes": ""
+    },
+    {
+      "quantity": "200g",
+      "ingredient": "fresh mozzarella cheese, sliced",
+      "notes": ""
+    },
+    {
+      "quantity": "Handful",
+      "ingredient": "fresh basil leaves",
+      "notes": ""
+    },
+    {
+      "quantity": "To taste",
+      "ingredient": "olive oil",
+      "notes": ""
+    }
+  ],
+  "categories": [
+    {
+      "name": "Italian"
+    },
+  ]
+},
+{
+  "title": "Vegetarian Thai Green Curry",
+  "author": "Ananya Singh",
+  "dateCreated": "2023-10-12T00:00:00Z",
+  "expertiseRequired": "moderate",
+  "dateLastViewed": "2023-10-12T00:00:00Z",
+  "sourceURL": "https://www.example.com/thai-green-curry-recipe",
+  "prepTime": 20,
+  "cookTime": 25,
+  "servings": 4,
+  "currentScale": 1.0,
+  "isFavorited": true,
+  "imageURL": null,
+  "notes": "A rich and creamy Thai green curry with mixed vegetables.",
+  "directions": [
+    {
+      "order": 1,
+      "direction": "In a pan, heat oil and add Thai green curry paste. Cook for 2 minutes."
+    },
+    {
+      "order": 2,
+      "direction": "Add coconut milk, vegetable broth, and bring to a simmer."
+    },
+    {
+      "order": 3,
+      "direction": "Add mixed vegetables and tofu, cook until vegetables are tender."
+    },
+    {
+      "order": 4,
+      "direction": "Season with soy sauce, sugar, and lime juice. Cook for another 5 minutes."
+    },
+    {
+      "order": 5,
+      "direction": "Serve hot with steamed rice."
+    }
+  ],
+  "ingredients": [
+    {
+      "quantity": "1 tablespoon",
+      "ingredient": "vegetable oil",
+      "notes": ""
+    },
+    {
+      "quantity": "3 tablespoons",
+      "ingredient": "Thai green curry paste",
+      "notes": ""
+    },
+    {
+      "quantity": "1 can",
+      "ingredient": "coconut milk",
+      "notes": ""
+    },
+    {
+      "quantity": "1 cup",
+      "ingredient": "vegetable broth",
+      "notes": ""
+    },
+    {
+      "quantity": "2 cups",
+      "ingredient": "mixed vegetables (bell peppers, carrots, peas)",
+      "notes": ""
+    },
+    {
+      "quantity": "200g",
+      "ingredient": "firm tofu, cubed",
+      "notes": ""
+    },
+    {
+      "quantity": "2 tablespoons",
+      "ingredient": "soy sauce",
+      "notes": ""
+    },
+    {
+      "quantity": "1 teaspoon",
+      "ingredient": "sugar",
+      "notes": ""
+    },
+    {
+      "quantity": "1",
+      "ingredient": "lime, juiced",
+      "notes": ""
+    }
+  ],
+  "categories": [
+    {
+      "name": "Thai"
+    },
+    {
+      "name": "Vegetarian"
+    }
+  ]
+},
+{
+  "title": "Classic Beef Stroganoff",
+  "author": "Ivan Petrov",
+  "dateCreated": "2023-10-20T00:00:00Z",
+  "expertiseRequired": "moderate",
+  "dateLastViewed": "2023-10-20T00:00:00Z",
+  "sourceURL": "https://www.example.com/beef-stroganoff-recipe",
+  "prepTime": 15,
+  "cookTime": 30,
+  "servings": 6,
+  "currentScale": 1.0,
+  "isFavorited": false,
+  "imageURL": null,
+  "notes": "A rich and savory Russian dish featuring tender beef in a creamy mushroom sauce.",
+  "directions": [
+    {
+      "order": 1,
+      "direction": "In a large skillet, brown beef strips in butter over high heat. Remove beef and set aside."
+    },
+    {
+      "order": 2,
+      "direction": "In the same skillet, add onions and mushrooms. Cook until tender."
+    },
+    {
+      "order": 3,
+      "direction": "Reduce heat to medium, add flour, and stir for 1 minute."
+    },
+    {
+      "order": 4,
+      "direction": "Gradually add beef broth and bring to a boil. Reduce heat and simmer."
+    },
+    {
+      "order": 5,
+      "direction": "Return beef to the skillet, add sour cream, and heat through without boiling."
+    },
+    {
+      "order": 6,
+      "direction": "Serve over cooked egg noodles."
+    }
+  ],
+  "ingredients": [
+    {
+      "quantity": "500g",
+      "ingredient": "beef sirloin, cut into thin strips",
+      "notes": ""
+    },
+    {
+      "quantity": "2 tablespoons",
+      "ingredient": "butter",
+      "notes": ""
+    },
+    {
+      "quantity": "1",
+      "ingredient": "onion, chopped",
+      "notes": ""
+    },
+    {
+      "quantity": "250g",
+      "ingredient": "mushrooms, sliced",
+      "notes": ""
+    },
+    {
+      "quantity": "2 tablespoons",
+      "ingredient": "all-purpose flour",
+      "notes": ""
+    },
+    {
+      "quantity": "1 cup",
+      "ingredient": "beef broth",
+      "notes": ""
+    },
+    {
+      "quantity": "1 cup",
+      "ingredient": "sour cream",
+      "notes": ""
+    }
+  ],
+  "categories": [
+    {
+      "name": "Russian"
+    },
+  ]
+},
   ]
 }
 

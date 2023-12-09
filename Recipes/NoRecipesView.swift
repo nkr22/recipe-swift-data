@@ -9,13 +9,13 @@ import SwiftUI
 
 struct NoRecipesView: View {
     var body: some View {
-        VStack {
+        VStack(alignment: .center) {
             Image(systemName: "fork.knife.circle.fill")
                 .resizable()
                 .scaledToFit()
                 .frame(width: 100)
                 .foregroundStyle(.red)
-            Text("Enter your first recipe").font(.title)
+            Text("Enter a recipe").font(.title)
         }
         
     }

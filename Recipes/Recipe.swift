@@ -22,13 +22,14 @@ class Recipe: Codable {
     var currentScale: Double
     var isFavorited: Bool
     var starRating: Int?
-    var imageURL: String?
+    var imageURL: Data?
     var notes: String?
     @Relationship(deleteRule: .cascade)
     var directions: [Direction] = []
     @Relationship(deleteRule: .cascade)
     var ingredients: [Ingredient] = []
-    var categories: [Category]?
+    @Relationship(deleteRule: .nullify)
+    var categories: [Category] = []
     
     enum CodingKeys: String, CodingKey {
         case title, author, dateCreated, expertiseRequired, dateLastViewed, sourceURL, prepTime, cookTime, servings, currentScale, isFavorited, starRating, imageURL, notes, directions, ingredients, categories
@@ -48,7 +49,7 @@ class Recipe: Codable {
             self.currentScale = try container.decode(Double.self, forKey: .currentScale)
             self.isFavorited = try container.decode(Bool.self, forKey: .isFavorited)
             self.starRating = try container.decodeIfPresent(Int.self, forKey: .starRating)
-            self.imageURL = try container.decodeIfPresent(String.self, forKey: .imageURL)
+            self.imageURL = try container.decodeIfPresent(Data.self, forKey: .imageURL)
             self.notes = try container.decodeIfPresent(String.self, forKey: .notes)
             self.directions = try container.decode([Direction].self, forKey: .directions)
             self.ingredients = try container.decode([Ingredient].self, forKey: .ingredients)
@@ -78,7 +79,7 @@ class Recipe: Codable {
         }
 
     
-    init(title: String, author: String, dateCreated: String, expertiseRequired: ExpertiseLevel, dateLastViewed: String, sourceURL: String?, prepTime: Int? , cookTime: Int? , servings: Double? , currentScale: Double, isFavorited: Bool, starRating: Int?, imageURL: String? , notes: String? , directions: [Direction], ingredients: [Ingredient], categories: [Category]?) {
+    init(title: String, author: String, dateCreated: String, expertiseRequired: ExpertiseLevel, dateLastViewed: String, sourceURL: String?, prepTime: Int? , cookTime: Int? , servings: Double? , currentScale: Double, isFavorited: Bool, starRating: Int?, imageURL: Data? , notes: String? , directions: [Direction], ingredients: [Ingredient], categories: [Category]) {
         self.title = title
         self.author = author
         self.dateCreated = dateCreated
@@ -110,7 +111,7 @@ class Direction: Codable, Hashable {
     var order: Int
     var direction: String
     
-    @Relationship(inverse: \Recipe.directions)
+    @Relationship(deleteRule: .cascade, inverse: \Recipe.directions)
         var recipe: Recipe?
 
     enum CodingKeys: CodingKey {
@@ -142,7 +143,7 @@ class Ingredient: Codable, Hashable {
     var ingredient: String
     var notes: String
 
-    @Relationship(inverse: \Recipe.ingredients)
+    @Relationship(deleteRule: .cascade, inverse: \Recipe.ingredients)
         var recipe: Recipe?
 
     enum CodingKeys: CodingKey {
@@ -171,10 +172,15 @@ class Ingredient: Codable, Hashable {
 }
 
 @Model
-class Category: Codable, Hashable {
-    var name: String
+class Category: Identifiable, Codable, Hashable {
+    var id: UUID? = UUID()
+    @Attribute(.unique) var name: String
     
-    @Relationship(inverse: \Recipe.categories) var recipes: [Recipe]
+    @Relationship(deleteRule: .nullify, inverse: \Recipe.categories) var recipes: [Recipe] = []
+    
+    init(name: String) {
+        self.name = name
+    }
     
     enum CodingKeys: CodingKey {
         case name
@@ -184,13 +190,13 @@ class Category: Codable, Hashable {
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.name = try container.decode(String.self, forKey: .name)
-        self.recipes = try container.decode([Recipe].self, forKey: .recipes)
+        
     }
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(name, forKey: .name)
-        try container.encode(recipes, forKey: .recipes)
+     
     }
 }
 

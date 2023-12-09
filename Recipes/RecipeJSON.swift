@@ -25,11 +25,11 @@ struct RecipeJSON: Codable {
     var currentScale: Double
     var isFavorited: Bool
     var starRating: Int?
-    var imageURL: String?
+    var imageURL: Data?
     var notes: String?
     var directions: [Direction]
     var ingredients: [Ingredient]
-    var categories: [Category]?
+    var categories: [Category]
 }
 
 func loadJson(filename fileName: String) -> [RecipeJSON]? {
@@ -39,6 +39,27 @@ func loadJson(filename fileName: String) -> [RecipeJSON]? {
             let jsonData = try JSONDecoder().decode(ResponseData.self, from: data)
             
             return jsonData.recipes
+        } catch {
+            print("error:\(error)")
+        }
+    }
+    return nil
+}
+
+struct CategoryResponseData: Codable {
+    var categories: [CategoryJSON]
+}
+
+struct CategoryJSON: Codable {
+    var name: String
+}
+
+func loadCategoryJson(filename fileName: String) -> [CategoryJSON]? {
+    if let url = Bundle.main.url(forResource: fileName, withExtension: ".json") {
+        do {
+            let data = try Data(contentsOf: url)
+            let jsonData = try JSONDecoder().decode(CategoryResponseData.self, from: data)
+            return jsonData.categories
         } catch {
             print("error:\(error)")
         }

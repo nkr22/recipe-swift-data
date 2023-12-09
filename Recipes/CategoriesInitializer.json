@@ -1,0 +1,21 @@
+{
+    "categories": [
+      {
+        "name": "Breakfast"
+      },
+      {
+        "name": "Lunch"
+      },
+      {
+        "name": "Dinner"
+      },
+        {
+        "name": "Savory"
+      },
+        {
+        "name": "Sweet"
+      }
+  ]
+}
+
+

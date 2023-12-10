@@ -158,6 +158,9 @@ struct EditRecipeView: View {
                     }
                 }
             }
+            .toolbarBackground(Color.red, for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
+            .toolbarColorScheme(.dark, for: .navigationBar)
             .onAppear() {
                 if !isInitialized {
                     title = recipe.title
@@ -180,6 +183,7 @@ struct EditRecipeView: View {
                 }
             }
         }
+
         .task(id: selectedPhoto) {
             if let data = try? await selectedPhoto?.loadTransferable(type: Data.self) {
                 imageData = data

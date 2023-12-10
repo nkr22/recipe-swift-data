@@ -9,6 +9,7 @@ import SwiftUI
 import SwiftData
 import MarkdownUI
 
+
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var recipes: [Recipe]
@@ -87,6 +88,9 @@ struct ContentView: View {
                     }
                 }
         }
+            .toolbarBackground(Color.init(uiColor: .red), for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
+            .toolbarColorScheme(.dark, for: .navigationBar)
             
         } detail: {
             HomePageView()
@@ -96,7 +100,10 @@ struct ContentView: View {
                initializeData()
                isInitialized = true
            }
-}
+            UISearchBar.appearance().backgroundColor = .red
+            UISearchBar.appearance().tintColor = .white
+            UISearchBar.appearance().isTranslucent = false
+        }
         .fullScreenCover(isPresented: $showNewRecipeModal) {
            NewRecipe()
         }
@@ -108,12 +115,44 @@ struct ContentView: View {
         
     }
     
+    private func recipeImageView(recipe: Recipe) -> some View {
+        Group {
+            if let imageData = recipe.imageURL, let uiImage = UIImage(data: imageData)  {
+                Image(uiImage: uiImage)
+                    .resizable()
+            } else {
+                RoundedRectangle(cornerRadius: 10.0)
+                    .foregroundColor(.gray)
+            }
+        }
+        .scaledToFill()
+        .frame(width: 80, height: 60)
+        .clipShape(RoundedRectangle(cornerRadius: 10))
+    }
+    
     private var browseAllList: some View {
         List {
             ForEach(filteredRecipes) { recipe in
                 NavigationLink {
                     
                     VStack{
+                        Text(recipe.title).font(.largeTitle)
+                        HStack {
+                            recipeImageView(recipe: recipe)
+                                .layoutPriority(0)
+                            VStack(alignment: .leading) {
+                                RatingsDisplayView(maxRating: 5, currentRating: recipe.starRating, sfSymbol: "star", width: 20, color: .systemYellow)
+                                Text(recipe.sourceURL ?? "Unknown source")
+                                    .lineLimit(1)
+                                Text(recipe.author)
+                                    .lineLimit(1)
+                            }
+                            .layoutPriority(1)
+                            .padding(.leading)
+                            Spacer()
+                        }
+                        .frame(maxWidth: .infinity)
+            
                         List {
                             ForEach(recipe.categories, id: \.self) { category in
                                 Markdown {
@@ -143,19 +182,17 @@ struct ContentView: View {
                     }
                     .toolbar {
         #if os(iOS)
-                        ToolbarItem(placement: .navigationBarTrailing) {
+                        ToolbarItem(placement: .topBarTrailing) {
                             Button(action: editRecipe) {
                                 Label("Edit", systemImage: "pencil")
                             }
                         }
                         
         #endif
-                        ToolbarItem {
-                            Button(action: addItem) {
-                                Label("Add Item", systemImage: "plus")
-                            }
-                        }
                 }
+                .toolbarBackground(Color.red, for: .navigationBar)
+                .toolbarBackground(.visible, for: .navigationBar)
+                .toolbarColorScheme(.dark, for: .navigationBar)
 
                 } label: {
                     RecipeComponentView(recipe: recipe)
@@ -295,9 +332,9 @@ struct SearchFilter: View {
     }
 }
 
-#Preview {
-    ContentView()
-        .modelContainer(for: Recipe.self, inMemory: true)
-}
+//#Preview {
+//    ContentView()
+//        .modelContainer(for: Recipe.self, inMemory: true)
+//}
 
 

@@ -10,25 +10,40 @@ struct MultiSelectionView<Selectable: Identifiable & Hashable>: View {
     let options: [Selectable]
     let optionToString: (Selectable) -> String
 
-    @Binding
-    var selected: Set<Selectable>
+    @Binding var selected: Set<Selectable>
+    @State var openNewCategorySheet = false
     
     var body: some View {
-        List {
-            ForEach(options) { selectable in
-                Button(action: { toggleSelection(selectable: selectable) }) {
-                    HStack {
-                        Text(optionToString(selectable)).foregroundColor(.black)
-
-                        Spacer()
-
-                        if (selected.contains { $0.id == selectable.id }) {
-                            Image(systemName: "checkmark").foregroundColor(.accentColor)
+        NavigationStack{
+            List {
+                ForEach(options) { selectable in
+                    Button(action: { toggleSelection(selectable: selectable) }) {
+                        HStack {
+                            Text(optionToString(selectable)).foregroundColor(.black)
+                            
+                            Spacer()
+                            
+                            if (selected.contains { $0.id == selectable.id }) {
+                                Image(systemName: "checkmark").foregroundColor(.accentColor)
+                            }
                         }
-                    }
-                }.tag(selectable.id)
+                    }.tag(selectable.id)
+                }
+            }.listStyle(GroupedListStyle())
+        }
+        .toolbar{
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(action: addCategory) {
+                    Label("Add Category", systemImage: "plus")
+                }
             }
-        }.listStyle(GroupedListStyle())
+        }
+        .sheet(isPresented: $openNewCategorySheet) {
+            NewCategoryView()
+        }
+        .toolbarBackground(Color.red, for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
+        .toolbarColorScheme(.dark, for: .navigationBar)
     }
 
     private func toggleSelection(selectable: Selectable) {
@@ -42,6 +57,10 @@ struct MultiSelectionView<Selectable: Identifiable & Hashable>: View {
         for selected in selected {
             print(selected.id)
         }
+    }
+    
+    private func addCategory() {
+        openNewCategorySheet = true
     }
 }
 

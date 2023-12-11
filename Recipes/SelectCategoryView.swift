@@ -19,15 +19,15 @@ struct SelectCategoryView: View {
             Text(currentFilter)
                 .font(.subheadline)
             Image(systemName: "chevron.down")
-                .frame(width:15)
+                .frame(width:10)
         }
         .padding()
         .foregroundStyle(.white)
         .background(
-            RoundedRectangle(cornerRadius: 8.0)
-                .foregroundStyle(.red)
+            RoundedRectangle(cornerRadius: 10.0)
+                .foregroundStyle(.blue)
                 .opacity(0.5)
-                .frame(minWidth: 50, maxWidth: .infinity)
+                .frame(minWidth: 50, maxWidth: .infinity, minHeight: 20, maxHeight: 25)
         )
         .onTapGesture {
             showCategorySheet = true

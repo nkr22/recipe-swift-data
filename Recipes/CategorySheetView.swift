@@ -25,6 +25,7 @@ struct CategorySheetView: View {
                 }
             }
             .toolbar {
+                
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
                         showNewCategorySheet = true
@@ -35,6 +36,8 @@ struct CategorySheetView: View {
                 }
                 
             }
+            .navigationTitle("Filter by Category")
+            .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.red, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
             .toolbarColorScheme(.dark, for: .navigationBar)
@@ -45,6 +48,6 @@ struct CategorySheetView: View {
     }
 }
 
-#Preview {
-    CategorySheetView(currentFilter: .constant("All"))
-}
+//#Preview {
+//    CategorySheetView(currentFilter: .constant("All"))
+//}

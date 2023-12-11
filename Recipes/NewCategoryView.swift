@@ -61,6 +61,6 @@ struct NewCategoryView: View {
     }
 }
 
-//#Preview {
-//    NewCategoryView()
-//}
+#Preview {
+    NewCategoryView()
+}

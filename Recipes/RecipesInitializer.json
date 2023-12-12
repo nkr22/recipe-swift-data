@@ -24,52 +24,61 @@
     }
   ],
   "ingredients": [
-    {
-      "quantity": "2 1/2 tablespoons",
-      "ingredient": "ground cinnamon",
-      "notes": ""
-    },
-    {
-      "quantity": "2 teaspoons",
-      "ingredient": "ground cloves",
-      "notes": ""
-    },
-    {
-      "quantity": "1/2 teaspoon",
-      "ingredient": "ground allspice",
-      "notes": ""
-    },
-    {
-      "quantity": "1/2 teaspoon",
-      "ingredient": "ground coriander",
-      "notes": ""
-    },
-    {
-      "quantity": "1/2 teaspoon",
-      "ingredient": "ground green cardamom",
-      "notes": ""
-    },
-    {
-      "quantity": "1/2 teaspoon",
-      "ingredient": "ground ginger",
-      "notes": "Doubled in the recipe."
-    },
-    {
-      "quantity": "1/2 teaspoon",
-      "ingredient": "ground star anise",
-      "notes": ""
-    },
-    {
-      "quantity": "1/4 teaspoon",
-      "ingredient": "ground mace",
-      "notes": ""
-    },
-    {
-      "quantity": "1/4 teaspoon",
-      "ingredient": "ground nutmeg",
-      "notes": ""
-    }
-  ],
+      {
+        "amount": "2.5",
+        "unit": "tablespoons",
+        "ingredient": "ground cinnamon",
+        "notes": ""
+      },
+      {
+        "amount": "2",
+        "unit": "teaspoons",
+        "ingredient": "ground cloves",
+        "notes": ""
+      },
+      {
+        "amount": "0.5",
+        "unit": "teaspoon",
+        "ingredient": "ground allspice",
+        "notes": ""
+      },
+      {
+        "amount": "0.5",
+        "unit": "teaspoon",
+        "ingredient": "ground coriander",
+        "notes": ""
+      },
+      {
+        "amount": "0.5",
+        "unit": "teaspoon",
+        "ingredient": "ground green cardamom",
+        "notes": ""
+      },
+      {
+        "amount": "0.5",
+        "unit": "teaspoon",
+        "ingredient": "ground ginger",
+        "notes": "Doubled in the recipe."
+      },
+      {
+        "amount": "0.5",
+        "unit": "teaspoon",
+        "ingredient": "ground star anise",
+        "notes": ""
+      },
+      {
+        "amount": "0.25",
+        "unit": "teaspoon",
+        "ingredient": "ground mace",
+        "notes": ""
+      },
+      {
+        "amount": "0.25",
+        "unit": "teaspoon",
+        "ingredient": "ground nutmeg",
+        "notes": ""
+      }
+    ],
   "categories": [
       {
         "name": "Spices"
@@ -132,67 +141,79 @@
     }
   ],
   "ingredients": [
-    {
-      "quantity": "5",
-      "ingredient": "large eggs",
-      "notes": ""
-    },
-    {
-      "quantity": "275g",
-      "ingredient": "packed brown sugar",
-      "notes": ""
-    },
-    {
-      "quantity": "85ml",
-      "ingredient": "honey",
-      "notes": ""
-    },
-    {
-      "quantity": "1 teaspoon",
-      "ingredient": "vanilla extract",
-      "notes": ""
-    },
-    {
-      "quantity": "225g",
-      "ingredient": "almond meal",
-      "notes": ""
-    },
-    {
-      "quantity": "225g",
-      "ingredient": "hazelnut meal",
-      "notes": ""
-    },
-    {
-      "quantity": "1/4 teaspoon",
-      "ingredient": "salt",
-      "notes": ""
-    },
-    {
-      "quantity": "1/2 teaspoon",
-      "ingredient": "baking powder",
-      "notes": ""
-    },
-    {
-      "quantity": "3 teaspoons",
-      "ingredient": "Lebkuchengewürz",
-      "notes": ""
-    },
-    {
-      "quantity": "115g",
-      "ingredient": "candied lemon peel",
-      "notes": ""
-    },
-    {
-      "quantity": "115g",
-      "ingredient": "candied orange peel",
-      "notes": ""
-    },
-    {
-      "quantity": "1/4 cup",
-      "ingredient": "all-purpose flour",
-      "notes": "To coat the candied peel"
-    }
-  ],
+      {
+        "amount": "5",
+        "unit": null,
+        "ingredient": "large eggs",
+        "notes": ""
+      },
+      {
+        "amount": "275",
+        "unit": "grams",
+        "ingredient": "packed brown sugar",
+        "notes": ""
+      },
+      {
+        "amount": "85",
+        "unit": "milliliters",
+        "ingredient": "honey",
+        "notes": ""
+      },
+      {
+        "amount": "1",
+        "unit": "teaspoon",
+        "ingredient": "vanilla extract",
+        "notes": ""
+      },
+      {
+        "amount": "225",
+        "unit": "grams",
+        "ingredient": "almond meal",
+        "notes": ""
+      },
+      {
+        "amount": "225",
+        "unit": "grams",
+        "ingredient": "hazelnut meal",
+        "notes": ""
+      },
+      {
+        "amount": "0.25",
+        "unit": "teaspoon",
+        "ingredient": "salt",
+        "notes": ""
+      },
+      {
+        "amount": "0.5",
+        "unit": "teaspoon",
+        "ingredient": "baking powder",
+        "notes": ""
+      },
+      {
+        "amount": "3",
+        "unit": "teaspoons",
+        "ingredient": "Lebkuchengewürz",
+        "notes": ""
+      },
+      {
+        "amount": "115",
+        "unit": "grams",
+        "ingredient": "candied lemon peel",
+        "notes": ""
+      },
+      {
+        "amount": "115",
+        "unit": "grams",
+        "ingredient": "candied orange peel",
+        "notes": ""
+      },
+      {
+        "amount": "0.25",
+        "unit": "cup",
+        "ingredient": "all-purpose flour",
+        "notes": "To coat the candied peel"
+      }
+    ],
   "categories": [
       {
         "name": "Bakery"
@@ -230,32 +251,38 @@
   ],
   "ingredients": [
     {
-      "quantity": "1 box",
+      "amount": "1",
+      "unit": "box",
       "ingredient": "Betty Crocker™ Super Moist™ White Cake Mix",
       "notes": ""
     },
     {
-      "quantity": "As called for on cake mix box",
+      "amount": null,
+      "unit": null,
       "ingredient": "Water, vegetable oil, and egg whites",
-      "notes": ""
+      "notes": "As called for on cake mix box"
     },
     {
-      "quantity": "1 cup",
+      "amount": "240",
+      "unit": "milliliters",
       "ingredient": "boiling water",
-      "notes": ""
+      "notes": "Equivalent to 1 cup"
     },
     {
-      "quantity": "1 box",
+      "amount": "1",
+      "unit": "box",
       "ingredient": "Jell-O™ strawberry-flavored gelatin (4-serving size)",
       "notes": ""
     },
     {
-      "quantity": "1 tub (12 oz)",
+      "amount": "340.2",
+      "unit": "grams",
       "ingredient": "Betty Crocker™ Whipped Fluffy White Frosting",
-      "notes": ""
+      "notes": "Equivalent to 12 oz"
     },
     {
-      "quantity": "12",
+      "amount": "12",
+      "unit": null,
       "ingredient": "fresh strawberries, cut in half",
       "notes": ""
     }
@@ -309,32 +336,50 @@
       "direction": "Remove from oven and drizzle with olive oil before serving."
     }
   ],
-  "ingredients": [
-    {
-      "quantity": "1",
-      "ingredient": "prepared pizza dough",
-      "notes": ""
-    },
-    {
-      "quantity": "1/2 cup",
-      "ingredient": "tomato sauce",
-      "notes": ""
-    },
-    {
-      "quantity": "200g",
-      "ingredient": "fresh mozzarella cheese, sliced",
-      "notes": ""
-    },
-    {
-      "quantity": "Handful",
-      "ingredient": "fresh basil leaves",
-      "notes": ""
-    },
-    {
-      "quantity": "To taste",
-      "ingredient": "olive oil",
-      "notes": ""
-    }
+  "ingredients": 
+  [
+      {
+          "amount": "500",
+          "unit": "g",
+          "ingredient": "beef sirloin, cut into thin strips",
+          "notes": ""
+      },
+      {
+          "amount": "2",
+          "unit": "tablespoons",
+          "ingredient": "butter",
+          "notes": ""
+      },
+      {
+          "amount": "1",
+          "unit": "",
+          "ingredient": "onion, chopped",
+          "notes": ""
+      },
+      {
+          "amount": "250",
+          "unit": "g",
+          "ingredient": "mushrooms, sliced",
+          "notes": ""
+      },
+      {
+          "amount": "2",
+          "unit": "tablespoons",
+          "ingredient": "all-purpose flour",
+          "notes": ""
+      },
+      {
+          "amount": "1",
+          "unit": "cup",
+          "ingredient": "beef broth",
+          "notes": ""
+      },
+      {
+          "amount": "1",
+          "unit": "cup",
+          "ingredient": "sour cream",
+          "notes": ""
+      }
   ],
   "categories": [
     {
@@ -380,51 +425,60 @@
     }
   ],
   "ingredients": [
-    {
-      "quantity": "1 tablespoon",
-      "ingredient": "vegetable oil",
-      "notes": ""
-    },
-    {
-      "quantity": "3 tablespoons",
-      "ingredient": "Thai green curry paste",
-      "notes": ""
-    },
-    {
-      "quantity": "1 can",
-      "ingredient": "coconut milk",
-      "notes": ""
-    },
-    {
-      "quantity": "1 cup",
-      "ingredient": "vegetable broth",
-      "notes": ""
-    },
-    {
-      "quantity": "2 cups",
-      "ingredient": "mixed vegetables (bell peppers, carrots, peas)",
-      "notes": ""
-    },
-    {
-      "quantity": "200g",
-      "ingredient": "firm tofu, cubed",
-      "notes": ""
-    },
-    {
-      "quantity": "2 tablespoons",
-      "ingredient": "soy sauce",
-      "notes": ""
-    },
-    {
-      "quantity": "1 teaspoon",
-      "ingredient": "sugar",
-      "notes": ""
-    },
-    {
-      "quantity": "1",
-      "ingredient": "lime, juiced",
-      "notes": ""
-    }
+      {
+          "amount": "1",
+          "unit": "tablespoon",
+          "ingredient": "vegetable oil",
+          "notes": ""
+      },
+      {
+          "amount": "3",
+          "unit": "tablespoons",
+          "ingredient": "Thai green curry paste",
+          "notes": ""
+      },
+      {
+          "amount": "1",
+          "unit": "can",
+          "ingredient": "coconut milk",
+          "notes": ""
+      },
+      {
+          "amount": "1",
+          "unit": "cup",
+          "ingredient": "vegetable broth",
+          "notes": ""
+      },
+      {
+          "amount": "2",
+          "unit": "cups",
+          "ingredient": "mixed vegetables (bell peppers, carrots, peas)",
+          "notes": ""
+      },
+      {
+          "amount": "200",
+          "unit": "g",
+          "ingredient": "firm tofu, cubed",
+          "notes": ""
+      },
+      {
+          "amount": "2",
+          "unit": "tablespoons",
+          "ingredient": "soy sauce",
+          "notes": ""
+      },
+      {
+          "amount": "1",
+          "unit": "teaspoon",
+          "ingredient": "sugar",
+          "notes": ""
+      },
+      {
+          "amount": "1",
+          "unit": "",
+          "ingredient": "lime, juiced",
+          "notes": ""
+      }
   ],
   "categories": [
     {

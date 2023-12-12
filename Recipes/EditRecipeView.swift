@@ -67,7 +67,7 @@ struct EditRecipeView: View {
                         Text("Rating")
                             .foregroundColor(.secondary)
                         Spacer()
-                        RatingsView(maxRating: 5, currentRating: $starRating, sfSymbol: "star", width: 30.0, color: .systemYellow)
+                        RatingsView(maxRating: 5, currentRating: $starRating, sfSymbol: "star", width: 30.0, color: Color("BrightAccentColor"))
                     }
                     TextField("Source URL", text: $sourceURL)
                     // Additional fields for prepTime, cookTime, servings, etc.
@@ -92,7 +92,7 @@ struct EditRecipeView: View {
                                 }
                             } label: {
                                 Label("Remove Image", systemImage: "xmark")
-                                    .foregroundStyle(.red)
+                                    .foregroundStyle(Color("MainColor"))
                             }
                         }
                     
@@ -158,9 +158,10 @@ struct EditRecipeView: View {
                     }
                 }
             }
-            .toolbarBackground(Color.red, for: .navigationBar)
+            .toolbarBackground(Color("MainColor"), for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
             .toolbarColorScheme(.dark, for: .navigationBar)
+
             .onAppear() {
                 if !isInitialized {
                     title = recipe.title

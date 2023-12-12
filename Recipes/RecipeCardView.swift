@@ -27,7 +27,7 @@ struct RecipeCardView: View {
                 .padding(.bottom, 1)
                 
                 HStack(spacing: 0) {
-                    RatingsDisplayView(maxRating: 5, currentRating: recipe.starRating, sfSymbol: "star", width: 30, color: .systemYellow)
+                    RatingsDisplayView(maxRating: 5, currentRating: recipe.starRating, sfSymbol: "star", width: 30, color: Color("BrightAccentColor"))
                     Spacer()
                 }
                 .padding(.bottom, 1)

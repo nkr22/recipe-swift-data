@@ -21,14 +21,7 @@ struct SelectCategoryView: View {
             Image(systemName: "chevron.down")
                 .frame(width:10)
         }
-        .padding()
-        .foregroundStyle(.white)
-        .background(
-            RoundedRectangle(cornerRadius: 10.0)
-                .foregroundStyle(.blue)
-                .opacity(0.5)
-                .frame(minWidth: 50, maxWidth: .infinity, minHeight: 20, maxHeight: 25)
-        )
+        .encapsulate(color: .black, foregroundColor: .white)
         .onTapGesture {
             showCategorySheet = true
         }

@@ -20,7 +20,7 @@ struct CategorySheetComponentView: View {
         }) {
             HStack {
                 Image(systemName: symbol)
-                    .foregroundStyle(.red)
+                    .foregroundStyle(Color("MainColor"))
                 Text(label)
                     .foregroundStyle(.black)
             }

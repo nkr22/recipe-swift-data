@@ -41,7 +41,7 @@ struct MultiSelectionView<Selectable: Identifiable & Hashable>: View {
         .sheet(isPresented: $openNewCategorySheet) {
             NewCategoryView()
         }
-        .toolbarBackground(Color.red, for: .navigationBar)
+        .toolbarBackground(Color("MainColor"), for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .toolbarColorScheme(.dark, for: .navigationBar)
     }

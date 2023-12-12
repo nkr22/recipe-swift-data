@@ -139,35 +139,40 @@ class Direction: Codable, Hashable {
 
 @Model
 class Ingredient: Codable, Hashable {
-    var quantity: String
+    var amount: String?
+    var unit: String?
     var ingredient: String
-    var notes: String
+    var notes: String?
+        
 
     @Relationship(deleteRule: .cascade, inverse: \Recipe.ingredients)
         var recipe: Recipe?
 
     enum CodingKeys: CodingKey {
-        case quantity, ingredient, notes
+        case amount, unit, ingredient, notes
     }
 
-    init(quantity: String, ingredient: String, notes: String) {
-        self.quantity = quantity
+    init(amount: String?, unit: String?, ingredient: String, notes: String?) {
+        self.amount = amount
+        self.unit = unit
         self.ingredient = ingredient
         self.notes = notes
     }
 
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.quantity = try container.decode(String.self, forKey: .quantity)
+        self.amount = try container.decode(String.self, forKey: .amount)
+        self.unit = try container.decode(String.self, forKey: .unit)
         self.ingredient = try container.decode(String.self, forKey: .ingredient)
-        self.notes = try container.decode(String.self, forKey: .notes)
+        self.notes = try container.decodeIfPresent(String.self, forKey: .notes)
     }
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(quantity, forKey: .quantity)
+        try container.encode(amount, forKey: .amount)
+        try container.encode(unit, forKey: .unit)
         try container.encode(ingredient, forKey: .ingredient)
-        try container.encode(notes, forKey: .notes)
+        try container.encodeIfPresent(notes, forKey: .notes)
     }
 }
 

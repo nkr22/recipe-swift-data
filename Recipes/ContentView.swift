@@ -19,7 +19,8 @@ struct ContentView: View {
     @State var showNewRecipeModal = false
     @State var showEditRecipeModal = false
     @State private var showCategorySheet = false
-    @State private var currentCategory: String = "All"
+    @State private var showSearchOptionsSheet = false
+    @State private var currentCategory: String = "All Recipes"
     @State private var isInitialized = false
     @State var selectedSegment: RecipeSegment = .ingredients
     
@@ -37,7 +38,7 @@ struct ContentView: View {
     }()
     
     private var filteredRecipes: [Recipe] {
-        if currentCategory == "All" {
+        if currentCategory == "All Recipes" {
             return recipes
         } else if currentCategory == "Most Recent" {
             return recipes.sorted(by: {
@@ -56,13 +57,13 @@ struct ContentView: View {
     
     private var searchFilteredRecipes: [Recipe] {
         guard !searchText.isEmpty else {return filteredRecipes}
-        return recipes.filter { recipe in
+        return filteredRecipes.filter { recipe in
             (searchInTitle && recipe.title.localizedCaseInsensitiveContains(searchText)) ||
             (searchInAuthor && recipe.author.localizedCaseInsensitiveContains(searchText)) ||
             (searchInNotes && (recipe.notes?.localizedCaseInsensitiveContains(searchText) ?? false)) ||
             (searchInIngredients && recipe.ingredients.contains(where: {
                 $0.ingredient.localizedCaseInsensitiveContains(searchText) ||
-                $0.notes.localizedCaseInsensitiveContains(searchText)
+                $0.notes?.localizedCaseInsensitiveContains(searchText) ?? false
             })) ||
             (searchInDirections && recipe.directions.contains(where: {
                 $0.direction.localizedCaseInsensitiveContains(searchText)
@@ -72,31 +73,29 @@ struct ContentView: View {
     
     private var searchOptionsView: some View {
         VStack(alignment: .leading) {
-//            Toggle("Search in Title", isOn: $searchInTitle)
-//            Toggle("Search in Author", isOn: $searchInAuthor)
-            // ... other search option toggles
-            Rectangle()
-                .fill(.blue)
+            HStack{
+                SearchFilter(showSearchOptionsSheet: $showSearchOptionsSheet)
+                    .foregroundStyle(.white)
+                Spacer()
+                SelectCategoryView(currentFilter: $currentCategory, showCategorySheet: $showCategorySheet)
+            }
+            .padding(.horizontal)
         }
-        .padding()
-        .background(Color.white)
-        .cornerRadius(10)
-        .shadow(radius: 5)
+        .padding(.bottom)
+        .background(Color("MainColor"))
     }
 
     var body: some View {
         NavigationSplitView {
             VStack{
-
+                if isSearchBarFocused {
+                    searchOptionsView
+                }
                 if searchFilteredRecipes.isEmpty {
                     Spacer()
                     NoRecipesView()
                     Spacer()
                 } else {
-//                        SearchableListView(recipes: filteredRecipes, searchText: $searchText)
-                    if isSearchBarFocused {
-                        searchOptionsView // Your custom view for search options
-                    }
                     browseAllList
                 }
             }
@@ -105,10 +104,6 @@ struct ContentView: View {
                 ToolbarItem(placement: .principal) {
                     SelectCategoryView(currentFilter: $currentCategory, showCategorySheet: $showCategorySheet)
                         .padding(.bottom, 10)
-                }
-                
-                ToolbarItem(placement: .topBarLeading) {
-                    SearchFilter(searchInTitle: $searchInTitle, searchInAuthor: $searchInAuthor, searchInNotes: $searchInNotes, searchInIngredients: $searchInIngredients, searchInDirections: $searchInDirections)
                 }
                                 
                 ToolbarItem(placement: .topBarTrailing) {
@@ -120,17 +115,9 @@ struct ContentView: View {
                     }
                 }
             }
-//            .toolbarTitleMenu{
-//               Button("blah") {
-//                   print("blah")
-//               }
-//                Button("blah2") {
-//                    print("blah2")
-//                }
-//            }
 
             .navigationTitle("").navigationBarTitleDisplayMode(.inline)
-            .toolbarBackground(Color.init(uiColor: .red), for: .navigationBar)
+            .toolbarBackground(Color("MainColor"), for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
             .toolbarColorScheme(.dark, for: .navigationBar)
             
@@ -144,7 +131,8 @@ struct ContentView: View {
            }
             UISearchBar.appearance().backgroundColor = .red
             UISearchBar.appearance().tintColor = .white
-            UISearchBar.appearance().isTranslucent = false
+            UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).backgroundColor = .white
+            UISearchBar.appearance().overrideUserInterfaceStyle = .light
         }
         .fullScreenCover(isPresented: $showNewRecipeModal) {
            NewRecipe()
@@ -152,17 +140,13 @@ struct ContentView: View {
         .sheet(isPresented: $showCategorySheet) {
             CategorySheetView(currentFilter: $currentCategory)
         }
-        
-        .searchable(text: $searchText, prompt: "Search for a recipe")
-        .searchScopes($currentCategory) {
-            Text("All").tag("All")
-            ForEach(categories, id: \.self) { category in
-                Text(category.name)
-                    .tag(category.name)
-            }
+        .sheet(isPresented: $showSearchOptionsSheet){
+            SearchOptionsSheetView(searchInTitle: $searchInTitle, searchInAuthor: $searchInAuthor, searchInNotes: $searchInNotes, searchInIngredients: $searchInIngredients, searchInDirections: $searchInDirections)
         }
-        .focused($isSearchBarFocused)
         
+        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search for a recipe")
+        .focused($isSearchBarFocused)
+
     }
     
     private func recipeImageView(recipe: Recipe) -> some View {
@@ -192,7 +176,7 @@ struct ContentView: View {
         }
         .lineLimit(1)
     }
-    
+    @State private var showScalePopover = false
     private var browseAllList: some View {
             List{
                 ForEach(searchFilteredRecipes) { recipe in
@@ -204,7 +188,7 @@ struct ContentView: View {
                                     recipeImageView(recipe: recipe)
                                         .layoutPriority(0)
                                     VStack(alignment: .leading) {
-                                        RatingsDisplayView(maxRating: 5, currentRating: recipe.starRating, sfSymbol: "star", width: 30, color: .systemYellow)
+                                        RatingsDisplayView(maxRating: 5, currentRating: recipe.starRating, sfSymbol: "star", width: 30, color: Color("BrightAccentColor"))
                                         Text(recipe.author)
                                             .lineLimit(1)
                                             .fontWeight(.bold)
@@ -218,11 +202,16 @@ struct ContentView: View {
                             }
                             .frame(maxWidth: .infinity)
                             .padding()
+                            Button(action: {
+                                showScalePopover.toggle()
+                            }, label: {
+                                Label("Current Scale: \(recipe.currentScale)", systemImage: "slider.horizontal.3")
+                            })
                             Picker("", selection: $selectedSegment) {
                                 ForEach(RecipeSegment.allCases, id: \.self) {
                                     Text($0.rawValue)
                                 }
-                                .foregroundStyle(.red)
+                                .foregroundStyle(Color("MainColor"))
                             }
                             .pickerStyle(.segmented)
                             .padding(.horizontal)
@@ -243,7 +232,7 @@ struct ContentView: View {
                                 }
                             }
                         }
-                        .toolbarBackground(Color.red, for: .navigationBar)
+                        .toolbarBackground(Color("MainColor"), for: .navigationBar)
                         .toolbarBackground(.visible, for: .navigationBar)
                         .toolbarColorScheme(.dark, for: .navigationBar)
                         .navigationTitle("Recipe Details")
@@ -253,13 +242,15 @@ struct ContentView: View {
                         RecipeCardView(recipe: recipe)
                             .padding(EdgeInsets())
                          .swipeActions(allowsFullSwipe: false) {
+                             
                              Button(role: .destructive) {
                                  deleteRecipe(recipe)
                              } label: {
                                  Label("Delete", systemImage: "trash")
                              }
-                             .tint(.red)
-                             if !(currentCategory == "Most Recent" || currentCategory == "Uncategorized" || currentCategory == "All") {
+                             .tint(Color("MainColor"))
+                             
+                             if !(currentCategory == "Most Recent" || currentCategory == "Uncategorized" || currentCategory == "All Recipes" || currentCategory == "Favorites") {
                                  Button {
                                      removeRecipeFromCategory(recipe: recipe)
                                  } label: {
@@ -267,6 +258,16 @@ struct ContentView: View {
                                  }
                                  .tint(.indigo)
                              }
+                             
+                             if (currentCategory == "Favorites") {
+                                 Button {
+                                     removeRecipeFromFavorites(recipe: recipe)
+                                 } label: {
+                                     Label("Remove from Favorites", systemImage: "heart")
+                                 }
+                                 .tint(.indigo)
+                             }
+
                         }
                     }
                     
@@ -284,6 +285,12 @@ struct ContentView: View {
     private func removeRecipeFromCategory(recipe: Recipe) {
         withAnimation{
             recipe.categories.removeAll(where: {$0.name == currentCategory})
+        }
+    }
+    
+    private func removeRecipeFromFavorites(recipe: Recipe) {
+        withAnimation{
+            recipe.isFavorited = false
         }
     }
 
@@ -360,47 +367,6 @@ struct ContentView: View {
     }
 }
 
-//struct SearchableListView: View {
-//    var recipes: [Recipe]
-//    @Binding var searchText: String
-//
-//
-//    private var filteredRecipes: [Recipe] {
-//            if searchText.isEmpty {
-//                return recipes
-//            } else {
-//                return recipes.filter { recipe in
-//                    (searchInTitle && recipe.title.localizedCaseInsensitiveContains(searchText)) ||
-//                    (searchInAuthor && recipe.author.localizedCaseInsensitiveContains(searchText)) ||
-//                    (searchInNotes && (recipe.notes?.localizedCaseInsensitiveContains(searchText) ?? false)) ||
-//                    (searchInIngredients && recipe.ingredients.contains(where: {
-//                        $0.ingredient.localizedCaseInsensitiveContains(searchText) ||
-//                        $0.notes.localizedCaseInsensitiveContains(searchText)
-//                    })) ||
-//                    (searchInDirections && recipe.directions.contains(where: {
-//                        $0.direction.localizedCaseInsensitiveContains(searchText)
-//                    }))
-//                }
-//            }
-//        }
-//
-//
-//    var body: some View {
-//        VStack{
-//            
-//            List {
-//                ForEach(filteredRecipes) { recipe in
-//                    NavigationLink {
-//                        // Navigation link content...
-//                    } label: {
-//                        Text(recipe.title)
-//                    }
-//                }
-//            }
-//        }
-//    }
-//}
-
 enum RecipeSegment: String, CaseIterable {
     case ingredients = "Ingredients"
     case directions = "Directions"
@@ -425,7 +391,7 @@ struct IngredientsView: View {
 
     var body: some View {
         List(ingredients, id: \.self) { ingredient in
-            Text("\(ingredient.quantity) \(ingredient.ingredient) \(ingredient.notes)")
+            Text("\(ingredient.amount ?? "") \(ingredient.unit ?? "") \(ingredient.ingredient) \(ingredient.notes ?? "")")
         }
     }
 }
@@ -442,23 +408,15 @@ struct DirectionsView: View {
 
 
 struct SearchFilter: View {
-    @Binding var searchInTitle: Bool
-    @Binding var searchInAuthor: Bool
-    @Binding var searchInNotes: Bool
-    @Binding var searchInIngredients: Bool
-    @Binding var searchInDirections: Bool
+    @Binding var showSearchOptionsSheet: Bool
     
     var body: some View {
-        Menu {
-            Toggle("Search in Title", isOn: $searchInTitle)
-            Toggle("Search in Author", isOn: $searchInAuthor)
-            Toggle("Search in Notes", isOn: $searchInNotes)
-            Toggle("Search in Ingredients", isOn: $searchInIngredients)
-            Toggle("Search in Direction", isOn: $searchInDirections)
-        } label: {
+        
+        Button(action: {
+            showSearchOptionsSheet = true
+        }, label: {
             Label("Search Options", systemImage: "slider.horizontal.3")
-        }
-        .padding()
+        })
     }
 }
 

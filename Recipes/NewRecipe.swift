@@ -64,7 +64,7 @@ struct NewRecipe: View {
                         Text("Rating")
                             .foregroundColor(.secondary)
                         Spacer()
-                        RatingsView(maxRating: 5, currentRating: $starRating, sfSymbol: "star", width: 30.0, color: .systemYellow)
+                        RatingsView(maxRating: 5, currentRating: $starRating, sfSymbol: "star", width: 30.0, color: Color("BrightAccentColor"))
                     }
                     TextField("Source URL", text: $sourceURL)
                     MultiSelector(label: Text("Select Categories"), options: allCategories, optionToString: {$0.name}, selected: $categories)
@@ -88,7 +88,7 @@ struct NewRecipe: View {
                                 }
                             } label: {
                                 Label("Remove Image", systemImage: "xmark")
-                                    .foregroundStyle(.red)
+                                    .foregroundStyle(Color("MainColor"))
                             }
                         }
                                     
@@ -159,9 +159,10 @@ struct NewRecipe: View {
                     }
                 }
             }
-            .toolbarBackground(Color.red, for: .navigationBar)
+            .toolbarBackground(Color("MainColor"), for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
             .toolbarColorScheme(.dark, for: .navigationBar)
+            
             .task(id: selectedPhoto) {
                 if let data = try? await selectedPhoto?.loadTransferable(type: Data.self) {
                     imageData = data

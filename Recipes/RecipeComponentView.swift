@@ -18,7 +18,7 @@ struct RecipeComponentView: View {
                 Text(recipe.title)
                     .lineLimit(1)
                     .font(.headline)
-                RatingsDisplayView(maxRating: 5, currentRating: recipe.starRating, sfSymbol: "star", width: 20, color: .systemYellow)
+                RatingsDisplayView(maxRating: 5, currentRating: recipe.starRating, sfSymbol: "star", width: 20, color: Color("BrightAccentColor"))
             }
             .layoutPriority(1)
             .padding(.leading)

@@ -16,7 +16,7 @@ struct CategorySheetView: View {
     var body: some View {
         NavigationStack{
             List {
-                CategorySheetComponentView(label: "All", symbol: "house", onSelect: { currentFilter = "All" })
+                CategorySheetComponentView(label: "All Recipes", symbol: "house", onSelect: { currentFilter = "All Recipes" })
                 CategorySheetComponentView(label: "Most Recent", symbol: "clock", onSelect: { currentFilter = "Most Recent" })
                 CategorySheetComponentView(label: "Favorites", symbol: "heart", onSelect: { currentFilter = "Favorites" })
                 CategorySheetComponentView(label: "Uncategorized", symbol: "questionmark.folder", onSelect: { currentFilter = "Uncategorized" })
@@ -32,13 +32,13 @@ struct CategorySheetView: View {
                     }, label: {
                         Label("Add Category", systemImage: "plus")
                     })
-                    .foregroundStyle(.red)
+                    .foregroundStyle(Color("TextColor"))
                 }
                 
             }
             .navigationTitle("Filter by Category")
             .navigationBarTitleDisplayMode(.inline)
-            .toolbarBackground(Color.red, for: .navigationBar)
+            .toolbarBackground(Color("MainColor"), for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
             .toolbarColorScheme(.dark, for: .navigationBar)
             .sheet(isPresented: $showNewCategorySheet) {

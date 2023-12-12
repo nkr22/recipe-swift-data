@@ -12,7 +12,7 @@ struct RatingsDisplayView: View {
     var currentRating: Int?
     var sfSymbol: String
     var width: Double
-    var color: UIColor
+    var color: Color
     var body: some View {
         HStack {
             ForEach(1...maxRating, id: \.self) {rating in
@@ -42,6 +42,6 @@ struct RatingsDisplayView: View {
         maxRating: 5,
         currentRating: 3,
         sfSymbol: "star", width: 30,
-        color: .systemYellow
+        color: Color("MainColor")
     )
 }

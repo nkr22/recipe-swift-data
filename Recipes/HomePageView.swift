@@ -79,7 +79,7 @@ struct HomePageView: View {
                                 .padding()
                                 .foregroundColor(.white)
                                 .frame(width: geometry.size.width * 0.4, height: geometry.size.height * 0.2)
-                                .background(RoundedRectangle(cornerRadius: 12.0).fill(Color.red))
+                                .background(RoundedRectangle(cornerRadius: 12.0).fill(Color("MainColor")))
                             })
                             .frame(width: geometry.size.width / 2, height: geometry.size.height / 5)
                             Spacer()

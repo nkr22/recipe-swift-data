@@ -14,7 +14,7 @@ struct NoRecipesView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 100)
-                .foregroundStyle(.red)
+                .foregroundStyle(Color("MainColor"))
             Text("Enter a recipe").font(.title)
         }
         

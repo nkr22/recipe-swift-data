@@ -19,8 +19,8 @@ struct NewRecipe: View {
     @State private var starRating: Int? = nil
     @State private var expertiseRequired = ExpertiseLevel.beginner
     @State private var sourceURL: String = ""
-    @State private var prepTime: Int? = nil
-    @State private var cookTime: Int? = nil
+    @State private var prepTime: PrepTime? = nil
+    @State private var cookTime: CookTime? = nil
     @State private var servings: Double? = nil
     @State private var notes: String = ""
     @State private var directions: [Direction] = []
@@ -30,10 +30,13 @@ struct NewRecipe: View {
     @State private var imageData: Data? = nil
     @State private var selectedPhoto: PhotosPickerItem?
     
+    @State private var ingredientsSectionExpanded = true
+        @State private var directionsSectionExpanded = true
+    
     let df = DateFormatter()
     
     func addIngredient () {
-        ingredients.append(Ingredient(quantity: "", ingredient: "", notes: ""))
+        ingredients.append(Ingredient(amount: "", unit: "", ingredient: "", notes: ""))
     }
     
     func deleteIngredient(at offsets: IndexSet) {
@@ -97,6 +100,7 @@ struct NewRecipe: View {
                 Section(header: Text("Ingredients")) {
                     Button(action: addIngredient) {
                         Label("Add Ingredient", systemImage: "plus")
+                            .foregroundStyle(Color("MainColor"))
                     }
                     ForEach($ingredients, id: \.id) { $ingredient in
                         IngredientInputView(ingredient: $ingredient)
@@ -109,15 +113,16 @@ struct NewRecipe: View {
                 Section(header: Text("Directions")) {
                     Button(action: addDirection) {
                         Label("Add Direction", systemImage: "plus")
+                            .foregroundStyle(Color("MainColor"))
                     }
-                    ForEach($directions, id: \.id) { $direction in
+                    ForEach($directions.sorted { $0.order.wrappedValue < $1.order.wrappedValue }, id: \.id) { $direction in
                         DirectionInputView(direction: $direction)
                     }
                     .onDelete(perform: deleteDirection)
                 }
                 
                 Section(header: Text("Notes")) {
-                    TextEditor(text: $notes).multilineTextAlignment(.leading)
+                    TextField("Notes", text: $notes, axis: .vertical).multilineTextAlignment(.leading)
                 }
             
             }
@@ -159,9 +164,7 @@ struct NewRecipe: View {
                     }
                 }
             }
-            .toolbarBackground(Color("MainColor"), for: .navigationBar)
-            .toolbarBackground(.visible, for: .navigationBar)
-            .toolbarColorScheme(.dark, for: .navigationBar)
+            .navigationBarBackground()
             
             .task(id: selectedPhoto) {
                 if let data = try? await selectedPhoto?.loadTransferable(type: Data.self) {
@@ -173,6 +176,6 @@ struct NewRecipe: View {
     }
 }
 
-#Preview {
-    NewRecipe()
-}
+//#Preview {
+//    NewRecipe()
+//}

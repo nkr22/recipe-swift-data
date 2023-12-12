@@ -7,7 +7,10 @@
   "dateLastViewed": "2023-11-26T00:00:00Z",
   "sourceURL": "https://www.daringgourmet.com/homemade-lebkuchengewuerz-german-gingerbread-spice-blend/",
   "starRating": 4,
-  "prepTime": 5,
+  "prepTime": {
+      "value": 5,
+      "unit": "Minutes"
+  },
   "servings": 4,
   "currentScale": 1.0,
   "isFavorited": true,
@@ -99,8 +102,14 @@
   "dateLastViewed": "2023-11-26T00:00:00Z",
   "sourceURL": "https://www.daringgourmet.com/traditional-nuernberger-elisenlebkuchen-german-lebkuchen/",
   "starRating": 3,
-  "prepTime": 20,
-  "cookTime": 25,
+  "prepTime": {
+      "value": 20,
+      "unit": "Minutes"
+  },
+  "cookTime": {
+      "value": 25,
+      "unit": "Minutes"
+  },
   "servings": 35,
   "currentScale": 1.0,
   "isFavorited": false,
@@ -129,7 +138,7 @@
     },
     {
       "order": 6,
-      "direction": "Bake on the middle rack of the oven for 25-28 minutes. Allow to cool completely after removing."
+      "direction": "Bake on the middle rack of the oven for 25-28 Minutes. Allow to cool completely after removing."
     },
     {
       "order": 7,
@@ -143,7 +152,7 @@
   "ingredients": [
       {
         "amount": "5",
-        "unit": null,
+        "unit": "",
         "ingredient": "large eggs",
         "notes": ""
       },
@@ -228,8 +237,14 @@
   "dateLastViewed": "2023-11-26T00:00:00Z",
   "sourceURL": "https://www.bettycrocker.com/recipes/strawberry-poke-cake/354fda2b-949f-4222-b939-24ea67b50f1a",
   "starRating": 4,
-  "prepTime": 15,
-  "cookTime": 20,
+  "prepTime": {
+      "value": 15,
+      "unit": "Minutes"
+  },
+  "cookTime": {
+      "value": 20,
+      "unit": "Minutes"
+  },
   "servings": 12,
   "currentScale": 1.0,
   "isFavorited": false,
@@ -238,7 +253,7 @@
   "directions": [
     {
       "order": 1,
-      "direction": "Heat oven to 350°F (325°F for dark or nonstick pan). Make and bake cake as directed on box for 13x9-inch pan, using water, oil, and egg whites. Cool in pan on cooling rack for 20 minutes."
+      "direction": "Heat oven to 350°F (325°F for dark or nonstick pan). Make and bake cake as directed on box for 13x9-inch pan, using water, oil, and egg whites. Cool in pan on cooling rack for 20 Minutes."
     },
     {
       "order": 2,
@@ -257,8 +272,8 @@
       "notes": ""
     },
     {
-      "amount": null,
-      "unit": null,
+      "amount": "",
+      "unit": "",
       "ingredient": "Water, vegetable oil, and egg whites",
       "notes": "As called for on cake mix box"
     },
@@ -282,7 +297,7 @@
     },
     {
       "amount": "12",
-      "unit": null,
+      "unit": "",
       "ingredient": "fresh strawberries, cut in half",
       "notes": ""
     }
@@ -307,8 +322,14 @@
   "dateLastViewed": "2023-09-05T00:00:00Z",
   "sourceURL": "https://www.example.com/margherita-pizza-recipe",
   "starRating": 5,
-  "prepTime": 30,
-  "cookTime": 15,
+  "prepTime": {
+      "value": 30,
+      "unit": "Minutes"
+  },
+  "cookTime": {
+      "value": 15,
+      "unit": "Minutes"
+  },
   "servings": 4,
   "currentScale": 1.0,
   "isFavorited": false,
@@ -329,7 +350,7 @@
     },
     {
       "order": 4,
-      "direction": "Bake for 12-15 minutes until the crust is golden and cheese is bubbly."
+      "direction": "Bake for 12-15 Minutes until the crust is golden and cheese is bubbly."
     },
     {
       "order": 5,
@@ -395,8 +416,14 @@
   "dateLastViewed": "2023-10-12T00:00:00Z",
   "sourceURL": "https://www.example.com/thai-green-curry-recipe",
   "starRating": 5,
-  "prepTime": 20,
-  "cookTime": 25,
+  "prepTime": {
+      "value": 20,
+      "unit": "Minutes"
+  },
+  "cookTime": {
+      "value": 25,
+      "unit": "Minutes"
+  },
   "servings": 4,
   "currentScale": 1.0,
   "isFavorited": true,
@@ -405,7 +432,7 @@
   "directions": [
     {
       "order": 1,
-      "direction": "In a pan, heat oil and add Thai green curry paste. Cook for 2 minutes."
+      "direction": "In a pan, heat oil and add Thai green curry paste. Cook for 2 Minutes."
     },
     {
       "order": 2,
@@ -417,7 +444,7 @@
     },
     {
       "order": 4,
-      "direction": "Season with soy sauce, sugar, and lime juice. Cook for another 5 minutes."
+      "direction": "Season with soy sauce, sugar, and lime juice. Cook for another 5 Minutes."
     },
     {
       "order": 5,
@@ -497,8 +524,14 @@
   "dateLastViewed": "2023-10-20T00:00:00Z",
   "sourceURL": "https://www.example.com/beef-stroganoff-recipe",
   "starRating": 2,
-  "prepTime": 15,
-  "cookTime": 30,
+  "prepTime": {
+      "value": 15,
+      "unit": "Minutes"
+  },
+  "cookTime": {
+      "value": 30,
+      "unit": "Minutes"
+  },
   "servings": 6,
   "currentScale": 1.0,
   "isFavorited": false,
@@ -531,41 +564,48 @@
     }
   ],
   "ingredients": [
-    {
-      "quantity": "500g",
-      "ingredient": "beef sirloin, cut into thin strips",
-      "notes": ""
-    },
-    {
-      "quantity": "2 tablespoons",
-      "ingredient": "butter",
-      "notes": ""
-    },
-    {
-      "quantity": "1",
-      "ingredient": "onion, chopped",
-      "notes": ""
-    },
-    {
-      "quantity": "250g",
-      "ingredient": "mushrooms, sliced",
-      "notes": ""
-    },
-    {
-      "quantity": "2 tablespoons",
-      "ingredient": "all-purpose flour",
-      "notes": ""
-    },
-    {
-      "quantity": "1 cup",
-      "ingredient": "beef broth",
-      "notes": ""
-    },
-    {
-      "quantity": "1 cup",
-      "ingredient": "sour cream",
-      "notes": ""
-    }
+      {
+          "amount": "500",
+          "unit": "g",
+          "ingredient": "beef sirloin, cut into thin strips",
+          "notes": ""
+      },
+      {
+          "amount": "2",
+          "unit": "tablespoons",
+          "ingredient": "butter",
+          "notes": ""
+      },
+      {
+          "amount": "1",
+          "unit": "",
+          "ingredient": "onion, chopped",
+          "notes": ""
+      },
+      {
+          "amount": "250",
+          "unit": "g",
+          "ingredient": "mushrooms, sliced",
+          "notes": ""
+      },
+      {
+          "amount": "2",
+          "unit": "tablespoons",
+          "ingredient": "all-purpose flour",
+          "notes": ""
+      },
+      {
+          "amount": "1",
+          "unit": "cup",
+          "ingredient": "beef broth",
+          "notes": ""
+      },
+      {
+          "amount": "1",
+          "unit": "cup",
+          "ingredient": "sour cream",
+          "notes": ""
+      }
   ],
   "categories": [
     {

@@ -10,7 +10,7 @@ import SwiftData
 import PhotosUI
 
 struct EditRecipeView: View {
-    let recipe: Recipe
+    let recipe: Recipe?
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
     @Query(sort: \Category.name) private var allCategories: [Category]
@@ -20,8 +20,8 @@ struct EditRecipeView: View {
     @State private var starRating: Int? = nil
     @State private var expertiseRequired = ExpertiseLevel.beginner
     @State private var sourceURL: String = ""
-    @State private var prepTime: Int? = nil
-    @State private var cookTime: Int? = nil
+    @State private var prepTime: PrepTime? = nil
+    @State private var cookTime: CookTime? = nil
     @State private var servings: Double? = nil
     @State private var notes: String = ""
     @State private var directions: [Direction] = []
@@ -33,10 +33,20 @@ struct EditRecipeView: View {
     @State private var imageData: Data? = nil
     @State private var selectedPhoto: PhotosPickerItem?
     
+    @State private var prepTimeValue: Double?
+    @State private var cookTimeValue: Double?
+    @State private var selectedPrepUnit: TimeUnit = .minutes
+    @State private var selectedCookUnit: TimeUnit = .minutes
+    
     let df = DateFormatter()
+    let decimalFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        return formatter
+    }()
     
     func addIngredient () {
-        ingredients.append(Ingredient(quantity: "", ingredient: "", notes: ""))
+        ingredients.append(Ingredient(amount: "", unit: "", ingredient: "", notes: ""))
     }
     
     func deleteIngredient(at offsets: IndexSet) {
@@ -63,6 +73,14 @@ struct EditRecipeView: View {
                             Text(level.rawValue.capitalized).tag(level)
                         }
                     }
+                    // Additional fields for prepTime, cookTime, servings, etc.
+                    Toggle("Favorited Recipe", isOn: $isFavorited)
+                    MultiSelector(label: Text("Select Categories"), options: allCategories, optionToString: {$0.name}, selected: $selectedCategories)
+
+                    
+                }
+                
+                Section(header: Text("Additional Information")) {
                     HStack {
                         Text("Rating")
                             .foregroundColor(.secondary)
@@ -70,8 +88,6 @@ struct EditRecipeView: View {
                         RatingsView(maxRating: 5, currentRating: $starRating, sfSymbol: "star", width: 30.0, color: Color("BrightAccentColor"))
                     }
                     TextField("Source URL", text: $sourceURL)
-                    // Additional fields for prepTime, cookTime, servings, etc.
-                    MultiSelector(label: Text("Select Categories"), options: allCategories, optionToString: {$0.name}, selected: $selectedCategories)
                     if let selectedPhotoData = imageData,
                            let uiImage = UIImage(data: selectedPhotoData) {
                             Image(uiImage: uiImage)
@@ -95,8 +111,49 @@ struct EditRecipeView: View {
                                     .foregroundStyle(Color("MainColor"))
                             }
                         }
-                    
                 }
+                Section(header: Text("Meal Information")) {
+                    VStack(alignment: .leading, spacing: 20) {
+                        HStack {
+                            Text("Servings:")
+                                .frame(width: 100, alignment: .leading)
+                            Spacer()
+                            TextField("e.g. 5", value: $servings, formatter: decimalFormatter)
+                                .keyboardType(.numberPad)
+                        }
+                        
+                        HStack {
+                            Text("Prep Time:")
+                                .frame(width: 100, alignment: .leading)
+                            Spacer()
+                            TextField("e.g. 20", value: $prepTimeValue, formatter: decimalFormatter)
+                                .keyboardType(.numberPad)
+                            Picker("", selection: $selectedPrepUnit) {
+                                ForEach(TimeUnit.allCases) { unit in
+                                    Text(unit.rawValue).tag(unit)
+                                }
+                            }
+                            .pickerStyle(.menu)
+                            .frame(width: 100)
+                        }
+                        
+                        HStack {
+                            Text("Cook Time:")
+                                .frame(width: 100, alignment: .leading)
+                            Spacer()
+                            TextField("e.g. 20", value: $cookTimeValue, formatter: decimalFormatter)
+                                .keyboardType(.numberPad)
+                            Picker("", selection: $selectedCookUnit) {
+                                ForEach(TimeUnit.allCases) { unit in
+                                    Text(unit.rawValue).tag(unit)
+                                }
+                            }
+                            .pickerStyle(.menu)
+                            .frame(width: 100)
+                        }
+                    }
+                }
+
                 
                 Section(header: Text("Ingredients")) {
                     Button(action: addIngredient) {
@@ -121,67 +178,82 @@ struct EditRecipeView: View {
                 }
                 
                 Section(header: Text("Notes")) {
-                    TextEditor(text: $notes).multilineTextAlignment(.leading)
+                    TextField("Notes", text: $notes, axis: .vertical).multilineTextAlignment(.leading)
                 }
             
             }
-            .navigationTitle("Edit Recipe")
-            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button("Cancel") {
                         dismiss()
                     }
                 }
-                ToolbarItem {
-                    HeartFavoriteView(isFavorited: $isFavorited, sfSymbol: "heart", width: 30.0, color: .systemRed)
-                }
+//                ToolbarItem {
+//                    HeartFavoriteView(isFavorited: $isFavorited, sfSymbol: "heart", width: 30.0, color: .systemRed)
+//                }
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Save") {
-                        if isChanged {
-                            recipe.title = title
-                            recipe.author = author
-                            recipe.expertiseRequired = expertiseRequired
-                            recipe.sourceURL = sourceURL
-                            recipe.prepTime = prepTime
-                            recipe.cookTime = cookTime
-                            recipe.servings = servings
-                            recipe.isFavorited = isFavorited
-                            recipe.starRating = starRating
-                            recipe.notes = notes
-                            recipe.directions = directions
-                            recipe.ingredients = ingredients
-                            recipe.categories = Array(selectedCategories)
-                            recipe.imageURL = imageData
-                        }
-                        dismiss()
-                    }
-                }
+                   Button("Save") {
+                       if let recipe {
+                           if isChanged {
+                               recipe.title = title
+                               recipe.author = author
+                               recipe.expertiseRequired = expertiseRequired
+                               recipe.sourceURL = sourceURL
+                               recipe.prepTime?.value = prepTimeValue ?? recipe.prepTime?.value ?? 0
+                               recipe.cookTime?.value = cookTimeValue ?? recipe.cookTime?.value ?? 0
+                               recipe.prepTime?.unit = selectedPrepUnit
+                               recipe.cookTime?.unit = selectedCookUnit
+                               recipe.prepTime?.unit = selectedPrepUnit
+                               recipe.cookTime?.unit = selectedCookUnit
+                               recipe.servings = servings
+                               recipe.isFavorited = isFavorited
+                               recipe.starRating = starRating
+                               recipe.notes = notes
+                               recipe.directions = directions
+                               recipe.ingredients = ingredients
+                               recipe.categories = Array(selectedCategories)
+                               recipe.imageURL = imageData
+                           }
+                           dismiss()
+                       } else {
+                           let newPrepTime = prepTimeValue != nil ? PrepTime(value: prepTimeValue!, unit: selectedPrepUnit) : nil
+                           let newCookTime = cookTimeValue != nil ? CookTime(value: cookTimeValue!, unit: selectedCookUnit) : nil
+
+                           let newRecipe =
+                           Recipe(
+                               title: title,
+                               author: author,
+                               dateCreated: df.string(from: Date()),
+                               expertiseRequired: expertiseRequired,
+                               dateLastViewed: df.string(from: Date()),
+                               sourceURL: sourceURL,
+                               prepTime: newPrepTime,
+                               cookTime: newCookTime,
+                               servings: servings,
+                               currentScale: 1,
+                               isFavorited: isFavorited,
+                               starRating: starRating,
+                               imageURL: imageData,
+                               notes: notes,
+                               directions: directions,
+                               ingredients: ingredients,
+                               categories: Array(categories)
+                           )
+                           context.insert(newRecipe)
+                           dismiss()
+                       }
+                   }
+               }
             }
-            .toolbarBackground(Color("MainColor"), for: .navigationBar)
-            .toolbarBackground(.visible, for: .navigationBar)
-            .toolbarColorScheme(.dark, for: .navigationBar)
+            .navigationBarBackground()
+            .navigationTitle((recipe != nil) ? "Edit Recipe" : "New Recipe")
+            .navigationBarTitleDisplayMode(.inline)
 
             .onAppear() {
                 if !isInitialized {
-                    title = recipe.title
-                    author = recipe.author
-                    expertiseRequired = recipe.expertiseRequired
-                    recipe.dateLastViewed = df.string(from: Date())
-                    sourceURL = recipe.sourceURL ?? ""
-                    imageData = recipe.imageURL
-                    prepTime = recipe.prepTime
-                    cookTime = recipe.cookTime
-                    servings = recipe.servings
-                    isFavorited = recipe.isFavorited
-                    starRating = recipe.starRating
-                    notes = recipe.notes ?? ""
-                    directions = recipe.directions
-                    ingredients = recipe.ingredients
-                    categories = recipe.categories
-                    selectedCategories = Set(recipe.categories)
-                    isInitialized = true
+                    initializeViewWithRecipe(recipe)
                 }
+
             }
         }
 
@@ -190,14 +262,46 @@ struct EditRecipeView: View {
                 imageData = data
             }
         }
-        
-        var isChanged: Bool {
+    
+    }
+    
+    private func initializeViewWithRecipe(_ recipe: Recipe?) {
+           if let recipe {
+               title = recipe.title
+               author = recipe.author
+               expertiseRequired = recipe.expertiseRequired
+               recipe.dateLastViewed = df.string(from: Date())
+               sourceURL = recipe.sourceURL ?? ""
+               imageData = recipe.imageURL
+               prepTime = recipe.prepTime
+               cookTime = recipe.cookTime
+               prepTimeValue = prepTime?.value ?? 0
+               cookTimeValue = cookTime?.value ?? 0
+               selectedPrepUnit = prepTime?.unit ?? TimeUnit.minutes
+               selectedCookUnit = cookTime?.unit ?? TimeUnit.minutes
+               servings = recipe.servings
+               isFavorited = recipe.isFavorited
+               starRating = recipe.starRating
+               notes = recipe.notes ?? ""
+               directions = recipe.directions
+               ingredients = recipe.ingredients
+               categories = recipe.categories
+               selectedCategories = Set(recipe.categories)
+               isInitialized = true
+           }
+           isInitialized = true
+       }
+    
+    private var isChanged: Bool {
+        if let recipe {
             title != recipe.title ||
             author != recipe.author ||
             expertiseRequired != recipe.expertiseRequired ||
             sourceURL != recipe.sourceURL ||
-            prepTime != recipe.prepTime ||
-            cookTime != recipe.cookTime ||
+            prepTimeValue != recipe.prepTime?.value ||
+            selectedPrepUnit != recipe.prepTime?.unit ||
+            cookTimeValue != recipe.cookTime?.value ||
+            selectedCookUnit != recipe.cookTime?.unit ||
             servings != recipe.servings ||
             isFavorited != recipe.isFavorited ||
             starRating != recipe.starRating ||
@@ -206,10 +310,13 @@ struct EditRecipeView: View {
             ingredients != recipe.ingredients ||
             Array(selectedCategories) != recipe.categories ||
             imageData != recipe.imageURL
+        } else {
+            false
         }
-    
     }
 }
+
+
 
 //#Preview {
 //    let df = DateFormatter()

@@ -19,8 +19,8 @@ struct RecipeJSON: Codable {
     var expertiseRequired: ExpertiseLevel
     var dateLastViewed: String
     var sourceURL: String?
-    var prepTime: Int?
-    var cookTime: Int?
+    var prepTime: PrepTime?
+    var cookTime: CookTime?
     var servings: Double?
     var currentScale: Double
     var isFavorited: Bool

@@ -38,9 +38,7 @@ struct CategorySheetView: View {
             }
             .navigationTitle("Filter by Category")
             .navigationBarTitleDisplayMode(.inline)
-            .toolbarBackground(Color("MainColor"), for: .navigationBar)
-            .toolbarBackground(.visible, for: .navigationBar)
-            .toolbarColorScheme(.dark, for: .navigationBar)
+            .navigationBarBackground()
             .sheet(isPresented: $showNewCategorySheet) {
                 NewCategoryView()
             }

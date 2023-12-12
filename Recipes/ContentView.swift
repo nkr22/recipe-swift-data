@@ -17,7 +17,6 @@ struct ContentView: View {
     @Query private var categories: [Category]
     @State private var searchText = ""
     @State var showNewRecipeModal = false
-    @State var showEditRecipeModal = false
     @State private var showCategorySheet = false
     @State private var showSearchOptionsSheet = false
     @State private var currentCategory: String = "All Recipes"
@@ -63,7 +62,7 @@ struct ContentView: View {
             (searchInNotes && (recipe.notes?.localizedCaseInsensitiveContains(searchText) ?? false)) ||
             (searchInIngredients && recipe.ingredients.contains(where: {
                 $0.ingredient.localizedCaseInsensitiveContains(searchText) ||
-                $0.notes?.localizedCaseInsensitiveContains(searchText) ?? false
+                $0.notes.localizedCaseInsensitiveContains(searchText)
             })) ||
             (searchInDirections && recipe.directions.contains(where: {
                 $0.direction.localizedCaseInsensitiveContains(searchText)
@@ -71,26 +70,21 @@ struct ContentView: View {
         }
     }
     
-    private var searchOptionsView: some View {
-        VStack(alignment: .leading) {
-            HStack{
-                SearchFilter(showSearchOptionsSheet: $showSearchOptionsSheet)
-                    .foregroundStyle(.white)
-                Spacer()
+    var headerView: some View {
+            HStack {
                 SelectCategoryView(currentFilter: $currentCategory, showCategorySheet: $showCategorySheet)
+                Spacer()
+                SearchFilter(showSearchOptionsSheet: $showSearchOptionsSheet)
             }
             .padding(.horizontal)
+            .padding(.bottom)
+            .background(Color("MainColor"))
         }
-        .padding(.bottom)
-        .background(Color("MainColor"))
-    }
 
     var body: some View {
         NavigationSplitView {
-            VStack{
-                if isSearchBarFocused {
-                    searchOptionsView
-                }
+            VStack(spacing: 0){
+               headerView
                 if searchFilteredRecipes.isEmpty {
                     Spacer()
                     NoRecipesView()
@@ -99,11 +93,30 @@ struct ContentView: View {
                     browseAllList
                 }
             }
+            .onAppear {
+                if !isInitialized {
+                   initializeData()
+                   isInitialized = true
+               }
+                UISearchBar.appearance().backgroundColor = .red
+                UISearchBar.appearance().tintColor = .white
+                UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).backgroundColor = .white
+                UISearchBar.appearance().overrideUserInterfaceStyle = .light
+            }
+            .fullScreenCover(isPresented: $showNewRecipeModal) {
+                EditRecipeView(recipe: nil)
+            }
+            .sheet(isPresented: $showCategorySheet) {
+                CategorySheetView(currentFilter: $currentCategory)
+            }
+            .sheet(isPresented: $showSearchOptionsSheet){
+                SearchOptionsSheetView(searchInTitle: $searchInTitle, searchInAuthor: $searchInAuthor, searchInNotes: $searchInNotes, searchInIngredients: $searchInIngredients, searchInDirections: $searchInDirections)
+            }
+            .navigationTitle("").navigationBarTitleDisplayMode(.inline)
             .toolbar {
-
-                ToolbarItem(placement: .principal) {
-                    SelectCategoryView(currentFilter: $currentCategory, showCategorySheet: $showCategorySheet)
-                        .padding(.bottom, 10)
+                ToolbarItem(placement: .topBarLeading){
+                    Text("Recipeats")
+                        .font(.title.bold())
                 }
                                 
                 ToolbarItem(placement: .topBarTrailing) {
@@ -115,37 +128,11 @@ struct ContentView: View {
                     }
                 }
             }
-
-            .navigationTitle("").navigationBarTitleDisplayMode(.inline)
-            .toolbarBackground(Color("MainColor"), for: .navigationBar)
-            .toolbarBackground(.visible, for: .navigationBar)
-            .toolbarColorScheme(.dark, for: .navigationBar)
-            
         } detail: {
             HomePageView()
         }
-        .onAppear {
-            if !isInitialized {
-               initializeData()
-               isInitialized = true
-           }
-            UISearchBar.appearance().backgroundColor = .red
-            UISearchBar.appearance().tintColor = .white
-            UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).backgroundColor = .white
-            UISearchBar.appearance().overrideUserInterfaceStyle = .light
-        }
-        .fullScreenCover(isPresented: $showNewRecipeModal) {
-           NewRecipe()
-        }
-        .sheet(isPresented: $showCategorySheet) {
-            CategorySheetView(currentFilter: $currentCategory)
-        }
-        .sheet(isPresented: $showSearchOptionsSheet){
-            SearchOptionsSheetView(searchInTitle: $searchInTitle, searchInAuthor: $searchInAuthor, searchInNotes: $searchInNotes, searchInIngredients: $searchInIngredients, searchInDirections: $searchInDirections)
-        }
-        
-        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search for a recipe")
-        .focused($isSearchBarFocused)
+        .searchable(text: $searchText, placement: .toolbar, prompt: "Search for a recipe")
+        .navigationViewStyle(StackNavigationViewStyle())
 
     }
     
@@ -176,71 +163,16 @@ struct ContentView: View {
         }
         .lineLimit(1)
     }
-    @State private var showScalePopover = false
+    @State var showScalePopover = false
+    @State var scaleForPopover: Double = 1
     private var browseAllList: some View {
             List{
                 ForEach(searchFilteredRecipes) { recipe in
                     NavigationLink {
-                        VStack{
-                            VStack(alignment: .leading){
-                                Text(recipe.title).font(.headline).fontWeight(.bold)
-                                HStack {
-                                    recipeImageView(recipe: recipe)
-                                        .layoutPriority(0)
-                                    VStack(alignment: .leading) {
-                                        RatingsDisplayView(maxRating: 5, currentRating: recipe.starRating, sfSymbol: "star", width: 30, color: Color("BrightAccentColor"))
-                                        Text(recipe.author)
-                                            .lineLimit(1)
-                                            .fontWeight(.bold)
-                                            .foregroundStyle(.gray)
-                                        recipeSourceView(recipe: recipe)
-                                    }
-                                    .layoutPriority(1)
-                                    .padding(.leading)
-                                    Spacer()
-                                }
-                            }
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            Button(action: {
-                                showScalePopover.toggle()
-                            }, label: {
-                                Label("Current Scale: \(recipe.currentScale)", systemImage: "slider.horizontal.3")
-                            })
-                            Picker("", selection: $selectedSegment) {
-                                ForEach(RecipeSegment.allCases, id: \.self) {
-                                    Text($0.rawValue)
-                                }
-                                .foregroundStyle(Color("MainColor"))
-                            }
-                            .pickerStyle(.segmented)
-                            .padding(.horizontal)
-                            RecipeSegmentedView(segment: selectedSegment, recipe: recipe)
-                            
-                        }
-                        .onAppear{
-                            updateDateLastViewed(for: recipe)
-                        }
-                        
-                        .fullScreenCover(isPresented: $showEditRecipeModal) {
-                            EditRecipeView(recipe: recipe)
-                        }
-                        .toolbar {
-                            ToolbarItem(placement: .topBarTrailing) {
-                                Button(action: editRecipe) {
-                                    Label("Edit", systemImage: "pencil")
-                                }
-                            }
-                        }
-                        .toolbarBackground(Color("MainColor"), for: .navigationBar)
-                        .toolbarBackground(.visible, for: .navigationBar)
-                        .toolbarColorScheme(.dark, for: .navigationBar)
-                        .navigationTitle("Recipe Details")
-                        .navigationBarTitleDisplayMode(.inline)
-                        
+                        RecipeInformationView(recipe: recipe)
                     } label: {
                         RecipeCardView(recipe: recipe)
-                            .padding(EdgeInsets())
+                         .padding(EdgeInsets())
                          .swipeActions(allowsFullSwipe: false) {
                              
                              Button(role: .destructive) {
@@ -271,6 +203,8 @@ struct ContentView: View {
                         }
                     }
                     
+
+                    
                 }
                 .onDelete(perform: deleteItems)
                 .listRowSeparator(.hidden, edges: .all)
@@ -298,10 +232,7 @@ struct ContentView: View {
         showNewRecipeModal = true
     }
     
-    private func editRecipe() {
-        showEditRecipeModal = true
-    }
-    
+
     private func deleteRecipe(_ recipe: Recipe) {
         withAnimation {
             if let index = searchFilteredRecipes.firstIndex(of: recipe) {
@@ -359,52 +290,9 @@ struct ContentView: View {
         }
     }
     
-    private func updateDateLastViewed(for recipe: Recipe) {
-        let currentDate = Date()
-        recipe.dateLastViewed = dateFormatter.string(from: currentDate)
-        // Save the changes to the model context if necessary
-        try? modelContext.save()
-    }
+
 }
 
-enum RecipeSegment: String, CaseIterable {
-    case ingredients = "Ingredients"
-    case directions = "Directions"
-}
-
-struct RecipeSegmentedView: View {
-    var segment: RecipeSegment
-    var recipe: Recipe
-
-    var body: some View {
-        switch segment {
-        case .ingredients:
-            IngredientsView(ingredients: recipe.ingredients)
-        case .directions:
-            DirectionsView(directions: recipe.directions)
-        }
-    }
-}
-
-struct IngredientsView: View {
-    var ingredients: [Ingredient]
-
-    var body: some View {
-        List(ingredients, id: \.self) { ingredient in
-            Text("\(ingredient.amount ?? "") \(ingredient.unit ?? "") \(ingredient.ingredient) \(ingredient.notes ?? "")")
-        }
-    }
-}
-
-struct DirectionsView: View {
-    var directions: [Direction]
-
-    var body: some View {
-        List(directions.sorted { $0.order < $1.order }, id: \.self) { direction in
-            Text("\(direction.order). \(direction.direction)")
-        }
-    }
-}
 
 
 struct SearchFilter: View {

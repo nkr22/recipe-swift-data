@@ -27,74 +27,81 @@ struct HomePageView: View {
     }
     
     var body: some View {
-        VStack{
-            Image("Recipeat")
-                .resizable()
-                .scaledToFit()
-                .background {
-                    Rectangle()
-                        .ignoresSafeArea()
-                        .foregroundStyle(.gray.opacity(0.5))
-                        .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height/4)
-                }
-                .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height/4)
-            Spacer()
-            VStack(alignment: .leading){
-                Text("Most Recent Recipes").font(.largeTitle).fontWeight(.bold)
-                ScrollView(.horizontal){
-                    HStack(spacing: 40){
-                        ForEach(recentRecipes) {recipe in
-                            VStack{
-                                RoundedRectangle(cornerRadius: 8.0)
-                                    .foregroundStyle(.gray)
-                                    .aspectRatio(1, contentMode: .fill)
-                                    .layoutPriority(0)
-                                Text(recipe.title)
-                                    .font(.largeTitle)
-                                    .layoutPriority(1)
+        NavigationStack{
+            VStack{
+                Image("Recipeat")
+                    .resizable()
+                    .scaledToFit()
+                    .background {
+                        Rectangle()
+                            .ignoresSafeArea()
+                            .foregroundStyle(.gray.opacity(0.5))
+                            .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height/4)
+                    }
+                    .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height/4)
+                Spacer()
+                VStack(alignment: .leading){
+                    Text("Most Recent Recipes").font(.largeTitle).fontWeight(.bold)
+                    ScrollView(.horizontal){
+                        HStack(spacing: 40){
+                            ForEach(recentRecipes) {recipe in
+                                NavigationLink{
+                                    RecipeInformationView(recipe: recipe)
+                                } label: {
+                                    VStack{
+                                        RoundedRectangle(cornerRadius: 8.0)
+                                            .foregroundStyle(.gray)
+                                            .aspectRatio(1, contentMode: .fill)
+                                            .layoutPriority(0)
+                                        Text(recipe.title)
+                                            .font(.largeTitle)
+                                            .layoutPriority(1)
+                                    }
+                                    
+                                }
+                                .frame(width: UIScreen.main.bounds.width/4, height: UIScreen.main.bounds.height/4)
                             }
-                            .frame(width: UIScreen.main.bounds.width/4, height: UIScreen.main.bounds.height/4)
                         }
                     }
+                    .padding()
                 }
                 .padding()
-            }
-            .padding()
-
-            Spacer()
-            if UIDevice.current.userInterfaceIdiom != .phone {
-                GeometryReader{geometry in
-                    VStack {
-                        Spacer() // This will push the button to the middle
-                        HStack {
-                            Spacer()
-                            Button(action: {
-                                showNewRecipeModal = true
-                            }, label: {
-                                HStack {
-                                    Image(systemName: "plus")
-                                    Text("Add a Recipe")
-                                }
-                                .font(.largeTitle)
-                                .padding()
-                                .foregroundColor(.white)
-                                .frame(width: geometry.size.width * 0.4, height: geometry.size.height * 0.2)
-                                .background(RoundedRectangle(cornerRadius: 12.0).fill(Color("MainColor")))
-                            })
-                            .frame(width: geometry.size.width / 2, height: geometry.size.height / 5)
-                            Spacer()
+                
+                Spacer()
+                if UIDevice.current.userInterfaceIdiom != .phone {
+                    GeometryReader{geometry in
+                        VStack {
+                            Spacer() // This will push the button to the middle
+                            HStack {
+                                Spacer()
+                                Button(action: {
+                                    showNewRecipeModal = true
+                                }, label: {
+                                    HStack {
+                                        Image(systemName: "plus")
+                                        Text("Add a Recipe")
+                                    }
+                                    .font(.largeTitle)
+                                    .padding()
+                                    .foregroundColor(.white)
+                                    .frame(width: geometry.size.width * 0.4, height: geometry.size.height * 0.2)
+                                    .background(RoundedRectangle(cornerRadius: 12.0).fill(Color("MainColor")))
+                                })
+                                .frame(width: geometry.size.width / 2, height: geometry.size.height / 5)
+                                Spacer()
+                            }
+                            
+                            Spacer() // This will also push the button to the middle
                         }
-
-                        Spacer() // This will also push the button to the middle
+                        .frame(height: geometry.size.height)
+                        
                     }
-                    .frame(height: geometry.size.height)
-                    
                 }
             }
         }
 
         .fullScreenCover(isPresented: $showNewRecipeModal) {
-           NewRecipe()
+            EditRecipeView(recipe: nil)
         }
         
     }

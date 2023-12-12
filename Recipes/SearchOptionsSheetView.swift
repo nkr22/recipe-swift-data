@@ -16,27 +16,26 @@ struct SearchOptionsSheetView: View {
     @Binding var searchInDirections: Bool
     
     var body: some View {
-            NavigationView {
-                Form {
-                    Toggle("Search in Title", isOn: $searchInTitle)
-                    Toggle("Search in Author", isOn: $searchInAuthor)
-                    Toggle("Search in Notes", isOn: $searchInNotes)
-                    Toggle("Search in Ingredients", isOn: $searchInIngredients)
-                    Toggle("Search in Directions", isOn: $searchInDirections)
-                }
-                .navigationBarTitle("Search Options", displayMode: .inline)
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button("Done") {
-                            dismiss()
-                        }
-                    }
-                }
-                .toolbarBackground(Color("MainColor"), for: .navigationBar)
-                .toolbarBackground(.visible, for: .navigationBar)
-                .toolbarColorScheme(.dark, for: .navigationBar)
+        NavigationStack {
+            Form {
+                Toggle("Search in Title", isOn: $searchInTitle)
+                Toggle("Search in Author", isOn: $searchInAuthor)
+                Toggle("Search in Notes", isOn: $searchInNotes)
+                Toggle("Search in Ingredients", isOn: $searchInIngredients)
+                Toggle("Search in Directions", isOn: $searchInDirections)
             }
+            .navigationBarTitle("Search Options", displayMode: .inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Done") {
+                        dismiss()
+                    }
+                    .foregroundStyle(Color("TextColor"))
+                }
+            }
+            .navigationBarBackground()
         }
+    }
 }
 
 //#Preview {

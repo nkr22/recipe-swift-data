@@ -12,24 +12,32 @@ struct IngredientInputView: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            HStack {
-                Text("Quantity")
+            HStack(alignment: .top)  {
+                Text("Amount")
                 Spacer()
-                TextField("Quantity", text: $ingredient.quantity)
+                TextField("Amount (eg. 500)", text: $ingredient.amount)
+                    .keyboardType(.decimalPad)
                     .multilineTextAlignment(.trailing)
             }
 
-            HStack {
-                Text("Description")
+            HStack(alignment: .top)  {
+                Text("Unit")
                 Spacer()
-                TextField("Description", text: $ingredient.ingredient)
+                TextField("Unit (eg. g)", text: $ingredient.unit, axis: .vertical)
                     .multilineTextAlignment(.trailing)
             }
 
-            HStack {
+            HStack(alignment: .top) {
+                Text("Ingredient")
+                Spacer()
+                TextField("Ingredient", text: $ingredient.ingredient, axis: .vertical)
+                    .multilineTextAlignment(.trailing)
+            }
+
+            HStack(alignment: .top)  {
                 Text("Notes")
                 Spacer()
-                TextField("Notes", text: $ingredient.notes)
+                TextField("Notes", text: $ingredient.notes, axis: .vertical)
                     .multilineTextAlignment(.trailing)
             }
         }
@@ -37,5 +45,5 @@ struct IngredientInputView: View {
 }
 
 #Preview {
-    IngredientInputView(ingredient: .constant(Ingredient(quantity: "1 Cup", ingredient: "Flour", notes: "Unbleached")))
+    IngredientInputView(ingredient: .constant(Ingredient(amount: "1", unit: "Cup", ingredient: "Flour", notes: "Unbleached")))
 }

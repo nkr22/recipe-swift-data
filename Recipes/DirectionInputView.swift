@@ -12,9 +12,9 @@ struct DirectionInputView: View {
 
     var body: some View {
 
-        HStack {
+        HStack(alignment: .top) {
             Text("\(direction.order).")
-            TextField("Description", text: $direction.direction)
+            TextField("Description", text: $direction.direction, axis: .vertical)
                 .multilineTextAlignment(.leading)
         }
 

@@ -41,9 +41,7 @@ struct MultiSelectionView<Selectable: Identifiable & Hashable>: View {
         .sheet(isPresented: $openNewCategorySheet) {
             NewCategoryView()
         }
-        .toolbarBackground(Color("MainColor"), for: .navigationBar)
-        .toolbarBackground(.visible, for: .navigationBar)
-        .toolbarColorScheme(.dark, for: .navigationBar)
+        .navigationBarBackground()
     }
 
     private func toggleSelection(selectable: Selectable) {

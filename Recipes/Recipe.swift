@@ -16,8 +16,10 @@ class Recipe: Codable {
     var expertiseRequired: ExpertiseLevel
     var dateLastViewed: String
     var sourceURL: String?
-    var prepTime: Int?
-    var cookTime: Int?
+    @Relationship(deleteRule: .cascade)
+    var prepTime: PrepTime?
+    @Relationship(deleteRule: .cascade)
+    var cookTime: CookTime?
     var servings: Double?
     var currentScale: Double
     var isFavorited: Bool
@@ -43,8 +45,8 @@ class Recipe: Codable {
             self.expertiseRequired = try container.decode(ExpertiseLevel.self, forKey: .expertiseRequired)
             self.dateLastViewed = try container.decode(String.self, forKey: .dateLastViewed)
             self.sourceURL = try container.decodeIfPresent(String.self, forKey: .sourceURL)
-            self.prepTime = try container.decodeIfPresent(Int.self, forKey: .prepTime)
-            self.cookTime = try container.decodeIfPresent(Int.self, forKey: .cookTime)
+            self.prepTime = try container.decodeIfPresent(PrepTime.self, forKey: .prepTime)
+            self.cookTime = try container.decodeIfPresent(CookTime.self, forKey: .cookTime)
             self.servings = try container.decodeIfPresent(Double.self, forKey: .servings)
             self.currentScale = try container.decode(Double.self, forKey: .currentScale)
             self.isFavorited = try container.decode(Bool.self, forKey: .isFavorited)
@@ -79,7 +81,7 @@ class Recipe: Codable {
         }
 
     
-    init(title: String, author: String, dateCreated: String, expertiseRequired: ExpertiseLevel, dateLastViewed: String, sourceURL: String?, prepTime: Int? , cookTime: Int? , servings: Double? , currentScale: Double, isFavorited: Bool, starRating: Int?, imageURL: Data? , notes: String? , directions: [Direction], ingredients: [Ingredient], categories: [Category]) {
+    init(title: String, author: String, dateCreated: String, expertiseRequired: ExpertiseLevel, dateLastViewed: String, sourceURL: String?, prepTime: PrepTime? , cookTime: CookTime? , servings: Double? , currentScale: Double, isFavorited: Bool, starRating: Int?, imageURL: Data? , notes: String? , directions: [Direction], ingredients: [Ingredient], categories: [Category]) {
         self.title = title
         self.author = author
         self.dateCreated = dateCreated
@@ -105,6 +107,13 @@ enum ExpertiseLevel: String, Codable, CaseIterable {
     case beginner, moderate, advanced, expert
 }
 
+enum TimeUnit: String, Codable, CaseIterable, Identifiable {
+    case minutes = "Minutes"
+    case hours = "Hours"
+    case days = "Days"
+    
+    var id: String { self.rawValue }
+}
 
 @Model
 class Direction: Codable, Hashable {
@@ -139,10 +148,10 @@ class Direction: Codable, Hashable {
 
 @Model
 class Ingredient: Codable, Hashable {
-    var amount: String?
-    var unit: String?
+    var amount: String
+    var unit: String
     var ingredient: String
-    var notes: String?
+    var notes: String
         
 
     @Relationship(deleteRule: .cascade, inverse: \Recipe.ingredients)
@@ -152,7 +161,7 @@ class Ingredient: Codable, Hashable {
         case amount, unit, ingredient, notes
     }
 
-    init(amount: String?, unit: String?, ingredient: String, notes: String?) {
+    init(amount: String, unit: String, ingredient: String, notes: String) {
         self.amount = amount
         self.unit = unit
         self.ingredient = ingredient
@@ -164,7 +173,7 @@ class Ingredient: Codable, Hashable {
         self.amount = try container.decode(String.self, forKey: .amount)
         self.unit = try container.decode(String.self, forKey: .unit)
         self.ingredient = try container.decode(String.self, forKey: .ingredient)
-        self.notes = try container.decodeIfPresent(String.self, forKey: .notes)
+        self.notes = try container.decode(String.self, forKey: .notes)
     }
 
     func encode(to encoder: Encoder) throws {
@@ -205,4 +214,64 @@ class Category: Identifiable, Codable, Hashable {
     }
 }
 
+@Model
+class PrepTime: Codable, Hashable {
+    var value: Double
+    var unit: TimeUnit
+    
+    @Relationship(deleteRule: .cascade, inverse: \Recipe.directions)
+        var recipe: Recipe?
+    
+    init(value: Double, unit: TimeUnit) {
+        self.value = value
+        self.unit = unit
+    }
+    
+    enum CodingKeys: CodingKey {
+        case value
+        case unit
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.value = try container.decode(Double.self, forKey: .value)
+        self.unit = try container.decode(TimeUnit.self, forKey: .unit)
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(value, forKey: .value)
+        try container.encode(unit, forKey: .unit)
+    }
+}
 
+@Model
+class CookTime: Codable, Hashable {
+    var value: Double
+    var unit: TimeUnit
+    
+    @Relationship(deleteRule: .cascade, inverse: \Recipe.directions)
+        var recipe: Recipe?
+    
+    init(value: Double, unit: TimeUnit) {
+        self.value = value
+        self.unit = unit
+    }
+    
+    enum CodingKeys: CodingKey {
+        case value
+        case unit
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.value = try container.decode(Double.self, forKey: .value)
+        self.unit = try container.decode(TimeUnit.self, forKey: .unit)
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(value, forKey: .value)
+        try container.encode(unit, forKey: .unit)
+    }
+}

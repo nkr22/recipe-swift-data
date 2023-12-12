@@ -37,9 +37,7 @@ struct NewCategoryView: View {
                     })
                 }
             }
-            .toolbarBackground(Color("MainColor"), for: .navigationBar)
-            .toolbarBackground(.visible, for: .navigationBar)
-            .toolbarColorScheme(.dark, for: .navigationBar)
+            .navigationBarBackground()
 
         }
     }
@@ -61,6 +59,6 @@ struct NewCategoryView: View {
     }
 }
 
-#Preview {
-    NewCategoryView()
-}
+//#Preview {
+//    NewCategoryView()
+//}

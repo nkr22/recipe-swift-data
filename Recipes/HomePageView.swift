@@ -37,7 +37,7 @@ struct HomePageView: View {
                     .resizable()
             }
         }
-        .aspectRatio(1, contentMode: .fill)
+        .aspectRatio(1, contentMode: .fit)
         .layoutPriority(0)
         .clipped()
         .cornerRadius(10)
@@ -60,7 +60,7 @@ struct HomePageView: View {
                 VStack(alignment: .leading){
                     Text("Most Recent Recipes").font(.largeTitle).fontWeight(.bold)
                     ScrollView(.horizontal){
-                        HStack(spacing: 40){
+                        HStack(spacing: 20){
                             ForEach(recentRecipes) {recipe in
                                 NavigationLink{
                                     RecipeInformationView(recipe: recipe)
@@ -68,8 +68,10 @@ struct HomePageView: View {
                                     VStack{
                                         cardImageView(recipe)
                                         Text(recipe.title)
-                                            .font(.largeTitle)
+                                            .font(.title2)
+                                            .lineLimit(2)
                                             .layoutPriority(1)
+                                        Spacer()
                                     }
                                     
                                 }

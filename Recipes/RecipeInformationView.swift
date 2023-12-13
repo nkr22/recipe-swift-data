@@ -31,7 +31,6 @@ struct RecipeInformationView: View {
                         Text(recipe.title).font(.headline).fontWeight(.bold).lineLimit(1)
                         HStack {
                             recipeImageView(recipe: recipe)
-                                .frame(maxWidth: geometry.size.width/3)
                                 .layoutPriority(0)
                             VStack(alignment: .leading) {
                                 RatingsDisplayView(maxRating: 5, currentRating: recipe.starRating, sfSymbol: "star", width: 30, color: Color("BrightAccentColor"))
@@ -46,6 +45,7 @@ struct RecipeInformationView: View {
                             Spacer()
                         }
                     }
+                    .frame(maxWidth: .infinity)
                     .padding()
                     HStack{
                         Button(action: {
@@ -66,7 +66,9 @@ struct RecipeInformationView: View {
                                             }
                                         }
                                     }
-                                    .navigationBarBackground()
+                                    .toolbarBackground(Color("MainColor"), for: .navigationBar)
+                                    .toolbarBackground(.visible, for: .navigationBar)
+                                    .toolbarColorScheme(.dark, for: .navigationBar)
                             }
                             .frame(minWidth: 200, minHeight: 200)
                             .presentationCompactAdaptation(.popover)
@@ -92,15 +94,15 @@ struct RecipeInformationView: View {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button(action: editRecipe) {
                             Label("Edit", systemImage: "pencil")
-                                .labelStyle(.titleAndIcon)
                         }
                     }
                 }
-                .navigationBarBackground()
+                .toolbarBackground(Color("MainColor"), for: .navigationBar)
+                .toolbarBackground(.visible, for: .navigationBar)
+                .toolbarColorScheme(.dark, for: .navigationBar)
                 .navigationTitle("Recipe Details")
                 .navigationBarTitleDisplayMode(.inline)
             }
-            
             .onAppear{
                 updateDateLastViewed(for: recipe)
                 scaleForPopover = recipe.currentScale
@@ -121,7 +123,8 @@ struct RecipeInformationView: View {
                     .foregroundColor(.gray)
             }
         }
-        .scaledToFit()
+        .scaledToFill()
+        .frame(width: 80, height: 60)
         .clipShape(RoundedRectangle(cornerRadius: 10))
     }
      

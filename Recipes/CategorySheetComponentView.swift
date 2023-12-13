@@ -28,8 +28,8 @@ struct CategorySheetComponentView: View {
     }
 }
 
-#Preview {
-    CategorySheetComponentView(label: "All", symbol: "house") {
-       print("category")
-    }
-}
+//#Preview {
+//    CategorySheetComponentView(label: "All", symbol: "house") {
+//       print("category")
+//    }
+//}

@@ -113,12 +113,7 @@ struct ContentView: View {
                 SearchOptionsSheetView(searchInTitle: $searchInTitle, searchInAuthor: $searchInAuthor, searchInNotes: $searchInNotes, searchInIngredients: $searchInIngredients, searchInDirections: $searchInDirections)
             }
             .navigationTitle("").navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading){
-                    Text("Recipeats")
-                        .font(.title.bold())
-                }
-                                
+            .toolbar {                                
                 ToolbarItem(placement: .topBarTrailing) {
                     EditButton()
                 }
@@ -131,8 +126,7 @@ struct ContentView: View {
         } detail: {
             HomePageView()
         }
-        .searchable(text: $searchText, placement: .toolbar, prompt: "Search for a recipe")
-        .navigationViewStyle(StackNavigationViewStyle())
+        .searchable(text: $searchText, prompt: "Search for a recipe")
 
     }
     

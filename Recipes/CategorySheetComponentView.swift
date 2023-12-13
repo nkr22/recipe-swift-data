@@ -30,6 +30,6 @@ struct CategorySheetComponentView: View {
 
 #Preview {
     CategorySheetComponentView(label: "All", symbol: "house") {
-        let cat = "cat"
+       print("category")
     }
 }

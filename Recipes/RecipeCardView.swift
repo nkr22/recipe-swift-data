@@ -19,8 +19,10 @@ struct RecipeCardView: View {
             VStack(alignment: .leading) {
                 HStack {
                     Text(recipe.title)
-                        .font(.title2)
+                        .font(.title3)
                         .bold()
+                        .foregroundStyle(.black)
+                        .lineLimit(2)
                     Spacer()
                     HeartDisplayView(isFavorited: recipe.isFavorited)
                 }
@@ -48,7 +50,16 @@ struct RecipeCardView: View {
         .background(Color(.white))
         .cornerRadius(10)
         .shadow(radius: 5)
+        .contextMenu{
+            Button(action: {
+                recipe.isFavorited.toggle()
+            }, label: {
+                Label(recipe.isFavorited ? "Remove from Favorites" : "Add to Favorites", systemImage: "heart.fill")
+            }
+                   )
+        }
     }
+    
     private var cardImageView: some View {
         Group {
             if let selectedPhotoData = recipe.imageURL, let uiImage = UIImage(data: selectedPhotoData) {
@@ -59,19 +70,6 @@ struct RecipeCardView: View {
                     .resizable()
             }
         }
-    }
-}
-
-extension View {
-    func encapsulate(color: Color, foregroundColor: Color = .black) -> some View {
-        return self
-            .padding(7)
-            .padding(.horizontal, 5)
-            .background(
-                Capsule()
-                    .fill(color)
-            )
-            .foregroundStyle(foregroundColor)
     }
 }
 

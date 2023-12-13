@@ -20,9 +20,15 @@ struct EditRecipeView: View {
     @State private var starRating: Int? = nil
     @State private var expertiseRequired = ExpertiseLevel.beginner
     @State private var sourceURL: String = ""
-    @State private var prepTime: PrepTime? = nil
-    @State private var cookTime: CookTime? = nil
-    @State private var servings: Double? = nil
+    @State private var prepTime: String = ""
+    @State private var cookTime: String = ""
+    @State private var servings: String = ""
+    private var formattedMealInfo: String {
+        let servingsString = servings == "" ? servings : "Servings: \(servings)"
+        let prepString = prepTime == "" ? prepTime : "\nPrep Time: \(prepTime)"
+        let cookString = cookTime == "" ? cookTime : "\nCook Time: \(cookTime)"
+        return "\(servingsString) \(prepString) \(cookString)"
+    }
     @State private var notes: String = ""
     @State private var directions: [Direction] = []
     @State private var directionCount: Int = 1
@@ -33,10 +39,6 @@ struct EditRecipeView: View {
     @State private var imageData: Data? = nil
     @State private var selectedPhoto: PhotosPickerItem?
     
-    @State private var prepTimeValue: Double?
-    @State private var cookTimeValue: Double?
-    @State private var selectedPrepUnit: TimeUnit = .minutes
-    @State private var selectedCookUnit: TimeUnit = .minutes
     
     let df = DateFormatter()
     let decimalFormatter: NumberFormatter = {
@@ -71,6 +73,17 @@ struct EditRecipeView: View {
                     Picker("Expertise Required", selection: $expertiseRequired) {
                         ForEach(ExpertiseLevel.allCases, id: \.self) { level in
                             Text(level.rawValue.capitalized).tag(level)
+                        }
+                    }
+                    NavigationLink{
+                        MealInfoView(servings: $servings, prepTime: $prepTime, cookTime: $cookTime)
+                    } label: {
+                        HStack(alignment: .center) {
+                            Text("Info")
+                            Spacer()
+                            Text(formattedMealInfo)
+                                .foregroundColor(.gray)
+                                .multilineTextAlignment(.trailing)
                         }
                     }
                     // Additional fields for prepTime, cookTime, servings, etc.
@@ -112,47 +125,6 @@ struct EditRecipeView: View {
                             }
                         }
                 }
-                Section(header: Text("Meal Information")) {
-                    VStack(alignment: .leading, spacing: 20) {
-                        HStack {
-                            Text("Servings:")
-                                .frame(width: 100, alignment: .leading)
-                            Spacer()
-                            TextField("e.g. 5", value: $servings, formatter: decimalFormatter)
-                                .keyboardType(.numberPad)
-                        }
-                        
-                        HStack {
-                            Text("Prep Time:")
-                                .frame(width: 100, alignment: .leading)
-                            Spacer()
-                            TextField("e.g. 20", value: $prepTimeValue, formatter: decimalFormatter)
-                                .keyboardType(.numberPad)
-                            Picker("", selection: $selectedPrepUnit) {
-                                ForEach(TimeUnit.allCases) { unit in
-                                    Text(unit.rawValue).tag(unit)
-                                }
-                            }
-                            .pickerStyle(.menu)
-                            .frame(width: 100)
-                        }
-                        
-                        HStack {
-                            Text("Cook Time:")
-                                .frame(width: 100, alignment: .leading)
-                            Spacer()
-                            TextField("e.g. 20", value: $cookTimeValue, formatter: decimalFormatter)
-                                .keyboardType(.numberPad)
-                            Picker("", selection: $selectedCookUnit) {
-                                ForEach(TimeUnit.allCases) { unit in
-                                    Text(unit.rawValue).tag(unit)
-                                }
-                            }
-                            .pickerStyle(.menu)
-                            .frame(width: 100)
-                        }
-                    }
-                }
 
                 
                 Section(header: Text("Ingredients")) {
@@ -188,9 +160,7 @@ struct EditRecipeView: View {
                         dismiss()
                     }
                 }
-//                ToolbarItem {
-//                    HeartFavoriteView(isFavorited: $isFavorited, sfSymbol: "heart", width: 30.0, color: .systemRed)
-//                }
+
                 ToolbarItem(placement: .topBarTrailing) {
                    Button("Save") {
                        if let recipe {
@@ -199,12 +169,8 @@ struct EditRecipeView: View {
                                recipe.author = author
                                recipe.expertiseRequired = expertiseRequired
                                recipe.sourceURL = sourceURL
-                               recipe.prepTime?.value = prepTimeValue ?? recipe.prepTime?.value ?? 0
-                               recipe.cookTime?.value = cookTimeValue ?? recipe.cookTime?.value ?? 0
-                               recipe.prepTime?.unit = selectedPrepUnit
-                               recipe.cookTime?.unit = selectedCookUnit
-                               recipe.prepTime?.unit = selectedPrepUnit
-                               recipe.cookTime?.unit = selectedCookUnit
+                               recipe.prepTime = prepTime
+                               recipe.cookTime = cookTime
                                recipe.servings = servings
                                recipe.isFavorited = isFavorited
                                recipe.starRating = starRating
@@ -216,9 +182,6 @@ struct EditRecipeView: View {
                            }
                            dismiss()
                        } else {
-                           let newPrepTime = prepTimeValue != nil ? PrepTime(value: prepTimeValue!, unit: selectedPrepUnit) : nil
-                           let newCookTime = cookTimeValue != nil ? CookTime(value: cookTimeValue!, unit: selectedCookUnit) : nil
-
                            let newRecipe =
                            Recipe(
                                title: title,
@@ -227,8 +190,8 @@ struct EditRecipeView: View {
                                expertiseRequired: expertiseRequired,
                                dateLastViewed: df.string(from: Date()),
                                sourceURL: sourceURL,
-                               prepTime: newPrepTime,
-                               cookTime: newCookTime,
+                               prepTime: prepTime,
+                               cookTime: cookTime,
                                servings: servings,
                                currentScale: 1,
                                isFavorited: isFavorited,
@@ -237,7 +200,7 @@ struct EditRecipeView: View {
                                notes: notes,
                                directions: directions,
                                ingredients: ingredients,
-                               categories: Array(categories)
+                               categories: Array(selectedCategories)
                            )
                            context.insert(newRecipe)
                            dismiss()
@@ -273,13 +236,9 @@ struct EditRecipeView: View {
                recipe.dateLastViewed = df.string(from: Date())
                sourceURL = recipe.sourceURL ?? ""
                imageData = recipe.imageURL
-               prepTime = recipe.prepTime
-               cookTime = recipe.cookTime
-               prepTimeValue = prepTime?.value ?? 0
-               cookTimeValue = cookTime?.value ?? 0
-               selectedPrepUnit = prepTime?.unit ?? TimeUnit.minutes
-               selectedCookUnit = cookTime?.unit ?? TimeUnit.minutes
-               servings = recipe.servings
+               prepTime = recipe.prepTime ?? ""
+               cookTime = recipe.cookTime ?? ""
+               servings = recipe.servings ?? ""
                isFavorited = recipe.isFavorited
                starRating = recipe.starRating
                notes = recipe.notes ?? ""
@@ -287,6 +246,7 @@ struct EditRecipeView: View {
                ingredients = recipe.ingredients
                categories = recipe.categories
                selectedCategories = Set(recipe.categories)
+               directionCount = recipe.directions.count + 1
                isInitialized = true
            }
            isInitialized = true
@@ -298,10 +258,8 @@ struct EditRecipeView: View {
             author != recipe.author ||
             expertiseRequired != recipe.expertiseRequired ||
             sourceURL != recipe.sourceURL ||
-            prepTimeValue != recipe.prepTime?.value ||
-            selectedPrepUnit != recipe.prepTime?.unit ||
-            cookTimeValue != recipe.cookTime?.value ||
-            selectedCookUnit != recipe.cookTime?.unit ||
+            prepTime != recipe.prepTime ||
+            cookTime != recipe.cookTime ||
             servings != recipe.servings ||
             isFavorited != recipe.isFavorited ||
             starRating != recipe.starRating ||

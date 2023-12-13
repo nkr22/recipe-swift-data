@@ -16,11 +16,9 @@ class Recipe: Codable {
     var expertiseRequired: ExpertiseLevel
     var dateLastViewed: String
     var sourceURL: String?
-    @Relationship(deleteRule: .cascade)
-    var prepTime: PrepTime?
-    @Relationship(deleteRule: .cascade)
-    var cookTime: CookTime?
-    var servings: Double?
+    var prepTime: String?
+    var cookTime: String?
+    var servings: String?
     var currentScale: Double
     var isFavorited: Bool
     var starRating: Int?
@@ -45,9 +43,9 @@ class Recipe: Codable {
             self.expertiseRequired = try container.decode(ExpertiseLevel.self, forKey: .expertiseRequired)
             self.dateLastViewed = try container.decode(String.self, forKey: .dateLastViewed)
             self.sourceURL = try container.decodeIfPresent(String.self, forKey: .sourceURL)
-            self.prepTime = try container.decodeIfPresent(PrepTime.self, forKey: .prepTime)
-            self.cookTime = try container.decodeIfPresent(CookTime.self, forKey: .cookTime)
-            self.servings = try container.decodeIfPresent(Double.self, forKey: .servings)
+            self.prepTime = try container.decodeIfPresent(String.self, forKey: .prepTime)
+            self.cookTime = try container.decodeIfPresent(String.self, forKey: .cookTime)
+            self.servings = try container.decodeIfPresent(String.self, forKey: .servings)
             self.currentScale = try container.decode(Double.self, forKey: .currentScale)
             self.isFavorited = try container.decode(Bool.self, forKey: .isFavorited)
             self.starRating = try container.decodeIfPresent(Int.self, forKey: .starRating)
@@ -81,7 +79,7 @@ class Recipe: Codable {
         }
 
     
-    init(title: String, author: String, dateCreated: String, expertiseRequired: ExpertiseLevel, dateLastViewed: String, sourceURL: String?, prepTime: PrepTime? , cookTime: CookTime? , servings: Double? , currentScale: Double, isFavorited: Bool, starRating: Int?, imageURL: Data? , notes: String? , directions: [Direction], ingredients: [Ingredient], categories: [Category]) {
+    init(title: String, author: String, dateCreated: String, expertiseRequired: ExpertiseLevel, dateLastViewed: String, sourceURL: String?, prepTime: String? , cookTime: String? , servings: String? , currentScale: Double, isFavorited: Bool, starRating: Int?, imageURL: Data? , notes: String? , directions: [Direction], ingredients: [Ingredient], categories: [Category]) {
         self.title = title
         self.author = author
         self.dateCreated = dateCreated
@@ -105,14 +103,6 @@ class Recipe: Codable {
 
 enum ExpertiseLevel: String, Codable, CaseIterable {
     case beginner, moderate, advanced, expert
-}
-
-enum TimeUnit: String, Codable, CaseIterable, Identifiable {
-    case minutes = "Minutes"
-    case hours = "Hours"
-    case days = "Days"
-    
-    var id: String { self.rawValue }
 }
 
 @Model
@@ -214,64 +204,3 @@ class Category: Identifiable, Codable, Hashable {
     }
 }
 
-@Model
-class PrepTime: Codable, Hashable {
-    var value: Double
-    var unit: TimeUnit
-    
-    @Relationship(deleteRule: .cascade, inverse: \Recipe.directions)
-        var recipe: Recipe?
-    
-    init(value: Double, unit: TimeUnit) {
-        self.value = value
-        self.unit = unit
-    }
-    
-    enum CodingKeys: CodingKey {
-        case value
-        case unit
-    }
-    
-    required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.value = try container.decode(Double.self, forKey: .value)
-        self.unit = try container.decode(TimeUnit.self, forKey: .unit)
-    }
-    
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(value, forKey: .value)
-        try container.encode(unit, forKey: .unit)
-    }
-}
-
-@Model
-class CookTime: Codable, Hashable {
-    var value: Double
-    var unit: TimeUnit
-    
-    @Relationship(deleteRule: .cascade, inverse: \Recipe.directions)
-        var recipe: Recipe?
-    
-    init(value: Double, unit: TimeUnit) {
-        self.value = value
-        self.unit = unit
-    }
-    
-    enum CodingKeys: CodingKey {
-        case value
-        case unit
-    }
-    
-    required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.value = try container.decode(Double.self, forKey: .value)
-        self.unit = try container.decode(TimeUnit.self, forKey: .unit)
-    }
-    
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(value, forKey: .value)
-        try container.encode(unit, forKey: .unit)
-    }
-}

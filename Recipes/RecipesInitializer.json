@@ -7,11 +7,8 @@
   "dateLastViewed": "2023-11-26T00:00:00Z",
   "sourceURL": "https://www.daringgourmet.com/homemade-lebkuchengewuerz-german-gingerbread-spice-blend/",
   "starRating": 4,
-  "prepTime": {
-      "value": 5,
-      "unit": "Minutes"
-  },
-  "servings": 4,
+  "prepTime": "5 minutes",
+  "servings": "4",
   "currentScale": 1.0,
   "isFavorited": true,
   "imageURL": null,
@@ -102,15 +99,9 @@
   "dateLastViewed": "2023-11-26T00:00:00Z",
   "sourceURL": "https://www.daringgourmet.com/traditional-nuernberger-elisenlebkuchen-german-lebkuchen/",
   "starRating": 3,
-  "prepTime": {
-      "value": 20,
-      "unit": "Minutes"
-  },
-  "cookTime": {
-      "value": 25,
-      "unit": "Minutes"
-  },
-  "servings": 35,
+  "prepTime": "20 minutes",
+  "cookTime": "25 minutes",
+  "servings": "35",
   "currentScale": 1.0,
   "isFavorited": false,
   "imageURL": null,
@@ -237,15 +228,9 @@
   "dateLastViewed": "2023-11-26T00:00:00Z",
   "sourceURL": "https://www.bettycrocker.com/recipes/strawberry-poke-cake/354fda2b-949f-4222-b939-24ea67b50f1a",
   "starRating": 4,
-  "prepTime": {
-      "value": 15,
-      "unit": "Minutes"
-  },
-  "cookTime": {
-      "value": 20,
-      "unit": "Minutes"
-  },
-  "servings": 12,
+  "prepTime": "15 minutes",
+  "cookTime": "20 minutes",
+  "servings": "12",
   "currentScale": 1.0,
   "isFavorited": false,
   "imageURL": null,
@@ -322,15 +307,9 @@
   "dateLastViewed": "2023-09-05T00:00:00Z",
   "sourceURL": "https://www.example.com/margherita-pizza-recipe",
   "starRating": 5,
-  "prepTime": {
-      "value": 30,
-      "unit": "Minutes"
-  },
-  "cookTime": {
-      "value": 15,
-      "unit": "Minutes"
-  },
-  "servings": 4,
+  "prepTime": "30 minutes",
+  "cookTime": "15 minutes",
+  "servings": "4",
   "currentScale": 1.0,
   "isFavorited": false,
   "imageURL": null,
@@ -416,15 +395,9 @@
   "dateLastViewed": "2023-10-12T00:00:00Z",
   "sourceURL": "https://www.example.com/thai-green-curry-recipe",
   "starRating": 5,
-  "prepTime": {
-      "value": 20,
-      "unit": "Minutes"
-  },
-  "cookTime": {
-      "value": 25,
-      "unit": "Minutes"
-  },
-  "servings": 4,
+  "prepTime": "20 minutes",
+  "cookTime": "25 minutes",
+  "servings": "4",
   "currentScale": 1.0,
   "isFavorited": true,
   "imageURL": null,
@@ -524,15 +497,9 @@
   "dateLastViewed": "2023-10-20T00:00:00Z",
   "sourceURL": "https://www.example.com/beef-stroganoff-recipe",
   "starRating": 2,
-  "prepTime": {
-      "value": 15,
-      "unit": "Minutes"
-  },
-  "cookTime": {
-      "value": 30,
-      "unit": "Minutes"
-  },
-  "servings": 6,
+  "prepTime": "15 minutes",
+  "cookTime": "30 minutes",
+  "servings": "6",
   "currentScale": 1.0,
   "isFavorited": false,
   "imageURL": null,

@@ -24,86 +24,90 @@ struct RecipeInformationView: View {
     }()
     
     var body: some View {
-        NavigationStack{
-            VStack{
-                VStack(alignment: .leading){
-                    Text(recipe.title).font(.headline).fontWeight(.bold).lineLimit(1)
-                    HStack {
-                        recipeImageView(recipe: recipe)
-                            .layoutPriority(0)
-                        VStack(alignment: .leading) {
-                            RatingsDisplayView(maxRating: 5, currentRating: recipe.starRating, sfSymbol: "star", width: 30, color: Color("BrightAccentColor"))
-                            Text(recipe.author)
-                                .lineLimit(1)
-                                .fontWeight(.bold)
-                                .foregroundStyle(.gray)
-                            recipeSourceView(recipe: recipe)
+        GeometryReader{ geometry in
+            NavigationStack{
+                VStack{
+                    VStack(alignment: .leading){
+                        Text(recipe.title).font(.headline).fontWeight(.bold).lineLimit(1)
+                        HStack {
+                            recipeImageView(recipe: recipe)
+                                .frame(maxWidth: geometry.size.width/3)
+                                .layoutPriority(0)
+                            VStack(alignment: .leading) {
+                                RatingsDisplayView(maxRating: 5, currentRating: recipe.starRating, sfSymbol: "star", width: 30, color: Color("BrightAccentColor"))
+                                Text(recipe.author)
+                                    .lineLimit(1)
+                                    .fontWeight(.bold)
+                                    .foregroundStyle(.gray)
+                                recipeSourceView(recipe: recipe)
+                            }
+                            .layoutPriority(1)
+                            .padding(.leading)
+                            Spacer()
                         }
-                        .layoutPriority(1)
-                        .padding(.leading)
-                        Spacer()
                     }
-                }
-                .frame(maxWidth: .infinity)
-                .padding()
-                HStack{
-                    Button(action: {
-                        showScalePopover = true
-                    }, label: {
-                        Label("Current Scale: \(recipe.currentScale, specifier: "%.2f")", systemImage: "slider.horizontal.3")
-                    })
-                    .foregroundStyle(.blue)
-                    .popover(isPresented: $showScalePopover, attachmentAnchor: .point(.bottom), arrowEdge: .bottom) {
-                        NavigationStack{
-                            ScalePopoverView(scaleValue: $scaleForPopover)
-                                .toolbar{
-                                    ToolbarItem(placement: .topBarTrailing) {
-                                        Button(action: {
-                                            showScalePopover = false
-                                        }) {
-                                            Text("Done")
+                    .padding()
+                    HStack{
+                        Button(action: {
+                            showScalePopover = true
+                        }, label: {
+                            Label("Current Scale: \(recipe.currentScale, specifier: "%.2f")", systemImage: "slider.horizontal.3")
+                        })
+                        .foregroundStyle(.blue)
+                        .popover(isPresented: $showScalePopover, attachmentAnchor: .point(.bottom), arrowEdge: .bottom) {
+                            NavigationStack{
+                                ScalePopoverView(scaleValue: $scaleForPopover)
+                                    .toolbar{
+                                        ToolbarItem(placement: .topBarTrailing) {
+                                            Button(action: {
+                                                showScalePopover = false
+                                            }) {
+                                                Text("Done")
+                                            }
                                         }
                                     }
-                                }
-                                .navigationBarBackground()
+                                    .navigationBarBackground()
+                            }
+                            .frame(minWidth: 200, minHeight: 200)
+                            .presentationCompactAdaptation(.popover)
                         }
-                        .frame(minWidth: 200, minHeight: 200)
-                        .presentationCompactAdaptation(.popover)
+                        Spacer()
                     }
-                    Spacer()
-                }
-                .padding(.horizontal)
-                Picker("", selection: $selectedSegment) {
-                    ForEach(RecipeSegment.allCases, id: \.self) {
-                        Text($0.rawValue)
+                    .padding(.horizontal)
+                    Picker("", selection: $selectedSegment) {
+                        ForEach(RecipeSegment.allCases, id: \.self) {
+                            Text($0.rawValue)
+                        }
+                        .foregroundStyle(Color("MainColor"))
                     }
-                    .foregroundStyle(Color("MainColor"))
+                    .pickerStyle(.segmented)
+                    .padding(.horizontal)
+                    RecipeSegmentedView(segment: selectedSegment, recipe: recipe, currentScale: scaleForPopover)
+                    
                 }
-                .pickerStyle(.segmented)
-                .padding(.horizontal)
-                RecipeSegmentedView(segment: selectedSegment, recipe: recipe, currentScale: scaleForPopover)
-                
-            }
-            .fullScreenCover(isPresented: $showEditRecipeModal) {
-                EditRecipeView(recipe: recipe)
-            }
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button(action: editRecipe) {
-                        Label("Edit", systemImage: "pencil")
+                .fullScreenCover(isPresented: $showEditRecipeModal) {
+                    EditRecipeView(recipe: recipe)
+                }
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button(action: editRecipe) {
+                            Label("Edit", systemImage: "pencil")
+                                .labelStyle(.titleAndIcon)
+                        }
                     }
                 }
+                .navigationBarBackground()
+                .navigationTitle("Recipe Details")
+                .navigationBarTitleDisplayMode(.inline)
             }
-            .navigationBarBackground()
-            .navigationTitle("Recipe Details")
-            .navigationBarTitleDisplayMode(.inline)
-        }
-        .onAppear{
-            updateDateLastViewed(for: recipe)
-            scaleForPopover = recipe.currentScale
-        }
-        .onChange(of: scaleForPopover) {
-            recipe.currentScale = scaleForPopover
+            
+            .onAppear{
+                updateDateLastViewed(for: recipe)
+                scaleForPopover = recipe.currentScale
+            }
+            .onChange(of: scaleForPopover) {
+                recipe.currentScale = scaleForPopover
+            }
         }
     }
     
@@ -117,8 +121,7 @@ struct RecipeInformationView: View {
                     .foregroundColor(.gray)
             }
         }
-        .scaledToFill()
-        .frame(width: 80, height: 60)
+        .scaledToFit()
         .clipShape(RoundedRectangle(cornerRadius: 10))
     }
      

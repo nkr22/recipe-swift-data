@@ -6,3 +6,17 @@
 //
 
 import Foundation
+import SwiftUI
+
+extension View {
+    func encapsulate(color: Color, foregroundColor: Color = .black) -> some View {
+        return self
+            .padding(7)
+            .padding(.horizontal, 5)
+            .background(
+                Capsule()
+                    .fill(color)
+            )
+            .foregroundStyle(foregroundColor)
+    }
+}

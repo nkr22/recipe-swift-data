@@ -23,22 +23,36 @@ struct RecipeInformationView: View {
         return formatter
     }()
     
+    private func titleView(recipe: Recipe)-> some View {
+        Group {
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                return Text(recipe.title).font(.title)
+            } else {
+                return Text(recipe.title).font(.headline)
+            }
+        }
+    }
+    
     var body: some View {
         GeometryReader{ geometry in
             NavigationStack{
                 VStack{
                     VStack(alignment: .leading){
-                        Text(recipe.title).font(.headline).fontWeight(.bold).lineLimit(1)
+                        Text(recipe.title)
+                            .font(.system(size: min(geometry.size.width * 0.06, 24)))
+                            .fontWeight(.bold).lineLimit(1)
                         HStack {
                             recipeImageView(recipe: recipe)
                                 .layoutPriority(0)
                             VStack(alignment: .leading) {
-                                RatingsDisplayView(maxRating: 5, currentRating: recipe.starRating, sfSymbol: "star", width: 30, color: Color("BrightAccentColor"))
+                                RatingsDisplayView(maxRating: 5, currentRating: recipe.starRating, sfSymbol: "star", width: min(geometry.size.width*0.06, 24), color: Color("BrightAccentColor"))
                                 Text(recipe.author)
                                     .lineLimit(1)
                                     .fontWeight(.bold)
                                     .foregroundStyle(.gray)
+                                    .font(.system(size: min(geometry.size.width * 0.04, 24)))
                                 recipeSourceView(recipe: recipe)
+                                    .font(.system(size: min(geometry.size.width * 0.04, 24)))
                             }
                             .layoutPriority(1)
                             .padding(.leading)
@@ -52,6 +66,7 @@ struct RecipeInformationView: View {
                             showScalePopover = true
                         }, label: {
                             Label("Current Scale: \(recipe.currentScale, specifier: "%.2f")", systemImage: "slider.horizontal.3")
+                                .font(.system(size: min(geometry.size.width * 0.04, 24)))
                         })
                         .foregroundStyle(.blue)
                         .popover(isPresented: $showScalePopover, attachmentAnchor: .point(.bottom), arrowEdge: .bottom) {
@@ -79,6 +94,7 @@ struct RecipeInformationView: View {
                     Picker("", selection: $selectedSegment) {
                         ForEach(RecipeSegment.allCases, id: \.self) {
                             Text($0.rawValue)
+                                .font(.system(size: min(geometry.size.width * 0.04, 24)))
                         }
                         .foregroundStyle(Color("MainColor"))
                     }
@@ -114,18 +130,21 @@ struct RecipeInformationView: View {
     }
     
     private func recipeImageView(recipe: Recipe) -> some View {
-        Group {
-            if let imageData = recipe.imageURL, let uiImage = UIImage(data: imageData)  {
-                Image(uiImage: uiImage)
-                    .resizable()
-            } else {
-                RoundedRectangle(cornerRadius: 10.0)
-                    .foregroundColor(.gray)
+        let width = UIDevice.current.userInterfaceIdiom == .pad ? 200.0 : 80.0
+        return(
+            Group {
+                if let imageData = recipe.imageURL, let uiImage = UIImage(data: imageData)  {
+                    Image(uiImage: uiImage)
+                        .resizable()
+                } else {
+                    RoundedRectangle(cornerRadius: 10.0)
+                        .foregroundColor(.gray)
+                }
             }
-        }
-        .scaledToFill()
-        .frame(width: 80, height: 60)
-        .clipShape(RoundedRectangle(cornerRadius: 10))
+            .scaledToFill()
+            .frame(width: width, height: width)
+            .clipShape(RoundedRectangle(cornerRadius: 10))
+        )
     }
      
     private func recipeSourceView(recipe: Recipe) -> some View {
@@ -209,6 +228,7 @@ struct IngredientsView: View {
     var body: some View {
         List(ingredients, id: \.self) { ingredient in
             Text("\(amountView(amount: ingredient.amount)) \(ingredient.unit) \(ingredient.ingredient) \(ingredient.notes)")
+                .font(.subheadline)
         }
     }
 }
@@ -219,6 +239,7 @@ struct DirectionsView: View {
     var body: some View {
         List(directions.sorted { $0.order < $1.order }, id: \.self) { direction in
             Text("\(direction.order). \(direction.direction)")
+                .font(.subheadline)
         }
     }
 }

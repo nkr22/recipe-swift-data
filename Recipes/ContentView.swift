@@ -30,19 +30,13 @@ struct ContentView: View {
     @State private var searchInDirections = false
     @FocusState private var isSearchBarFocused: Bool
     
-    private let dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ" 
-        return formatter
-    }()
-    
     private var filteredRecipes: [Recipe] {
         if currentCategory == "All Recipes" {
             return recipes
         } else if currentCategory == "Most Recent" {
             return recipes.sorted(by: {
-                guard let date1 = dateFormatter.date(from: $0.dateLastViewed),
-                      let date2 = dateFormatter.date(from: $1.dateLastViewed) else { return false }
+                guard let date1 = DateFormatter.myCustomFormatter.date(from: $0.dateLastViewed),
+                      let date2 = DateFormatter.myCustomFormatter.date(from: $1.dateLastViewed) else { return false }
                 return date1 > date2
             })
         } else if currentCategory == "Favorites" {
@@ -112,6 +106,7 @@ struct ContentView: View {
             .sheet(isPresented: $showSearchOptionsSheet){
                 SearchOptionsSheetView(searchInTitle: $searchInTitle, searchInAuthor: $searchInAuthor, searchInNotes: $searchInNotes, searchInIngredients: $searchInIngredients, searchInDirections: $searchInDirections)
             }
+            .navigationBarBackground()
             .navigationTitle("").navigationBarTitleDisplayMode(.inline)
             .toolbar {                                
                 ToolbarItem(placement: .topBarTrailing) {
@@ -130,7 +125,7 @@ struct ContentView: View {
 
     }
     
-    private func recipeImageView(recipe: Recipe) -> some View {
+    private func recipeImageView(recipe: Recipe, size: CGSize) -> some View {
         Group {
             if let imageData = recipe.imageURL, let uiImage = UIImage(data: imageData)  {
                 Image(uiImage: uiImage)
@@ -144,6 +139,7 @@ struct ContentView: View {
         .frame(width: 80, height: 60)
         .clipShape(RoundedRectangle(cornerRadius: 10))
     }
+    
      
     private func recipeSourceView(recipe: Recipe) -> some View {
         Group {
@@ -210,17 +206,7 @@ struct ContentView: View {
         .navigationSplitViewColumnWidth(min: 180, ideal: 200)
     }
     
-    private func removeRecipeFromCategory(recipe: Recipe) {
-        withAnimation{
-            recipe.categories.removeAll(where: {$0.name == currentCategory})
-        }
-    }
-    
-    private func removeRecipeFromFavorites(recipe: Recipe) {
-        withAnimation{
-            recipe.isFavorited = false
-        }
-    }
+
 
     private func addItem() {
         showNewRecipeModal = true
@@ -239,6 +225,16 @@ struct ContentView: View {
         withAnimation {
             for index in offsets {
                 modelContext.delete(recipes[index])
+            }
+        }
+    }
+    
+    private func initializeCategories() {
+        if let categories = loadCategoryJson(filename: "CategoriesInitializer") {
+            for category in categories {
+                modelContext.insert(
+                    Category(name: category.name)
+                )
             }
         }
     }
@@ -274,33 +270,23 @@ struct ContentView: View {
             }
         }
     }
-    private func initializeCategories() {
-        if let categories = loadCategoryJson(filename: "CategoriesInitializer") {
-            for category in categories {
-                modelContext.insert(
-                    Category(name: category.name)
-                )
-            }
+
+    
+    private func removeRecipeFromCategory(recipe: Recipe) {
+        withAnimation{
+            recipe.categories.removeAll(where: {$0.name == currentCategory})
+        }
+    }
+    
+    private func removeRecipeFromFavorites(recipe: Recipe) {
+        withAnimation{
+            recipe.isFavorited = false
         }
     }
     
 
 }
 
-
-
-struct SearchFilter: View {
-    @Binding var showSearchOptionsSheet: Bool
-    
-    var body: some View {
-        
-        Button(action: {
-            showSearchOptionsSheet = true
-        }, label: {
-            Label("Search Options", systemImage: "slider.horizontal.3")
-        })
-    }
-}
 
 //#Preview {
 //    ContentView()

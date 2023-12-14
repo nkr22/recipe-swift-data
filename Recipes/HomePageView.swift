@@ -12,6 +12,9 @@ struct HomePageView: View {
     @Query private var recipes: [Recipe]
     @State var showNewRecipeModal = false
     
+    private let cardPadding: CGFloat = 10
+    private let cardWidthFactor: CGFloat = 0.25
+    
     private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
@@ -38,87 +41,89 @@ struct HomePageView: View {
             }
         }
         .aspectRatio(1, contentMode: .fit)
-        .layoutPriority(0)
         .clipped()
         .cornerRadius(10)
     }
     
     var body: some View {
-        NavigationStack{
-            VStack{
-                Image("Recipeat")
-                    .resizable()
-                    .scaledToFit()
-                    .background {
-                        Rectangle()
-                            .ignoresSafeArea()
-                            .foregroundStyle(.gray.opacity(0.5))
-                            .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height/4)
-                    }
-                    .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height/4)
-                Spacer()
-                VStack(alignment: .leading){
-                    Text("Most Recent Recipes").font(.largeTitle).fontWeight(.bold)
-                    ScrollView(.horizontal){
-                        HStack(spacing: 20){
-                            ForEach(recentRecipes) {recipe in
-                                NavigationLink{
-                                    RecipeInformationView(recipe: recipe)
-                                } label: {
-                                    VStack{
-                                        cardImageView(recipe)
-                                        Text(recipe.title)
-                                            .font(.title2)
-                                            .lineLimit(2)
-                                            .layoutPriority(1)
-                                        Spacer()
+        GeometryReader{ geometry in
+            NavigationStack{
+                VStack{
+                    Rectangle()
+                        .fill(Color("AccentColor").opacity(0.3))
+                        .edgesIgnoringSafeArea(.all)
+                        .overlay{
+                            Image("Recipeat")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(height: geometry.size.height / 3)
+                        }
+                    Spacer()
+                    VStack(alignment: .leading){
+                        Text("Most Recent Recipes")
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                            .padding(.top, 1)
+                        ScrollView(.horizontal){
+                            HStack(spacing: cardPadding) {
+                                ForEach(recentRecipes) { recipe in
+                                    NavigationLink(destination: RecipeInformationView(recipe: recipe)) {
+                                        VStack {
+                                            cardImageView(recipe)
+                                                .frame(width: calculateCardWidth(size: geometry.size), height: calculateCardWidth(size: geometry.size))
+                                                .cornerRadius(10)
+
+                                            Text(recipe.title)
+                                                .font(.title2)
+                                                .lineLimit(2)
+                                                .frame(width: calculateCardWidth(size: geometry.size))
+                                        }
+                                        .padding(.vertical, cardPadding)
                                     }
-                                    
                                 }
-                                .frame(width: UIScreen.main.bounds.width/4, height: UIScreen.main.bounds.height/4)
                             }
+                            .frame(height: calculateCardWidth(size: geometry.size) + cardPadding * 4)
+                           .padding(.horizontal, cardPadding)
                         }
-                        .padding(.horizontal)
                     }
-                }
-                .padding(.vertical)
-                .padding(.leading)
-                
-                Spacer()
-                GeometryReader{geometry in
-                    VStack {
-                        Spacer() // This will push the button to the middle
-                        HStack {
-                            Spacer()
-                            Button(action: {
-                                showNewRecipeModal = true
-                            }, label: {
-                                HStack {
-                                    Image(systemName: "plus")
-                                    Text("Add a Recipe")
-                                }
-                                .font(.largeTitle)
-                                .padding()
-                                .foregroundColor(.white)
-                                .frame(width: geometry.size.width * 0.4, height: geometry.size.height * 0.2)
-                                .background(RoundedRectangle(cornerRadius: 12.0).fill(Color("MainColor")))
-                            })
-                            .frame(width: geometry.size.width / 2, height: geometry.size.height / 5)
-                            Spacer()
-                        }
-                        
-                        Spacer() // This will also push the button to the middle
-                    }
-                    .frame(height: geometry.size.height)
+                    .padding(.vertical)
+                    .padding(.leading)
                     
+                    Spacer()
+                    GeometryReader{geometry in
+                        VStack {
+                            Spacer()
+                            HStack {
+                                Spacer()
+                                RoundedRectangle(cornerRadius: 12.0)
+                                    .fill(Color("MainColor"))
+                                    .overlay(
+                                        Button(action: {
+                                            showNewRecipeModal = true
+                                        }, label: {
+                                            Label("Add Recipe", systemImage: "plus")
+                                        })
+                                    )
+                                    .frame(width: min(geometry.size.width * 0.3, 240), height: min(geometry.size.height * 0.3, 80))
+                                    .foregroundStyle(Color("TextColor"))
+                                Spacer()
+                            }
+                            
+                            Spacer()
+                        }
+                    }
                 }
             }
+            
+            .fullScreenCover(isPresented: $showNewRecipeModal) {
+                EditRecipeView(recipe: nil)
+            }
         }
-
-        .fullScreenCover(isPresented: $showNewRecipeModal) {
-            EditRecipeView(recipe: nil)
-        }
-        
+    }
+    private func calculateCardWidth(size: CGSize) -> CGFloat {
+        let totalPadding = cardPadding * 4
+        let cardWidth = (size.width - totalPadding) * cardWidthFactor
+        return cardWidth > 0 ? cardWidth : 100
     }
 }
 

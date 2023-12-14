@@ -38,9 +38,7 @@ struct EditRecipeView: View {
     @State private var isInitialized = false
     @State private var imageData: Data? = nil
     @State private var selectedPhoto: PhotosPickerItem?
-    
-    
-    let df = DateFormatter()
+
     let decimalFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
@@ -75,6 +73,7 @@ struct EditRecipeView: View {
                             Text(level.rawValue.capitalized).tag(level)
                         }
                     }
+                    Toggle("Favorited Recipe", isOn: $isFavorited)
                     NavigationLink{
                         MealInfoView(servings: $servings, prepTime: $prepTime, cookTime: $cookTime)
                     } label: {
@@ -86,8 +85,7 @@ struct EditRecipeView: View {
                                 .multilineTextAlignment(.trailing)
                         }
                     }
-                    // Additional fields for prepTime, cookTime, servings, etc.
-                    Toggle("Favorited Recipe", isOn: $isFavorited)
+
                     MultiSelector(label: Text("Select Categories"), options: allCategories, optionToString: {$0.name}, selected: $selectedCategories)
 
                     
@@ -186,9 +184,9 @@ struct EditRecipeView: View {
                            Recipe(
                                title: title,
                                author: author,
-                               dateCreated: df.string(from: Date()),
+                               dateCreated: DateFormatter.myCustomFormatter.string(from: Date()),
                                expertiseRequired: expertiseRequired,
-                               dateLastViewed: df.string(from: Date()),
+                               dateLastViewed: DateFormatter.myCustomFormatter.string(from: Date()),
                                sourceURL: sourceURL,
                                prepTime: prepTime,
                                cookTime: cookTime,
@@ -233,7 +231,7 @@ struct EditRecipeView: View {
                title = recipe.title
                author = recipe.author
                expertiseRequired = recipe.expertiseRequired
-               recipe.dateLastViewed = df.string(from: Date())
+               recipe.dateLastViewed = DateFormatter.myCustomFormatter.string(from: Date())
                sourceURL = recipe.sourceURL ?? ""
                imageData = recipe.imageURL
                prepTime = recipe.prepTime ?? ""

@@ -66,8 +66,18 @@ struct EditRecipeView: View {
         NavigationStack {
             Form {
                 Section(header: Text("Basic Information")) {
-                    TextField("Title", text: $title)
-                    TextField("Author", text: $author)
+                    LabeledContent {
+                        TextField("Title", text: $title)
+                            .multilineTextAlignment(.trailing)
+                    } label: {
+                        Text("Title")
+                    }
+                    LabeledContent {
+                        TextField("Author", text: $author)
+                            .multilineTextAlignment(.trailing)
+                    } label: {
+                        Text("Author")
+                    }
                     Picker("Expertise Required", selection: $expertiseRequired) {
                         ForEach(ExpertiseLevel.allCases, id: \.self) { level in
                             Text(level.rawValue.capitalized).tag(level)

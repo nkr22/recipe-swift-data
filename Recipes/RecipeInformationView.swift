@@ -17,16 +17,6 @@ struct RecipeInformationView: View {
     @State var showScalePopover = false
     @State var scaleForPopover: Double = 1
     
-    private func titleView(recipe: Recipe)-> some View {
-        Group {
-            if UIDevice.current.userInterfaceIdiom == .pad {
-                return Text(recipe.title).font(.title)
-            } else {
-                return Text(recipe.title).font(.headline)
-            }
-        }
-    }
-    
     var body: some View {
         GeometryReader{ geometry in
             NavigationStack{
@@ -36,10 +26,10 @@ struct RecipeInformationView: View {
                             .font(.system(size: min(geometry.size.width * 0.06, 24)))
                             .fontWeight(.bold).lineLimit(1)
                         HStack {
-                            recipeImageView(recipe: recipe)
+                            recipeImageView(recipe: recipe, size: geometry.size)
                                 .layoutPriority(0)
                             VStack(alignment: .leading) {
-                                RatingsDisplayView(maxRating: 5, currentRating: recipe.starRating, sfSymbol: "star", width: min(geometry.size.width*0.06, 24), color: Color("BrightAccentColor"))
+                                RatingsDisplayView(maxRating: 5, currentRating: recipe.starRating, sfSymbol: "star", width: min(geometry.size.width*0.06, 36), color: Color("BrightAccentColor"))
                                 Text(recipe.author)
                                     .lineLimit(1)
                                     .fontWeight(.bold)
@@ -123,8 +113,8 @@ struct RecipeInformationView: View {
         }
     }
     
-    private func recipeImageView(recipe: Recipe) -> some View {
-        let width = UIDevice.current.userInterfaceIdiom == .pad ? 200.0 : 80.0
+    private func recipeImageView(recipe: Recipe, size: CGSize) -> some View {
+        let width = min(size.width * 0.25, 200)
         return(
             Group {
                 if let imageData = recipe.imageURL, let uiImage = UIImage(data: imageData)  {

@@ -12,7 +12,6 @@ enum RecipeSegment: String, CaseIterable {
     case directions = "Directions"
 }
 
-
 struct RecipeSegmentedView: View {
     var segment: RecipeSegment
     var recipe: Recipe

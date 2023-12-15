@@ -9,9 +9,12 @@ import SwiftUI
 
 struct DirectionsView: View {
     var directions: [Direction]
+    var sortedDirections: [Direction] {
+        directions.sorted(by: {$0.order < $1.order})
+    }
 
     var body: some View {
-        List(directions.sorted { $0.order < $1.order }, id: \.self) { direction in
+        ForEach(sortedDirections) {direction in
             Text("\(direction.order). \(direction.direction)")
                 .font(.subheadline)
         }

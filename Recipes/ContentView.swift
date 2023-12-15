@@ -13,7 +13,7 @@ import MarkdownUI
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var recipes: [Recipe]
+    @Query(sort: \Recipe.starRating, order: .reverse) private var recipes: [Recipe]
     @Query private var categories: [Category]
     @State private var searchText = ""
     @State var showNewRecipeModal = false
@@ -22,12 +22,13 @@ struct ContentView: View {
     @State private var currentCategory: String = "All Recipes"
     @State private var isInitialized = false
     @State var selectedSegment: RecipeSegment = .ingredients
-    
     @State private var searchInTitle = true
     @State private var searchInAuthor = false
     @State private var searchInNotes = false
     @State private var searchInIngredients = false
     @State private var searchInDirections = false
+    @State var showScalePopover = false
+    @State var scaleForPopover: Double = 1
     @FocusState private var isSearchBarFocused: Bool
     
     private var filteredRecipes: [Recipe] {
@@ -78,7 +79,7 @@ struct ContentView: View {
     var body: some View {
         NavigationSplitView {
             VStack(spacing: 0){
-               headerView
+//               headerView
                 if searchFilteredRecipes.isEmpty {
                     Spacer()
                     NoRecipesView()
@@ -106,9 +107,16 @@ struct ContentView: View {
             .sheet(isPresented: $showSearchOptionsSheet){
                 SearchOptionsSheetView(searchInTitle: $searchInTitle, searchInAuthor: $searchInAuthor, searchInNotes: $searchInNotes, searchInIngredients: $searchInIngredients, searchInDirections: $searchInDirections)
             }
-            .navigationBarBackground()
             .navigationTitle("").navigationBarTitleDisplayMode(.inline)
-            .toolbar {                                
+            .toolbar {    
+                ToolbarItem(placement: .topBarLeading){
+                    SearchFilter(showSearchOptionsSheet: $showSearchOptionsSheet)
+                }
+                
+                ToolbarItem(placement: .principal){
+                    SelectCategoryView(currentFilter: $currentCategory, showCategorySheet: $showCategorySheet)
+                }
+                
                 ToolbarItem(placement: .topBarTrailing) {
                     EditButton()
                 }
@@ -118,10 +126,11 @@ struct ContentView: View {
                     }
                 }
             }
+            .navigationBarBackground()
         } detail: {
             HomePageView()
         }
-        .searchable(text: $searchText, prompt: "Search for a recipe")
+        .searchable(text: $searchText, prompt: "Search in \(currentCategory.localizedCapitalized)...")
 
     }
     
@@ -153,8 +162,6 @@ struct ContentView: View {
         }
         .lineLimit(1)
     }
-    @State var showScalePopover = false
-    @State var scaleForPopover: Double = 1
     private var browseAllList: some View {
             List{
                 ForEach(searchFilteredRecipes) { recipe in

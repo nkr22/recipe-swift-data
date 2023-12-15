@@ -4,7 +4,7 @@
 //
 //  Created by Noelia Root on 11/29/23.
 //
-
+// Walkthrough source: https://www.youtube.com/watch?v=dAMFgq4tDPM
 import SwiftUI
 
 struct HeartFavoriteView: View {

@@ -4,6 +4,7 @@
 //
 //  Created by Noelia Root on 12/3/23.
 //
+// Followed this tutorial and code: https://www.fline.dev/multi-selector-in-swiftui/
 
 import SwiftUI
 

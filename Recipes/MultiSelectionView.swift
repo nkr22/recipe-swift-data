@@ -4,6 +4,8 @@
 //
 //  Created by Noelia Root on 12/3/23.
 //
+// Followed this tutorial and code: https://www.fline.dev/multi-selector-in-swiftui/
+
 import SwiftUI
 
 struct MultiSelectionView<Selectable: Identifiable & Hashable>: View {
@@ -15,21 +17,7 @@ struct MultiSelectionView<Selectable: Identifiable & Hashable>: View {
     
     var body: some View {
         NavigationStack{
-            List {
-                ForEach(options) { selectable in
-                    Button(action: { toggleSelection(selectable: selectable) }) {
-                        HStack {
-                            Text(optionToString(selectable)).foregroundColor(.black)
-                            
-                            Spacer()
-                            
-                            if (selected.contains { $0.id == selectable.id }) {
-                                Image(systemName: "checkmark").foregroundColor(.accentColor)
-                            }
-                        }
-                    }.tag(selectable.id)
-                }
-            }.listStyle(GroupedListStyle())
+            CategoryList
         }
         .toolbar{
             ToolbarItem(placement: .topBarTrailing) {
@@ -43,7 +31,29 @@ struct MultiSelectionView<Selectable: Identifiable & Hashable>: View {
         }
         .navigationBarBackground()
     }
-
+    var CategoryList: some View {
+        List {
+            ForEach(options) { selectable in
+                Button(action: { toggleSelection(selectable: selectable) }) {
+                    HStack {
+                        Text(optionToString(selectable)).foregroundColor(.black)
+                        
+                        Spacer()
+                        
+                        if (selected.contains { $0.id == selectable.id }) {
+                            Image(systemName: "checkmark").foregroundColor(.accentColor)
+                        }
+                    }
+                }.tag(selectable.id)
+            }
+        }
+        .listStyle(GroupedListStyle())
+    }
+    
+    private func addCategory() {
+        openNewCategorySheet = true
+    }
+    
     private func toggleSelection(selectable: Selectable) {
         print("Selected Category: \(selectable.id) \(selectable.self)")
         if let existingIndex = selected.firstIndex(where: { $0.id == selectable.id }) {
@@ -57,9 +67,6 @@ struct MultiSelectionView<Selectable: Identifiable & Hashable>: View {
         }
     }
     
-    private func addCategory() {
-        openNewCategorySheet = true
-    }
+
 }
 
-//

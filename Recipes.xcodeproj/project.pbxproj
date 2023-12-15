@@ -24,7 +24,6 @@
 		817228DB2B141A41002AAE3C /* AWSCognitoAuthPlugin in Frameworks */ = {isa = PBXBuildFile; productRef = 817228DA2B141A41002AAE3C /* AWSCognitoAuthPlugin */; };
 		817228DD2B141A41002AAE3C /* AWSS3StoragePlugin in Frameworks */ = {isa = PBXBuildFile; productRef = 817228DC2B141A41002AAE3C /* AWSS3StoragePlugin */; };
 		817228DF2B141A41002AAE3C /* Amplify in Frameworks */ = {isa = PBXBuildFile; productRef = 817228DE2B141A41002AAE3C /* Amplify */; };
-		817228E72B144D64002AAE3C /* RecipeComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817228E62B144D64002AAE3C /* RecipeComponentView.swift */; };
 		817228E92B1450E0002AAE3C /* RecipesInitializer.json in Resources */ = {isa = PBXBuildFile; fileRef = 817228E82B1450E0002AAE3C /* RecipesInitializer.json */; };
 		817228EB2B14550F002AAE3C /* RecipeJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817228EA2B14550F002AAE3C /* RecipeJSON.swift */; };
 		817228EF2B15B2D8002AAE3C /* IngredientInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817228EE2B15B2D8002AAE3C /* IngredientInputView.swift */; };
@@ -86,7 +85,6 @@
 		815F3AAA2B28D49800E455EA /* View+Encapsulate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Encapsulate.swift"; sourceTree = "<group>"; };
 		815F3AAC2B28E05800E455EA /* MealInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealInfoView.swift; sourceTree = "<group>"; };
 		817228D52B13FA8B002AAE3C /* Recipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
-		817228E62B144D64002AAE3C /* RecipeComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeComponentView.swift; sourceTree = "<group>"; };
 		817228E82B1450E0002AAE3C /* RecipesInitializer.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = RecipesInitializer.json; sourceTree = "<group>"; };
 		817228EA2B14550F002AAE3C /* RecipeJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeJSON.swift; sourceTree = "<group>"; };
 		817228EE2B15B2D8002AAE3C /* IngredientInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientInputView.swift; sourceTree = "<group>"; };
@@ -174,21 +172,20 @@
 			isa = PBXGroup;
 			children = (
 				817228EE2B15B2D8002AAE3C /* IngredientInputView.swift */,
+				8158EA262B2B70EB00CB10F4 /* IngredientsView.swift */,
 				8158EA2A2B2B712300CB10F4 /* RecipeSegmentedView.swift */,
 				817228F02B163B7D002AAE3C /* DirectionInputView.swift */,
-				817228F62B185819002AAE3C /* HeartFavoriteView.swift */,
-				817228F42B1796E8002AAE3C /* RatingsView.swift */,
 				8158EA242B2B70D900CB10F4 /* DirectionsView.swift */,
-				815F3AAC2B28E05800E455EA /* MealInfoView.swift */,
+				817228F42B1796E8002AAE3C /* RatingsView.swift */,
 				81D146AC2B23D65D00464427 /* RatingsDisplayView.swift */,
+				817228F62B185819002AAE3C /* HeartFavoriteView.swift */,
 				815F3A992B2686CC00E455EA /* HeartDisplayView.swift */,
 				81D146982B1CF80B00464427 /* MultiSelectionView.swift */,
 				81D1469A2B1CFAC100464427 /* MultiSelector.swift */,
-				817228E62B144D64002AAE3C /* RecipeComponentView.swift */,
+				815F3AAC2B28E05800E455EA /* MealInfoView.swift */,
 				815F3A972B267FF800E455EA /* RecipeCardView.swift */,
 				81D146A02B1E21BA00464427 /* CategorySheetComponentView.swift */,
 				8158EA222B2B70BF00CB10F4 /* SearchFilter.swift */,
-				8158EA262B2B70EB00CB10F4 /* IngredientsView.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -440,7 +437,6 @@
 				8158EA2B2B2B712300CB10F4 /* RecipeSegmentedView.swift in Sources */,
 				8158EA232B2B70BF00CB10F4 /* SearchFilter.swift in Sources */,
 				81D1469D2B1D372D00464427 /* SelectCategoryView.swift in Sources */,
-				817228E72B144D64002AAE3C /* RecipeComponentView.swift in Sources */,
 				81D1469B2B1CFAC100464427 /* MultiSelector.swift in Sources */,
 				817228F52B1796E8002AAE3C /* RatingsView.swift in Sources */,
 				8158EA2D2B2B724A00CB10F4 /* DateFormatter+CustomDateFormatter.swift in Sources */,

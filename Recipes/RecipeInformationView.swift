@@ -14,103 +14,80 @@ struct RecipeInformationView: View {
     @Environment(\.dismiss) var dismiss
     @State var selectedSegment: RecipeSegment = .ingredients
     @State var showEditRecipeModal = false
-    @State var showScalePopover = false
     @State var scaleForPopover: Double = 1
     
     var body: some View {
-        GeometryReader{ geometry in
-            NavigationStack{
-                VStack{
-                    VStack(alignment: .leading){
-                        Text(recipe.title)
-                            .font(.system(size: min(geometry.size.width * 0.06, 24)))
-                            .fontWeight(.bold).lineLimit(1)
-                        HStack {
-                            recipeImageView(recipe: recipe, size: geometry.size)
-                                .layoutPriority(0)
-                            VStack(alignment: .leading) {
-                                RatingsDisplayView(maxRating: 5, currentRating: recipe.starRating, sfSymbol: "star", width: min(geometry.size.width*0.06, 36), color: Color("BrightAccentColor"))
-                                Text(recipe.author)
-                                    .lineLimit(1)
-                                    .fontWeight(.bold)
-                                    .foregroundStyle(.gray)
-                                    .font(.system(size: min(geometry.size.width * 0.04, 24)))
-                                recipeSourceView(recipe: recipe)
-                                    .font(.system(size: min(geometry.size.width * 0.04, 24)))
-                            }
-                            .layoutPriority(1)
-                            .padding(.leading)
-                            Spacer()
-                        }
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    HStack{
-                        Button(action: {
-                            showScalePopover = true
-                        }, label: {
-                            Label("Current Scale: \(recipe.currentScale, specifier: "%.2f")", systemImage: "slider.horizontal.3")
-                                .font(.system(size: min(geometry.size.width * 0.04, 24)))
-                        })
-                        .foregroundStyle(.blue)
-                        .popover(isPresented: $showScalePopover, attachmentAnchor: .point(.bottom), arrowEdge: .bottom) {
-                            NavigationStack{
-                                ScalePopoverView(scaleValue: $scaleForPopover)
-                                    .toolbar{
-                                        ToolbarItem(placement: .topBarTrailing) {
-                                            Button(action: {
-                                                showScalePopover = false
-                                            }) {
-                                                Text("Done")
-                                            }
-                                        }
+        List{
+            Section{
+                GeometryReader{ geometry in
+                    NavigationStack{
+                        VStack{
+                            VStack(alignment: .leading){
+                                Text(recipe.title)
+                                    .font(.system(size: min(geometry.size.width * 0.06, 24)))
+                                    .fontWeight(.bold).lineLimit(1)
+                                HStack {
+                                    recipeImageView(recipe: recipe, size: geometry.size)
+                                        .layoutPriority(0)
+                                    VStack(alignment: .leading) {
+                                        RatingsDisplayView(maxRating: 5, currentRating: recipe.starRating, sfSymbol: "star", width: min(geometry.size.width*0.06, 36), color: Color("BrightAccentColor"))
+                                        Text(recipe.author)
+                                            .lineLimit(1)
+                                            .fontWeight(.bold)
+                                            .foregroundStyle(.gray)
+                                            .font(.system(size: min(geometry.size.width * 0.04, 24)))
+                                        recipeSourceView(recipe: recipe)
+                                            .font(.system(size: min(geometry.size.width * 0.04, 24)))
                                     }
-                                    .toolbarBackground(Color("MainColor"), for: .navigationBar)
-                                    .toolbarBackground(.visible, for: .navigationBar)
-                                    .toolbarColorScheme(.dark, for: .navigationBar)
+                                    .layoutPriority(1)
+                                    .padding(.leading)
+                                    Spacer()
+                                }
                             }
-                            .frame(minWidth: 200, minHeight: 200)
-                            .presentationCompactAdaptation(.popover)
+                            .frame(maxWidth: .infinity)
+                            Picker("", selection: $selectedSegment) {
+                                ForEach(RecipeSegment.allCases, id: \.self) {
+                                    Text($0.rawValue)
+                                        .font(.system(size: min(geometry.size.width * 0.04, 24)))
+                                }
+                                .foregroundStyle(Color("MainColor"))
+                            }
+                            .pickerStyle(.segmented)        
                         }
-                        Spacer()
-                    }
-                    .padding(.horizontal)
-                    Picker("", selection: $selectedSegment) {
-                        ForEach(RecipeSegment.allCases, id: \.self) {
-                            Text($0.rawValue)
-                                .font(.system(size: min(geometry.size.width * 0.04, 24)))
+                        .fullScreenCover(isPresented: $showEditRecipeModal) {
+                            EditRecipeView(recipe: recipe)
                         }
-                        .foregroundStyle(Color("MainColor"))
-                    }
-                    .pickerStyle(.segmented)
-                    .padding(.horizontal)
-                    RecipeSegmentedView(segment: selectedSegment, recipe: recipe, currentScale: scaleForPopover)
-                    
-                }
-                .fullScreenCover(isPresented: $showEditRecipeModal) {
-                    EditRecipeView(recipe: recipe)
-                }
-                .toolbar {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Button(action: editRecipe) {
-                            Label("Edit", systemImage: "pencil")
+                        .toolbar {
+                            ToolbarItem(placement: .topBarTrailing) {
+                                Button(action: editRecipe) {
+                                    Label("Edit", systemImage: "pencil")
+                                }
+                            }
                         }
+                        .navigationBarBackground()
+                        .navigationTitle("Recipe Details")
+                        .navigationBarTitleDisplayMode(.inline)
+                    }
+                    .onAppear{
+                        updateDateLastViewed(for: recipe)
+                        scaleForPopover = recipe.currentScale
+                    }
+                    .onChange(of: scaleForPopover) {
+                        recipe.currentScale = scaleForPopover
                     }
                 }
-                .toolbarBackground(Color("MainColor"), for: .navigationBar)
-                .toolbarBackground(.visible, for: .navigationBar)
-                .toolbarColorScheme(.dark, for: .navigationBar)
-                .navigationTitle("Recipe Details")
-                .navigationBarTitleDisplayMode(.inline)
-            }
-            .onAppear{
-                updateDateLastViewed(for: recipe)
-                scaleForPopover = recipe.currentScale
-            }
-            .onChange(of: scaleForPopover) {
-                recipe.currentScale = scaleForPopover
+                .frame(height: calculateHeightForSection())
+                RecipeSegmentedView(segment: selectedSegment, recipe: recipe, currentScale: $scaleForPopover)
             }
         }
+        .listStyle(PlainListStyle())
+    }
+    
+    private func calculateHeightForSection() -> CGFloat {
+        let imageHeight = min(UIScreen.main.bounds.width * 0.25, 200)
+        let baseHeight: CGFloat = imageHeight * 1.25
+        let extraPadding: CGFloat = UIDeviceOrientation.unknown.isLandscape ? 0 : 50
+        return baseHeight + extraPadding
     }
     
     private func recipeImageView(recipe: Recipe, size: CGSize) -> some View {

@@ -3,7 +3,7 @@
 //  Recipes
 //
 //  Created by Noelia Root on 12/8/23.
-//
+// Walkthrough source: https://www.youtube.com/watch?v=dAMFgq4tDPM
 
 import SwiftUI
 

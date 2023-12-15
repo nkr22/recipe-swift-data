@@ -15,12 +15,12 @@ enum RecipeSegment: String, CaseIterable {
 struct RecipeSegmentedView: View {
     var segment: RecipeSegment
     var recipe: Recipe
-    var currentScale: Double
+    @Binding var currentScale: Double
 
     var body: some View {
         switch segment {
         case .ingredients:
-            IngredientsView(ingredients: recipe.ingredients, currentScale: currentScale)
+            IngredientsView(ingredients: recipe.ingredients, currentScale: $currentScale)
         case .directions:
             DirectionsView(directions: recipe.directions)
         }

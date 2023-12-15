@@ -9,6 +9,7 @@ import SwiftUI
 
 struct RecipeCardView: View {
     let recipe: Recipe
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             cardImageView
@@ -34,16 +35,7 @@ struct RecipeCardView: View {
                 }
                 .padding(.bottom, 1)
                 
-                ScrollView(.horizontal) {
-                    HStack{
-                        ForEach(recipe.categories, id: \.self) { tag in
-                            Text(tag.name)
-                                .encapsulate(color: .black.opacity(0.8), foregroundColor : .white)
-                        }
-                        Spacer()
-                    }
-                }
-                .padding(.bottom)
+                categoryView
             }
             .padding(.horizontal, 15)
         }
@@ -58,6 +50,18 @@ struct RecipeCardView: View {
             }
                    )
         }
+    }
+    private var categoryView: some View{
+        ScrollView(.horizontal) {
+            HStack{
+                ForEach(recipe.categories, id: \.self) { tag in
+                    Text(tag.name)
+                        .encapsulate(color: .black.opacity(0.8), foregroundColor : .white)
+                }
+                Spacer()
+            }
+        }
+        .padding(.bottom)
     }
     
     private var cardImageView: some View {

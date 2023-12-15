@@ -19,8 +19,8 @@ struct ColoredNavigationBar: ViewModifier {
   
   func body(content: Content) -> some View {
     content
-          .toolbarBackground(.visible, for: .navigationBar)
-      .toolbarBackground(background)
-      .toolbarColorScheme(.dark, for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
+        .toolbarBackground(background)
+        .toolbarColorScheme(.dark, for: .navigationBar)
   }
 }

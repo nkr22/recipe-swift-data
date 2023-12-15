@@ -17,6 +17,7 @@ struct SearchFilter: View {
         }, label: {
             Label("Search Options", systemImage: "slider.horizontal.3")
         })
+        .foregroundStyle(Color("TextColor"))
     }
 }
 

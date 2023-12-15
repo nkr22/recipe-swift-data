@@ -151,6 +151,7 @@
 		815F3AA12B28608100E455EA /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				815F3AA32B28609F00E455EA /* Helpers */,
 				8176650A2B0674C000D640F1 /* ContentView.swift */,
 				81D146912B18E24900464427 /* NoRecipesView.swift */,
 				815F3A9F2B282C0D00E455EA /* RecipeInformationView.swift */,
@@ -249,7 +250,6 @@
 			children = (
 				815F3AA72B28CD6500E455EA /* Extensions */,
 				815F3AA42B2860AA00E455EA /* Initializers */,
-				815F3AA32B28609F00E455EA /* Helpers */,
 				815F3AA22B28609400E455EA /* Models */,
 				815F3AA12B28608100E455EA /* Views */,
 				817665082B0674C000D640F1 /* RecipesApp.swift */,

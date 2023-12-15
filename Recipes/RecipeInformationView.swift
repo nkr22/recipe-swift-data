@@ -15,7 +15,9 @@ struct RecipeInformationView: View {
     @State var selectedSegment: RecipeSegment = .ingredients
     @State var showEditRecipeModal = false
     @State var scaleForPopover: Double = 1
-    
+    private var formattedCategoryListString: String {
+        recipe.categories.map { $0.name }.joined(separator: ", ")
+    }
     var body: some View {
         List{
             Section{
@@ -34,10 +36,12 @@ struct RecipeInformationView: View {
                                         Text(recipe.author)
                                             .lineLimit(1)
                                             .fontWeight(.bold)
+                                            .font(.system(size: min(geometry.size.width * 0.04, 24)))
+                                        Text(formattedCategoryListString)
+                                            .font(.system(size: min(geometry.size.width * 0.04, 24)))
+                                        MealInfoDisplayView(recipe: recipe)
+                                            .font(.system(size: min(geometry.size.width * 0.04, 24)))
                                             .foregroundStyle(.gray)
-                                            .font(.system(size: min(geometry.size.width * 0.04, 24)))
-                                        recipeSourceView(recipe: recipe)
-                                            .font(.system(size: min(geometry.size.width * 0.04, 24)))
                                     }
                                     .layoutPriority(1)
                                     .padding(.leading)
@@ -82,12 +86,17 @@ struct RecipeInformationView: View {
         }
         .listStyle(PlainListStyle())
     }
-    
+
     private func calculateHeightForSection() -> CGFloat {
         let imageHeight = min(UIScreen.main.bounds.width * 0.25, 200)
         let baseHeight: CGFloat = imageHeight * 1.25
-        let extraPadding: CGFloat = UIDeviceOrientation.unknown.isLandscape ? 0 : 50
+        let isLandscape = UIDevice.current.orientation.isLandscape
+        let extraPadding: CGFloat = isLandscape ? 30 : 50
         return baseHeight + extraPadding
+    }
+    
+    private func editRecipe() {
+        showEditRecipeModal = true
     }
     
     private func recipeImageView(recipe: Recipe, size: CGSize) -> some View {
@@ -107,23 +116,6 @@ struct RecipeInformationView: View {
             .clipShape(RoundedRectangle(cornerRadius: 10))
         )
     }
-     
-    private func recipeSourceView(recipe: Recipe) -> some View {
-        Group {
-            if let sourceData = recipe.sourceURL, let url = URL(string: sourceData) {
-                Link("\(sourceData)", destination: url)
-                    .foregroundStyle(.blue)
-            } else {
-                Text("Unknown source")
-                    .foregroundStyle(.gray)
-            }
-        }
-        .lineLimit(1)
-    }
-    
-    private func editRecipe() {
-        showEditRecipeModal = true
-    }
     
     private func updateDateLastViewed(for recipe: Recipe) {
         let currentDate = Date()
@@ -132,14 +124,6 @@ struct RecipeInformationView: View {
         try? modelContext.save()
     }
 }
-
-
-
-
-
-
-
-
 
 //#Preview {
 //    RecipeInformationView()

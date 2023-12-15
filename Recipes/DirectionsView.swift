@@ -12,12 +12,20 @@ struct DirectionsView: View {
     var sortedDirections: [Direction] {
         directions.sorted(by: {$0.order < $1.order})
     }
-
+    var notes: String
+    
     var body: some View {
+        Text("Directions")
+            .foregroundStyle(Color("MainColor"))
         ForEach(sortedDirections) {direction in
             Text("\(direction.order). \(direction.direction)")
-                .font(.subheadline)
         }
+        if notes != "" {
+            Text("Notes")
+                .foregroundStyle(Color("MainColor"))
+            Text(notes).multilineTextAlignment(.leading)
+        }
+  
     }
 }
 

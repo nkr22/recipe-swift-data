@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		810304AB2B2C121F0095DEAE /* MealInfoDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810304AA2B2C121F0095DEAE /* MealInfoDisplayView.swift */; };
 		8158EA232B2B70BF00CB10F4 /* SearchFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8158EA222B2B70BF00CB10F4 /* SearchFilter.swift */; };
 		8158EA252B2B70D900CB10F4 /* DirectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8158EA242B2B70D900CB10F4 /* DirectionsView.swift */; };
 		8158EA272B2B70EB00CB10F4 /* IngredientsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8158EA262B2B70EB00CB10F4 /* IngredientsView.swift */; };
@@ -71,6 +72,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		810304AA2B2C121F0095DEAE /* MealInfoDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealInfoDisplayView.swift; sourceTree = "<group>"; };
 		8158EA222B2B70BF00CB10F4 /* SearchFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFilter.swift; sourceTree = "<group>"; };
 		8158EA242B2B70D900CB10F4 /* DirectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionsView.swift; sourceTree = "<group>"; };
 		8158EA262B2B70EB00CB10F4 /* IngredientsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientsView.swift; sourceTree = "<group>"; };
@@ -186,6 +188,7 @@
 				815F3A972B267FF800E455EA /* RecipeCardView.swift */,
 				81D146A02B1E21BA00464427 /* CategorySheetComponentView.swift */,
 				8158EA222B2B70BF00CB10F4 /* SearchFilter.swift */,
+				810304AA2B2C121F0095DEAE /* MealInfoDisplayView.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -444,6 +447,7 @@
 				815F3A982B267FF800E455EA /* RecipeCardView.swift in Sources */,
 				81D146942B18E8C200464427 /* EditRecipeView.swift in Sources */,
 				817665092B0674C000D640F1 /* RecipesApp.swift in Sources */,
+				810304AB2B2C121F0095DEAE /* MealInfoDisplayView.swift in Sources */,
 				81D146992B1CF80B00464427 /* MultiSelectionView.swift in Sources */,
 				815F3A9C2B27C1B300E455EA /* SearchOptionsSheetView.swift in Sources */,
 				81D146922B18E24900464427 /* NoRecipesView.swift in Sources */,

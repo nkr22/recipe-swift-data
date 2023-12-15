@@ -22,7 +22,7 @@ struct RecipeSegmentedView: View {
         case .ingredients:
             IngredientsView(ingredients: recipe.ingredients, currentScale: $currentScale)
         case .directions:
-            DirectionsView(directions: recipe.directions)
+            DirectionsView(directions: recipe.directions, notes: recipe.notes ?? "")
         }
     }
 }

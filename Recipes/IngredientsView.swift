@@ -34,13 +34,12 @@ struct IngredientsView: View {
     
 
     var body: some View {
-        HStack(spacing:0){
+        HStack{
             Button(action: {
                 showScalePopover = true
             }, label: {
-                Label("Current Scale: \(currentScale, specifier: "%.2f")", systemImage: "slider.horizontal.3")
+                Label("Current Scale: \(currentScale, specifier: "%.2f")x", systemImage: "slider.horizontal.3")
                     .font(.subheadline)
-                    .padding(.vertical, 2) 
             })
             .foregroundStyle(.blue)
             .popover(isPresented: $showScalePopover, attachmentAnchor: .point(.bottom), arrowEdge: .bottom) {
@@ -60,10 +59,10 @@ struct IngredientsView: View {
                 .frame(minWidth: 200, minHeight: 200)
                 .presentationCompactAdaptation(.popover)
             }
-            Spacer()
         }
         .listRowSeparator(.hidden)
-        
+        Text("Ingredients")
+            .foregroundStyle(Color("MainColor"))
         ForEach(ingredients) {ingredient in
             Text(ingredientString(amount: ingredient.amount, unit: ingredient.unit, ingredient: ingredient.ingredient, notes: ingredient.notes))
                 .font(.subheadline)

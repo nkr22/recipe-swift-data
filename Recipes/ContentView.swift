@@ -4,16 +4,26 @@
 //
 //  Created by Noelia Root on 11/16/23.
 //
-// Segment View: https://stackoverflow.com/questions/73673083/swiftui-segmented-control-how-to-switch-to-other-segment-on-tap-in-first-segme
+//  Segment View: https://stackoverflow.com/questions/73673083/swiftui-segmented-control-how-to-switch-to-other-segment-on-tap-in-first-segme
+//  Recipe Component View/Inspiration: https://www.swiftyplace.com/blog/how-to-use-search-scopes-in-swiftui-to-improve-search-on-ios-and-macos
+//  I asked ChatGPT: "How can i grab both the category and the word that I am passing to searchable to filter the recipes that show on screen"
+//  How i changed the color of the toolbar and searchable when they were not cooperating: https://stackoverflow.com/questions/69511960/customize-searchable-search-field-swiftui-ios-15#:~:text=The%20textColor%20of%20the%20input,searchable%20modifier%20is%20applied.
 
 import SwiftUI
 import SwiftData
 import MarkdownUI
 
+enum SortOrder {
+    case titleAscending
+    case titleDescending
+    case ratingAscending
+    case ratingDescending
+}
+
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query(sort: \Recipe.starRating, order: .reverse) private var recipes: [Recipe]
+    @Query private var recipes: [Recipe]
     @Query private var categories: [Category]
     @State private var searchText = ""
     @State var showNewRecipeModal = false
@@ -29,6 +39,7 @@ struct ContentView: View {
     @State private var searchInDirections = false
     @State var showScalePopover = false
     @State var scaleForPopover: Double = 1
+    @State private var sortOrder: SortOrder = .titleAscending
     @FocusState private var isSearchBarFocused: Bool
     
     private var filteredRecipes: [Recipe] {
@@ -65,6 +76,19 @@ struct ContentView: View {
         }
     }
     
+    private var searchFilteredSortedRecipes: [Recipe] {
+           switch sortOrder {
+           case .titleAscending:
+               return searchFilteredRecipes.sorted(by: { $0.title < $1.title })
+           case .titleDescending:
+               return searchFilteredRecipes.sorted(by: { $0.title > $1.title })
+           case .ratingAscending:
+               return searchFilteredRecipes.sorted(by: { $0.starRating ?? 0 < $1.starRating ?? 0})
+           case .ratingDescending:
+               return searchFilteredRecipes.sorted(by: { $0.starRating ?? 0 > $1.starRating ?? 0})
+           }
+       }
+    
     var headerView: some View {
             HStack {
                 SelectCategoryView(currentFilter: $currentCategory, showCategorySheet: $showCategorySheet)
@@ -79,14 +103,53 @@ struct ContentView: View {
     var body: some View {
         NavigationSplitView {
             VStack(spacing: 0){
-//               headerView
-                if searchFilteredRecipes.isEmpty {
+                if searchFilteredSortedRecipes.isEmpty {
                     Spacer()
                     NoRecipesView()
                     Spacer()
                 } else {
                     browseAllList
                 }
+                Rectangle()
+                    .frame(height: 0)
+                    .background(Color("MainColor"))
+                    .overlay{
+                        
+                    }
+                HStack(alignment: .center){
+                    Menu("Sort") {
+                        Button("Rating Ascending", action: {
+                            withAnimation{
+                                sortOrder = .ratingAscending
+                            }
+                        })
+                        Button("Rating Descending", action: {
+                            withAnimation{
+                                sortOrder = .ratingDescending
+                            }
+                        })
+                        Button("Title A-Z", action: {
+                            withAnimation{
+                                sortOrder = .titleAscending
+                            }
+                        })
+                        Button("Title Z-A", action: {
+                            withAnimation{
+                                sortOrder = .titleDescending
+                            }
+                        })
+                    }
+                        .padding()
+                    Spacer()
+                    EditButton()
+                        .padding()
+                }
+                .frame(maxWidth: .infinity, maxHeight: 40)
+                .foregroundColor(Color("AccentColor"))
+                .background(
+                    Color("TextColor")
+                        .ignoresSafeArea(edges: .all)
+                )
             }
             .onAppear {
                 if !isInitialized {
@@ -117,10 +180,7 @@ struct ContentView: View {
                     SelectCategoryView(currentFilter: $currentCategory, showCategorySheet: $showCategorySheet)
                 }
                 
-                ToolbarItem(placement: .topBarTrailing) {
-                    EditButton()
-                }
-                ToolbarItem {
+                ToolbarItem(placement: .topBarTrailing){
                     Button(action: addItem) {
                         Label("Add Item", systemImage: "plus")
                     }
@@ -130,7 +190,7 @@ struct ContentView: View {
         } detail: {
             HomePageView()
         }
-        .searchable(text: $searchText, prompt: "Search in \(currentCategory.localizedCapitalized)...")
+        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search in \(currentCategory.localizedCapitalized)...")
 
     }
     
@@ -164,14 +224,13 @@ struct ContentView: View {
     }
     private var browseAllList: some View {
             List{
-                ForEach(searchFilteredRecipes) { recipe in
+                ForEach(searchFilteredSortedRecipes) { recipe in
                     NavigationLink {
                         RecipeInformationView(recipe: recipe)
                     } label: {
                         RecipeCardView(recipe: recipe)
                          .padding(EdgeInsets())
                          .swipeActions(allowsFullSwipe: false) {
-                             
                              Button(role: .destructive) {
                                  deleteRecipe(recipe)
                              } label: {
@@ -199,9 +258,6 @@ struct ContentView: View {
 
                         }
                     }
-                    
-
-                    
                 }
                 .onDelete(perform: deleteItems)
                 .listRowSeparator(.hidden, edges: .all)
@@ -213,8 +269,6 @@ struct ContentView: View {
         .navigationSplitViewColumnWidth(min: 180, ideal: 200)
     }
     
-
-
     private func addItem() {
         showNewRecipeModal = true
     }
@@ -222,7 +276,7 @@ struct ContentView: View {
 
     private func deleteRecipe(_ recipe: Recipe) {
         withAnimation {
-            if let index = searchFilteredRecipes.firstIndex(of: recipe) {
+            if let index = searchFilteredSortedRecipes.firstIndex(of: recipe) {
                 modelContext.delete(searchFilteredRecipes[index])
             }
         }
@@ -277,7 +331,6 @@ struct ContentView: View {
             }
         }
     }
-
     
     private func removeRecipeFromCategory(recipe: Recipe) {
         withAnimation{
@@ -290,7 +343,6 @@ struct ContentView: View {
             recipe.isFavorited = false
         }
     }
-    
 
 }
 

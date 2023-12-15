@@ -4,6 +4,7 @@
 //
 //  Created by Noelia Root on 11/30/23.
 //
+//  Followed this tutorial for images: https://www.youtube.com/watch?v=y3LofRLPUM8&list=PLvUWi5tdh92wZ5_iDMcBpenwTgFNan9T7&index=8
 
 import SwiftUI
 import SwiftData
@@ -23,12 +24,6 @@ struct EditRecipeView: View {
     @State private var prepTime: String = ""
     @State private var cookTime: String = ""
     @State private var servings: String = ""
-    private var formattedMealInfo: String {
-        let servingsString = servings == "" ? servings : "Servings: \(servings)"
-        let prepString = prepTime == "" ? prepTime : "\nPrep Time: \(prepTime)"
-        let cookString = cookTime == "" ? cookTime : "\nCook Time: \(cookTime)"
-        return "\(servingsString) \(prepString) \(cookString)"
-    }
     @State private var notes: String = ""
     @State private var directions: [Direction] = []
     @State private var directionCount: Int = 1
@@ -38,6 +33,34 @@ struct EditRecipeView: View {
     @State private var isInitialized = false
     @State private var imageData: Data? = nil
     @State private var selectedPhoto: PhotosPickerItem?
+    
+    private var formattedMealInfo: String {
+        let servingsString = servings == "" ? servings : "Servings: \(servings)"
+        let prepString = prepTime == "" ? prepTime : "\nPrep Time: \(prepTime)"
+        let cookString = cookTime == "" ? cookTime : "\nCook Time: \(cookTime)"
+        return "\(servingsString) \(prepString) \(cookString)"
+    }
+    
+    private var isChanged: Bool {
+        if let recipe {
+            title != recipe.title ||
+            author != recipe.author ||
+            expertiseRequired != recipe.expertiseRequired ||
+            sourceURL != recipe.sourceURL ||
+            prepTime != recipe.prepTime ||
+            cookTime != recipe.cookTime ||
+            servings != recipe.servings ||
+            isFavorited != recipe.isFavorited ||
+            starRating != recipe.starRating ||
+            notes != recipe.notes ||
+            directions != recipe.directions ||
+            ingredients != recipe.ingredients ||
+            Array(selectedCategories) != recipe.categories ||
+            imageData != recipe.imageURL
+        } else {
+            false
+        }
+    }
 
     let decimalFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
@@ -45,121 +68,117 @@ struct EditRecipeView: View {
         return formatter
     }()
     
-    func addIngredient () {
-        ingredients.append(Ingredient(amount: "", unit: "", ingredient: "", notes: ""))
+    var additionalInfoView: some View {
+        Section(header: Text("Additional Information")) {
+            HStack {
+                Text("Rating")
+                    .foregroundColor(.secondary)
+                Spacer()
+                RatingsView(maxRating: 5, currentRating: $starRating, sfSymbol: "star", width: 30.0, color: Color("BrightAccentColor"))
+            }
+            TextField("Source URL", text: $sourceURL)
+            if let selectedPhotoData = imageData,
+                   let uiImage = UIImage(data: selectedPhotoData) {
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(maxWidth: .infinity, maxHeight: 300)
+                }
+            PhotosPicker(selection: $selectedPhoto,
+                         matching: .images,
+                         photoLibrary: .shared()) {
+                                Label("Add Image", systemImage: "photo")
+                            }
+            if imageData != nil {
+                    Button(role: .destructive) {
+                        withAnimation {
+                            selectedPhoto = nil
+                            imageData = nil
+                        }
+                    } label: {
+                        Label("Remove Image", systemImage: "xmark")
+                            .foregroundStyle(Color("MainColor"))
+                    }
+                }
+        }
     }
     
-    func deleteIngredient(at offsets: IndexSet) {
-        ingredients.remove(atOffsets: offsets)
+    var basicInfoView: some View {
+        Section(header: Text("Basic Information")) {
+            LabeledContent {
+                TextField("Title", text: $title)
+                    .multilineTextAlignment(.trailing)
+            } label: {
+                Text("Title")
+            }
+            LabeledContent {
+                TextField("Author", text: $author)
+                    .multilineTextAlignment(.trailing)
+            } label: {
+                Text("Author")
+            }
+            Picker("Expertise Required", selection: $expertiseRequired) {
+                ForEach(ExpertiseLevel.allCases, id: \.self) { level in
+                    Text(level.rawValue.capitalized).tag(level)
+                }
+            }
+            Toggle("Favorited Recipe", isOn: $isFavorited)
+            NavigationLink{
+                MealInfoView(servings: $servings, prepTime: $prepTime, cookTime: $cookTime)
+            } label: {
+                HStack(alignment: .center) {
+                    Text("Info")
+                    Spacer()
+                    Text(formattedMealInfo)
+                        .foregroundColor(.gray)
+                        .multilineTextAlignment(.trailing)
+                }
+            }
+
+            MultiSelector(label: Text("Select Categories"), options: allCategories, optionToString: {$0.name}, selected: $selectedCategories)
+        }
     }
     
-    func addDirection () {
-        directions.append(Direction(order: directionCount , direction: ""))
-        directionCount += 1
+    var ingredientsView: some View {
+        Section(header: Text("Ingredients")) {
+            Button(action: addIngredient) {
+                Label("Add Ingredient", systemImage: "plus")
+            }
+            ForEach($ingredients, id: \.id) { $ingredient in
+                IngredientInputView(ingredient: $ingredient)
+            }
+            .onDelete(perform: deleteIngredient)
+            
+        }
     }
     
-    func deleteDirection(at offsets: IndexSet) {
-        directions.remove(atOffsets: offsets)
+    var directionsView: some View {
+        Section(header: Text("Directions")) {
+            Button(action: addDirection) {
+                Label("Add Direction", systemImage: "plus")
+            }
+            ForEach($directions.sorted { $0.order.wrappedValue < $1.order.wrappedValue }, id: \.id) { $direction in
+                DirectionInputView(direction: $direction)
+            }
+            .onDelete(perform: deleteDirection)
+        }
     }
+    
+    var notesView: some View {
+        Section(header: Text("Notes")) {
+            TextField("Notes", text: $notes, axis: .vertical).multilineTextAlignment(.leading)
+        }
+    }
+    
     
     var body: some View {
         NavigationStack {
             Form {
-                Section(header: Text("Basic Information")) {
-                    LabeledContent {
-                        TextField("Title", text: $title)
-                            .multilineTextAlignment(.trailing)
-                    } label: {
-                        Text("Title")
-                    }
-                    LabeledContent {
-                        TextField("Author", text: $author)
-                            .multilineTextAlignment(.trailing)
-                    } label: {
-                        Text("Author")
-                    }
-                    Picker("Expertise Required", selection: $expertiseRequired) {
-                        ForEach(ExpertiseLevel.allCases, id: \.self) { level in
-                            Text(level.rawValue.capitalized).tag(level)
-                        }
-                    }
-                    Toggle("Favorited Recipe", isOn: $isFavorited)
-                    NavigationLink{
-                        MealInfoView(servings: $servings, prepTime: $prepTime, cookTime: $cookTime)
-                    } label: {
-                        HStack(alignment: .center) {
-                            Text("Info")
-                            Spacer()
-                            Text(formattedMealInfo)
-                                .foregroundColor(.gray)
-                                .multilineTextAlignment(.trailing)
-                        }
-                    }
-
-                    MultiSelector(label: Text("Select Categories"), options: allCategories, optionToString: {$0.name}, selected: $selectedCategories)
-
-                    
-                }
-                
-                Section(header: Text("Additional Information")) {
-                    HStack {
-                        Text("Rating")
-                            .foregroundColor(.secondary)
-                        Spacer()
-                        RatingsView(maxRating: 5, currentRating: $starRating, sfSymbol: "star", width: 30.0, color: Color("BrightAccentColor"))
-                    }
-                    TextField("Source URL", text: $sourceURL)
-                    if let selectedPhotoData = imageData,
-                           let uiImage = UIImage(data: selectedPhotoData) {
-                            Image(uiImage: uiImage)
-                                .resizable()
-                                .scaledToFill()
-                                .frame(maxWidth: .infinity, maxHeight: 300)
-                        }
-                    PhotosPicker(selection: $selectedPhoto,
-                                 matching: .images,
-                                 photoLibrary: .shared()) {
-                                        Label("Add Image", systemImage: "photo")
-                                    }
-                    if imageData != nil {
-                            Button(role: .destructive) {
-                                withAnimation {
-                                    selectedPhoto = nil
-                                    imageData = nil
-                                }
-                            } label: {
-                                Label("Remove Image", systemImage: "xmark")
-                                    .foregroundStyle(Color("MainColor"))
-                            }
-                        }
-                }
-
-                
-                Section(header: Text("Ingredients")) {
-                    Button(action: addIngredient) {
-                        Label("Add Ingredient", systemImage: "plus")
-                    }
-                    ForEach($ingredients, id: \.id) { $ingredient in
-                        IngredientInputView(ingredient: $ingredient)
-                    }
-                    .onDelete(perform: deleteIngredient)
-                    
-                }
-                
-                
-                Section(header: Text("Directions")) {
-                    Button(action: addDirection) {
-                        Label("Add Direction", systemImage: "plus")
-                    }
-                    ForEach($directions.sorted { $0.order.wrappedValue < $1.order.wrappedValue }, id: \.id) { $direction in
-                        DirectionInputView(direction: $direction)
-                    }
-                    .onDelete(perform: deleteDirection)
-                }
-                
-                Section(header: Text("Notes")) {
-                    TextField("Notes", text: $notes, axis: .vertical).multilineTextAlignment(.leading)
-                }
+                basicInfoView
+                additionalInfoView
+                ingredientsView
+                directionsView
+                notesView
             
             }
             .toolbar {
@@ -219,7 +238,6 @@ struct EditRecipeView: View {
             .navigationBarBackground()
             .navigationTitle((recipe != nil) ? "Edit Recipe" : "New Recipe")
             .navigationBarTitleDisplayMode(.inline)
-
             .onAppear() {
                 if !isInitialized {
                     initializeViewWithRecipe(recipe)
@@ -227,13 +245,29 @@ struct EditRecipeView: View {
 
             }
         }
-
         .task(id: selectedPhoto) {
             if let data = try? await selectedPhoto?.loadTransferable(type: Data.self) {
                 imageData = data
             }
         }
     
+    }
+    
+    private func addIngredient () {
+        ingredients.append(Ingredient(amount: "", unit: "", ingredient: "", notes: ""))
+    }
+    
+    private func addDirection () {
+        directions.append(Direction(order: directionCount , direction: ""))
+        directionCount += 1
+    }
+    
+    private func deleteIngredient(at offsets: IndexSet) {
+        ingredients.remove(atOffsets: offsets)
+    }
+    
+    private func deleteDirection(at offsets: IndexSet) {
+        directions.remove(atOffsets: offsets)
     }
     
     private func initializeViewWithRecipe(_ recipe: Recipe?) {
@@ -259,27 +293,7 @@ struct EditRecipeView: View {
            }
            isInitialized = true
        }
-    
-    private var isChanged: Bool {
-        if let recipe {
-            title != recipe.title ||
-            author != recipe.author ||
-            expertiseRequired != recipe.expertiseRequired ||
-            sourceURL != recipe.sourceURL ||
-            prepTime != recipe.prepTime ||
-            cookTime != recipe.cookTime ||
-            servings != recipe.servings ||
-            isFavorited != recipe.isFavorited ||
-            starRating != recipe.starRating ||
-            notes != recipe.notes ||
-            directions != recipe.directions ||
-            ingredients != recipe.ingredients ||
-            Array(selectedCategories) != recipe.categories ||
-            imageData != recipe.imageURL
-        } else {
-            false
-        }
-    }
+
 }
 
 

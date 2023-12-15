@@ -58,8 +58,8 @@ struct HomePageView: View {
                         .frame(minHeight: geometry.size.height * 0.3)
                     Spacer()
                     recipeScrollView(size: geometry.size)
-                    .padding(.vertical)
-                    .padding(.leading)
+                        .padding(.vertical)
+                        .padding(.leading)
                     
                     Spacer()
                     buttonView
